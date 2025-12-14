@@ -35,6 +35,11 @@ export default function SideNavigation() {
                 <Link to="/string/encode-decode">Encode Decode</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild onClick={handleOpenMobile}>
+                <Link to="/string/hash-generator">Hash Generator</Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>

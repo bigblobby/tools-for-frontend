@@ -1,0 +1,97 @@
+import { ButtonGroup } from "@/components/ui/button-group";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import md5 from "md5";
+
+export default function StringHashGeneratorPage() {
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(event.target.value);
+  }
+
+  const handleClearAll = () => {
+    setInput("");
+    setOutput("");
+  }
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(output);
+  }
+
+  const handleClearOutput = () => {
+    setOutput("");
+  }
+
+  const handleGenerateMD5Hash = () => {
+    setOutput(md5(input));
+  }
+
+  const handleGenerateSHA256Hash = () => {
+    crypto.subtle.digest("SHA-256", new TextEncoder().encode(input)).then(hash => {
+      const hashString = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, "0")).join("");
+      setOutput(hashString);
+    });
+  }
+
+  const handleGenerateSHA512Hash = () => {
+    crypto.subtle.digest("SHA-512", new TextEncoder().encode(input)).then(hash => {
+      const hashString = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, "0")).join("");
+      setOutput(hashString);
+    });
+  }
+
+  return (
+    <div className="flex flex-row gap-10">
+      <div className="flex-1 flex flex-col gap-6">
+        <div>
+          <h1 className="text-2xl font-bold">String Hash Generator</h1>
+          <p className="text-gray-500">This page generates a hash of a string.</p>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <label htmlFor="string-input" className="block text-gray-500">Input</label>
+          <textarea value={input} id="string-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleInputChange} />
+
+          <div className="flex flex-wrap gap-3">
+            <Button variant="secondary" onClick={handleGenerateMD5Hash}>MD5</Button>
+            <Button variant="secondary" onClick={handleGenerateSHA256Hash}>SHA-256</Button>
+            <Button variant="secondary" onClick={handleGenerateSHA512Hash}>SHA-512</Button>
+          </div>
+          <div className="flex flex-col gap-3">
+            <ButtonGroup>
+              <Button variant="destructive" onClick={handleClearAll}>Clear All</Button>
+            </ButtonGroup>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <label htmlFor="string-output" className="block text-gray-500">Output <span className="text-xs">(Read Only)</span></label>
+          <textarea readOnly value={output} id="string-output" className="block w-full h-40 border border-gray-300 rounded-md p-2" />
+          <div className="flex flex-wrap gap-3">
+            <Button variant="secondary" onClick={handleCopy}>Copy</Button>
+            <Button variant="destructive" onClick={handleClearOutput}>Clear</Button>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col max-w-[320px] gap-3 bg-zinc-100 p-4 rounded-md">
+        <div>
+          <h3 className="mb-2 font-bold text-gray-500">Base64</h3>
+          <p className="text-gray-500 text-sm">Encode or decode the string to/from Base64.</p>
+        </div>
+        <div>
+          <h3 className="mb-2 font-bold text-gray-500">URL</h3>
+          <p className="text-gray-500 text-sm">Encode or decode the string to/from URL.</p>
+        </div>
+        <div>
+          <h3 className="mb-2 font-bold text-gray-500">HTML Entity</h3>
+          <p className="text-gray-500 text-sm mb-2">Encode or decode the string to/from HTML Entity using named references and encode everything.</p>
+          <p className="text-gray-500 text-sm mb-2"><span className="font-bold">Use Named References: </span>Named references are HTML entities like &amp;amp;, &amp;lt;, &amp;gt;, &amp;quot;, &amp;apos;, &amp;nbsp;, etc.</p>
+          <p className="text-gray-500 text-sm mb-2"><span className="font-bold">Encode Everything: </span>Encode everything is a flag that tells the encoder to encode all characters, not just the ones that need to be encoded.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
