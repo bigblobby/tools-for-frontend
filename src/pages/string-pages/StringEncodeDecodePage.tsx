@@ -1,10 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { useState } from "react";
+
+import { encode, decode } from "he";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function StringEncodeDecodePage() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
+  const [useNamedReferences, setUseNamedReferences] = useState(false);
+  const [encodeEverything, setEncodeEverything] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(event.target.value);
@@ -26,16 +31,39 @@ export default function StringEncodeDecodePage() {
     setOutput(atob(input));
   }
 
-  const handleClearInput = () => {
-    setInput("");
+  const handleHTMLEntityEncode = () => {
+    setOutput(encode(input, { useNamedReferences, encodeEverything }));
+  }
+
+  const handleHTMLEntityDecode = () => {
+    setOutput(decode(input));
+  }
+
+  const handleSetUseNamedReferences = (checked: boolean) => {
+    setUseNamedReferences(checked);
+  }
+
+  const handleSetEncodeEverything = (checked: boolean) => {
+    setEncodeEverything(checked);
   }
 
   const handleCopy = () => {
     navigator.clipboard.writeText(output);
   }
 
+  const handleClearInput = () => {
+    setInput("");
+  }
+
   const handleClearOutput = () => {
     setOutput("");
+  }
+
+  const handleClearAll = () => {
+    handleClearInput();
+    handleClearOutput();
+    setUseNamedReferences(false);
+    setEncodeEverything(false);
   }
 
   return (
@@ -50,36 +78,71 @@ export default function StringEncodeDecodePage() {
           <label htmlFor="string-input" className="block text-gray-500">Input</label>
           <textarea value={input} id="string-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleInputChange} />
           <div className="flex flex-wrap gap-3">
-            <div className="flex flex-col gap-3">
-              <label htmlFor="base64-encode" className="block text-gray-500">Base64</label>
+            <div className="flex flex-col gap-2">
+              <span className="block text-gray-500">Base64</span>
               <ButtonGroup>
-                <Button variant="secondary" onClick={handleBase64Encode}>Base64 Encode</Button>
-                <Button variant="secondary" onClick={handleBase64Decode}>Base64 Decode</Button>
+                <Button variant="secondary" onClick={handleBase64Encode}>Encode</Button>
+                <Button variant="secondary" onClick={handleBase64Decode}>Decode</Button>
               </ButtonGroup>
             </div>
-            <div className="flex flex-col gap-3">
-              <label htmlFor="url-encode" className="block text-gray-500">URL</label>
+            <div className="flex flex-col gap-2">
+              <span className="block text-gray-500">URL</span>
               <ButtonGroup>
-                <Button variant="secondary" onClick={handleURLEncode}>URL Encode</Button>
-                <Button variant="secondary" onClick={handleURLDecode}>URL Decode</Button>
+                <Button variant="secondary" onClick={handleURLEncode}>Encode</Button>
+                <Button variant="secondary" onClick={handleURLDecode}>Decode</Button>
               </ButtonGroup>
             </div>
-            <div className="flex flex-col gap-3 self-end">
-              <ButtonGroup>
-                <Button variant="destructive" onClick={handleClearInput}>Clear</Button>
-              </ButtonGroup>
+            <div className="flex flex-col gap-2">
+              <span className="block text-gray-500">HTML Entity</span>
+              <div className="flex items-center gap-2">
+                <ButtonGroup>
+                  <Button variant="secondary" onClick={handleHTMLEntityEncode}>Encode</Button>
+                  <Button variant="secondary" onClick={handleHTMLEntityDecode}>Decode</Button>
+                </ButtonGroup>
+                <div className="flex flex-row items-center gap-2">
+                  <Checkbox id="use-named-references" checked={useNamedReferences} onCheckedChange={handleSetUseNamedReferences} />
+                  <label htmlFor="use-named-references" className="block text-gray-500 text-sm">Use Named References</label>
+                </div>
+                <div className="flex flex-row items-center gap-2">
+                  <Checkbox id="encode-everything" checked={encodeEverything} onCheckedChange={handleSetEncodeEverything} />
+                  <label htmlFor="encode-everything" className="block text-gray-500 text-sm">Encode Everything</label>
+                </div>
+              </div>
             </div>
+          </div>
+          <div className="flex flex-col gap-3">
+            <ButtonGroup>
+              <Button variant="destructive" onClick={handleClearAll}>Clear All</Button>
+            </ButtonGroup>
           </div>
         </div>
 
         <div className="flex flex-col gap-3">
-          <label htmlFor="string-output" className="block text-gray-500">Output</label>
+          <label htmlFor="string-output" className="block text-gray-500">Output <span className="text-xs">(Read Only)</span></label>
           <textarea readOnly value={output} id="string-output" className="block w-full h-40 border border-gray-300 rounded-md p-2" />
           <div className="flex flex-wrap gap-3">
             <Button variant="secondary" onClick={handleCopy}>Copy</Button>
             <Button variant="destructive" onClick={handleClearOutput}>Clear</Button>
           </div>
         </div>
+      </div>
+
+      <div className="flex flex-col max-w-[320px] gap-3 bg-zinc-100 p-4 rounded-md">
+        <div>
+          <h3 className="mb-2 font-bold text-gray-500">Base64</h3>
+          <p className="text-gray-500 text-sm">Encode or decode the string to/from Base64.</p>
+        </div>
+        <div>
+          <h3 className="mb-2 font-bold text-gray-500">URL</h3>
+          <p className="text-gray-500 text-sm">Encode or decode the string to/from URL.</p>
+        </div>
+        <div>
+          <h3 className="mb-2 font-bold text-gray-500">HTML Entity</h3>
+          <p className="text-gray-500 text-sm mb-2">Encode or decode the string to/from HTML Entity using named references and encode everything.</p>
+          <p className="text-gray-500 text-sm mb-2"><span className="font-bold">Use Named References: </span>Named references are HTML entities like &amp;amp;, &amp;lt;, &amp;gt;, &amp;quot;, &amp;apos;, &amp;nbsp;, etc.</p>
+          <p className="text-gray-500 text-sm mb-2"><span className="font-bold">Encode Everything: </span>Encode everything is a flag that tells the encoder to encode all characters, not just the ones that need to be encoded.</p>
+        </div>
+
       </div>
     </div>
   );
