@@ -1,17 +1,19 @@
 import { Outlet } from "@tanstack/react-router";
 import SideNavigation from "@/components/SideNavigation";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function BaseLayout() {
   return (
-    <div className="flex">
-      <aside className="max-w-[260px] min-w-[260px] bg-gray-900 text-white h-screen">
+    <SidebarProvider>
+      <div className="flex w-full">
         <SideNavigation />
-      </aside>
-      <main className="flex-1 h-screen overflow-y-auto">
-        <div className="p-4 h-full md:p-8">
-          <Outlet />
-        </div>
-      </main>
-    </div>
+        <main className="flex-1 h-screen overflow-y-auto">
+          <div className="p-4 md:p-8">
+            <SidebarTrigger className="md:hidden mb-4" />
+            <Outlet />
+          </div>
+        </main>
+      </div>
+    </SidebarProvider>
   );
 }
