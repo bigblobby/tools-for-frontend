@@ -18,6 +18,9 @@ export default function SideNavigation() {
             <li className="text-gray-400 text-sm">
               <Link className="block px-3 py-2 rounded-md" to="/string/transform" activeProps={{ className: "text-white bg-gray-800" }}>Transform</Link>
             </li>
+            <li className="text-gray-400 text-sm">
+              <Link className="block px-3 py-2 rounded-md" to="/string/encode-decode" activeProps={{ className: "text-white bg-gray-800" }}>Encode Decode</Link>
+            </li>
           </ul>
         </li>
       </ul>
