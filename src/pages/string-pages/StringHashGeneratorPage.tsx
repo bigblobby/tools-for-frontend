@@ -77,20 +77,18 @@ export default function StringHashGeneratorPage() {
       </div>
 
       <div className="flex flex-col max-w-[320px] gap-3 bg-zinc-100 p-4 rounded-md">
-        <div>
-          <h3 className="mb-2 font-bold text-gray-500">Base64</h3>
-          <p className="text-gray-500 text-sm">Encode or decode the string to/from Base64.</p>
-        </div>
-        <div>
-          <h3 className="mb-2 font-bold text-gray-500">URL</h3>
-          <p className="text-gray-500 text-sm">Encode or decode the string to/from URL.</p>
-        </div>
-        <div>
-          <h3 className="mb-2 font-bold text-gray-500">HTML Entity</h3>
-          <p className="text-gray-500 text-sm mb-2">Encode or decode the string to/from HTML Entity using named references and encode everything.</p>
-          <p className="text-gray-500 text-sm mb-2"><span className="font-bold">Use Named References: </span>Named references are HTML entities like &amp;amp;, &amp;lt;, &amp;gt;, &amp;quot;, &amp;apos;, &amp;nbsp;, etc.</p>
-          <p className="text-gray-500 text-sm mb-2"><span className="font-bold">Encode Everything: </span>Encode everything is a flag that tells the encoder to encode all characters, not just the ones that need to be encoded.</p>
-        </div>
+        <p className="text-gray-500 text-sm">
+          <span className="font-bold">MD5: </span>
+          <span>Generates an MD5 hash of the string</span>
+        </p>
+        <p className="text-gray-500 text-sm">
+          <span className="font-bold">SHA-256: </span>
+          <span>Generates an SHA-256 hash of the string</span>
+        </p>
+        <p className="text-gray-500 text-sm">
+          <span className="font-bold">SHA-512: </span>
+          <span>Generates an SHA-512 hash of the string</span>
+        </p>
       </div>
     </div>
   );

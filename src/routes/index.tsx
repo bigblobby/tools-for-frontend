@@ -2,7 +2,8 @@ import { createRootRoute, createRoute, createRouter } from "@tanstack/react-rout
 import Homepage from "@/pages/Homepage";
 import BaseLayout from "@/layouts/base-layout";
 import NotFoundPage from "@/pages/NotFoundPage";
-import { stringRoute, stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute } from "./string.routes";
+import { stringRoute, stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute } from "@/routes/string.routes";
+import { colorRoute, colorConverterRoute } from "@/routes/color.routes";
 
 export const rootRoute = createRootRoute({
   component: BaseLayout,
@@ -17,7 +18,8 @@ const homeRoute = createRoute({
 
 const routeTree = rootRoute.addChildren([
   homeRoute,
-  stringRoute.addChildren([stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute]),
+  stringRoute.addChildren([stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute]),
+  colorRoute.addChildren([colorConverterRoute]),
 ]);
 
 export const router = createRouter({ routeTree });

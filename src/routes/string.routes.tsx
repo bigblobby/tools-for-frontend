@@ -4,6 +4,7 @@ import StringCountPage from "@/pages/string-pages/StringCountPage";
 import StringTransformPage from "@/pages/string-pages/StringTransformPage";
 import StringEncodeDecodePage from "@/pages/string-pages/StringEncodeDecodePage";
 import StringHashGeneratorPage from "@/pages/string-pages/StringHashGeneratorPage";
+import StringCaseConverterPage from "@/pages/string-pages/StringCaseConverterPage";
 
 const stringRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -34,4 +35,10 @@ const stringHashGeneratorRoute = createRoute({
   component: StringHashGeneratorPage,
 });
 
-export { stringRoute, stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute };
+const stringCaseConverterRoute = createRoute({
+  getParentRoute: () => stringRoute,
+  path: "/case-converter",
+  component: StringCaseConverterPage,
+});
+
+export { stringRoute, stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute };
