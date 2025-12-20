@@ -4,6 +4,8 @@ import BaseLayout from "@/layouts/base-layout";
 import NotFoundPage from "@/pages/NotFoundPage";
 import { stringRoute, stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute } from "@/routes/string.routes";
 import { colorRoute, colorConverterRoute } from "@/routes/color.routes";
+import { numberRoute } from "@/routes/number.routes";
+import { converterRoute, xmlToJsonConverterRoute } from "@/routes/converter.routes";
 
 export const rootRoute = createRootRoute({
   component: BaseLayout,
@@ -20,6 +22,8 @@ const routeTree = rootRoute.addChildren([
   homeRoute,
   stringRoute.addChildren([stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute]),
   colorRoute.addChildren([colorConverterRoute]),
+  numberRoute.addChildren([]),
+  converterRoute.addChildren([xmlToJsonConverterRoute]),
 ]);
 
 export const router = createRouter({ routeTree });

@@ -17,7 +17,7 @@ export default function SideNavigation() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>String Utilities</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-blue-900">String Utilities</SidebarGroupLabel>
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild onClick={handleOpenMobile}>
@@ -47,7 +47,7 @@ export default function SideNavigation() {
           </SidebarMenu>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel>Color Utilities</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-blue-900">Color Utilities</SidebarGroupLabel>
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild onClick={handleOpenMobile}>
@@ -56,9 +56,19 @@ export default function SideNavigation() {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-blue-900">Converter Utilities</SidebarGroupLabel>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild onClick={handleOpenMobile}>
+                <Link to="/converter/xml-to-json">XML to JSON</Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="p-6">
-        <a className="block text-center" href="https://www.buymeacoffee.com/tomdempster" target="_blank">
+        <a className="block text-center" href="https://www.buymeacoffee.com/bigblobby" target="_blank">
           <img className="h-10 mx-auto" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" />
         </a>
       </SidebarFooter>
