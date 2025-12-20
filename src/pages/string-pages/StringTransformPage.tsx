@@ -76,7 +76,7 @@ export default function StringTransformPage() {
             <Button variant="secondary" onClick={handleRemoveSpecialCharacters}>Remove Special Characters</Button>
             <Button variant="secondary" onClick={handleRemoveNumbers}>Remove Numbers</Button>
             <Button variant="secondary" onClick={handleRemoveLetters}>Remove Letters</Button>
-            <Button variant="destructive" onClick={handleClearInput}>Clear</Button>
+            <Button variant="destructive-outline" onClick={handleClearInput}>Clear</Button>
           </div>
         </div>
 
@@ -85,7 +85,7 @@ export default function StringTransformPage() {
           <textarea readOnly value={output} id="string-output" className="block w-full h-40 border border-gray-300 rounded-md p-2" />
           <div className="flex flex-wrap gap-3">
             <Button variant="secondary" onClick={handleCopy}>Copy</Button>
-            <Button variant="destructive" onClick={handleClearOutput}>Clear</Button>
+            <Button variant="destructive-outline" onClick={handleClearOutput}>Clear</Button>
           </div>
         </div>
       </div>

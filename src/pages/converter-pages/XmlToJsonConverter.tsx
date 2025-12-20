@@ -40,7 +40,7 @@ export default function XmlToJsonConverter() {
         </div>
         <div className="flex flex-wrap gap-3">
           <Button variant="secondary" onClick={handleConvert}>Convert</Button>
-          <Button variant="destructive" onClick={handleClear}>Clear</Button>
+          <Button variant="destructive-outline" onClick={handleClear}>Clear</Button>
         </div>
       </div>
     </div>
