@@ -10,6 +10,8 @@ export default function ColorConverter() {
   const [oklchColor, setOklchColor] = useState<Color | null>(null);
   const [oklabColor, setOklabColor] = useState<Color | null>(null);
   const [lchColor, setLchColor] = useState<Color | null>(null);
+  const [hwbColor, setHwbColor] = useState<Color | null>(null);
+  const [labColor, setLabColor] = useState<Color | null>(null);
 
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputColor(e.target.value);
@@ -25,6 +27,8 @@ export default function ColorConverter() {
       const lchColor = new Color('lch', [colorObj.lch.l, colorObj.lch.c, colorObj.lch.h]);
       const hexColor = new Color(colorObj).toGamut({ space: 'srgb' }).to('srgb').toString({ format: 'hex' });
       const longhex = hexColor.length < 6 ? hexColor.split('').map(v => v + v).join('').slice(1) : hexColor;
+      const hwbColor = new Color('hwb', [colorObj.hwb.h, colorObj.hwb.w, colorObj.hwb.b]);
+      const labColor = new Color('lab', [colorObj.lab.l, colorObj.lab.a, colorObj.lab.b]);
 
       setHslColor(hslColor);
       setRgbColor(rgbColor);
@@ -32,6 +36,8 @@ export default function ColorConverter() {
       setOklabColor(oklabColor);
       setLchColor(lchColor);
       setHexColor(longhex);
+      setHwbColor(hwbColor);
+      setLabColor(labColor);
     } catch (error) {
       console.error(error);
       // Silently fail.
@@ -57,7 +63,7 @@ export default function ColorConverter() {
     <div>
       <div>
         <h1 className="text-2xl font-bold">Color Converter</h1>
-        <p className="text-gray-500">This page converts a color to a different format.</p>
+        <p className="text-gray-500">Convert a color to a different format.</p>
       </div>
       <div className="flex flex-row gap-10 mt-10">
         <div className="flex-1 flex flex-col gap-4">
@@ -92,6 +98,14 @@ export default function ColorConverter() {
               <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">LCH:</span>
                 <span>{lchColor?.toString()}</span>
+              </div>
+              <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
+                <span className="font-bold">HWB:</span>
+                <span>{hwbColor?.toString()}</span>
+              </div>
+              <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
+                <span className="font-bold">LAB:</span>
+                <span>{labColor?.toString()}</span>
               </div>
             </div>
           </div>
