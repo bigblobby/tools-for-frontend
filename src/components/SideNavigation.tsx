@@ -31,17 +31,22 @@ export default function SideNavigation() {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild onClick={handleOpenMobile}>
+                <Link to="/string/case-converter">Case Converter</Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild onClick={handleOpenMobile}>
                 <Link to="/string/encode-decode">Encode Decode</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild onClick={handleOpenMobile}>
-                <Link to="/string/hash-generator">Hash Generator</Link>
+                <Link to="/string/jwt-decoder">JWT Decoder</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild onClick={handleOpenMobile}>
-                <Link to="/string/case-converter">Case Converter</Link>
+                <Link to="/string/hash-generator">Hash Generator</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

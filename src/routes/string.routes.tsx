@@ -1,14 +1,21 @@
-import { createRoute } from "@tanstack/react-router";
+import { createRoute, redirect } from "@tanstack/react-router";
 import { rootRoute } from ".";
 import StringCountPage from "@/pages/string-pages/StringCountPage";
 import StringTransformPage from "@/pages/string-pages/StringTransformPage";
 import StringEncodeDecodePage from "@/pages/string-pages/StringEncodeDecodePage";
 import StringHashGeneratorPage from "@/pages/string-pages/StringHashGeneratorPage";
 import StringCaseConverterPage from "@/pages/string-pages/StringCaseConverterPage";
+import StringJWTDecoderPage from "@/pages/string-pages/StringJWTDecoderPage";
 
 const stringRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/string",
+  beforeLoad: ({ location }) => {
+    // Only redirect if we're exactly on /string (not on a child route)
+    if (location.pathname === "/string" || location.pathname === "/string/") {
+      throw redirect({ to: "/string/count", replace: true });
+    }
+  },
 });
 
 const stringCountRoute = createRoute({
@@ -23,10 +30,22 @@ const stringTransformRoute = createRoute({
   component: StringTransformPage,
 });
 
+const stringCaseConverterRoute = createRoute({
+  getParentRoute: () => stringRoute,
+  path: "/case-converter",
+  component: StringCaseConverterPage,
+});
+
 const stringEncodeDecodeRoute = createRoute({
   getParentRoute: () => stringRoute,
   path: "/encode-decode",
   component: StringEncodeDecodePage,
+});
+
+const stringJWTDecoderRoute = createRoute({
+  getParentRoute: () => stringRoute,
+  path: "/jwt-decoder",
+  component: StringJWTDecoderPage,
 });
 
 const stringHashGeneratorRoute = createRoute({
@@ -35,10 +54,4 @@ const stringHashGeneratorRoute = createRoute({
   component: StringHashGeneratorPage,
 });
 
-const stringCaseConverterRoute = createRoute({
-  getParentRoute: () => stringRoute,
-  path: "/case-converter",
-  component: StringCaseConverterPage,
-});
-
-export { stringRoute, stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute };
+export { stringRoute, stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute, stringJWTDecoderRoute };
