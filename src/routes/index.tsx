@@ -15,6 +15,7 @@ import {
 import { colorRoute, colorConverterRoute } from "@/routes/color.routes";
 import { numberRoute } from "@/routes/number.routes";
 import { converterRoute, xmlToJsonConverterRoute } from "@/routes/converter.routes";
+import { dateTimeRoute, epochUnixDateTimeRoute } from '@/routes/date-time.routes.tsx';
 
 export const rootRoute = createRootRoute({
   component: BaseLayout,
@@ -33,6 +34,7 @@ const routeTree = rootRoute.addChildren([
   colorRoute.addChildren([colorConverterRoute]),
   numberRoute.addChildren([]),
   converterRoute.addChildren([xmlToJsonConverterRoute]),
+  dateTimeRoute.addChildren([epochUnixDateTimeRoute]),
 ]);
 
 export const router = createRouter({ routeTree });

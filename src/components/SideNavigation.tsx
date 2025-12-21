@@ -76,6 +76,16 @@ export default function SideNavigation() {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-blue-900">Date/Time Utilities</SidebarGroupLabel>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild onClick={handleOpenMobile}>
+                <Link to="/date-time/epoch-unix">Epoch/Unix Converter</Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="p-6">
         <a className="block text-center" href="https://www.buymeacoffee.com/bigblobby" target="_blank">
