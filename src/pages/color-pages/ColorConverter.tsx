@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Color from "colorjs.io";
 import { toast } from "sonner";
+import { Label } from '@/components/ui/label.tsx';
 
 export default function ColorConverter() {
   const [inputColor, setInputColor] = useState("oklch(42.4% 0.199 265.638)");
@@ -66,14 +67,14 @@ export default function ColorConverter() {
         <p className="text-gray-500">Convert a color to a different format.</p>
       </div>
       <div className="flex flex-row gap-10 mt-10">
-        <div className="flex-1 flex flex-col gap-4">
+        <div className="flex-1 flex flex-col gap-6">
           <div className="flex flex-col gap-2">
-            <label htmlFor="color-input" className="block text-gray-500">Input color <span className="text-xs">(Orange, #FFA500, hsl(36, 100%, 50%), etc.)</span></label>
+            <Label htmlFor="color-input">Input color <span className="text-xs">(Orange, #FFA500, hsl(36, 100%, 50%), etc.)</span></Label>
             <input value={inputColor} onFocus={handleFocusColorInput} onChange={handleColorChange} type="text" placeholder="Enter a color" className="block w-full h-10 border border-gray-300 rounded-md p-2" />
           </div>
 
           <div className="flex flex-col gap-2">
-            <span className="block text-gray-500">Output colors</span>
+            <Label>Output colors</Label>
             <div className="grid grid-cols-2 gap-2 auto-rows-[1fr]">
               <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">Hex:</span>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { xml2json } from 'xml-js';
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label.tsx';
 
 export default function XmlToJsonConverter() {
   const [xml, setXml] = useState("");
@@ -31,12 +32,12 @@ export default function XmlToJsonConverter() {
           <p className="text-gray-500">This page converts XML to JSON.</p>
         </div>
         <div className="flex flex-col gap-3">
-          <label htmlFor="xml-input" className="block text-gray-500">XML</label>
+          <Label htmlFor="xml-input">XML</Label>
           <textarea value={xml} id="xml-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleXmlChange} />
         </div>
         <div className="flex flex-col gap-3">
-          <label htmlFor="json-input" className="block text-gray-500">JSON</label>
-          <textarea value={json} id="json-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleJsonChange} />
+          <Label htmlFor="json-input">JSON <span className="text-xs">(Read Only)</span></Label>
+          <textarea readOnly value={json} id="json-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleJsonChange} />
         </div>
         <div className="flex flex-wrap gap-3">
           <Button variant="secondary" onClick={handleConvert}>Convert</Button>

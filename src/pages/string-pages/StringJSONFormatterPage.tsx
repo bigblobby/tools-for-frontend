@@ -47,7 +47,7 @@ export default function StringJSONFormatterPage() {
 
       <div className="flex row gap-10">
         <div className="flex-1 flex flex-col gap-3">
-          <label className="block text-gray-500" htmlFor="input">Input</label>
+          <Label htmlFor="input">Input</Label>
           <textarea value={jsonInput} rows={30} id="input" className="block w-full border border-gray-300 rounded-md p-2" onChange={(e) => setJsonInput(e.target.value)} />
         </div>
         <div className="flex flex-col gap-3 mt-10">
@@ -68,7 +68,7 @@ export default function StringJSONFormatterPage() {
           <Button variant="destructive-min" onClick={handleClearAll}>Clear All</Button>
         </div>
         <div className="flex-1 flex flex-col gap-3">
-          <label className="block text-gray-500" htmlFor="output">Output</label>
+          <Label htmlFor="output">Output <span className="text-xs">(Read Only)</span></Label>
           <textarea value={jsonOutput} readOnly rows={30} id="output" className="block w-full border border-gray-300 rounded-md p-2" />
         </div>
       </div>

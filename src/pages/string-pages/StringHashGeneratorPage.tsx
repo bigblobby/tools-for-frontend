@@ -2,6 +2,7 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import md5 from "md5";
+import { Label } from '@/components/ui/label.tsx';
 
 export default function StringHashGeneratorPage() {
   const [input, setInput] = useState("");
@@ -51,7 +52,7 @@ export default function StringHashGeneratorPage() {
         </div>
 
         <div className="flex flex-col gap-3">
-          <label htmlFor="string-input" className="block text-gray-500">Input</label>
+          <Label htmlFor="string-input">Input</Label>
           <textarea value={input} id="string-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleInputChange} />
 
           <div className="flex flex-wrap gap-3">
@@ -67,7 +68,7 @@ export default function StringHashGeneratorPage() {
         </div>
 
         <div className="flex flex-col gap-3">
-          <label htmlFor="string-output" className="block text-gray-500">Output <span className="text-xs">(Read Only)</span></label>
+          <Label htmlFor="string-output">Output <span className="text-xs">(Read Only)</span></Label>
           <textarea readOnly value={output} id="string-output" className="block w-full h-40 border border-gray-300 rounded-md p-2" />
           <div className="flex flex-wrap gap-3">
             <Button variant="secondary" onClick={handleCopy}>Copy</Button>

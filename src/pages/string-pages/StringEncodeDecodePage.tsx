@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { encode, decode } from "he";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from '@/components/ui/label.tsx';
 
 export default function StringEncodeDecodePage() {
   const [input, setInput] = useState("");
@@ -75,25 +76,25 @@ export default function StringEncodeDecodePage() {
         </div>
 
         <div className="flex flex-col gap-3">
-          <label htmlFor="string-input" className="block text-gray-500">Input</label>
+          <Label htmlFor="string-input">Input</Label>
           <textarea value={input} id="string-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleInputChange} />
           <div className="flex flex-wrap gap-3">
             <div className="flex flex-col gap-2">
-              <span className="block text-gray-500">Base64</span>
+              <span className="block text-gray-500 text-sm">Base64</span>
               <ButtonGroup>
                 <Button variant="secondary" onClick={handleBase64Encode}>Encode</Button>
                 <Button variant="secondary" onClick={handleBase64Decode}>Decode</Button>
               </ButtonGroup>
             </div>
             <div className="flex flex-col gap-2">
-              <span className="block text-gray-500">URL</span>
+              <span className="block text-gray-500 text-sm">URL</span>
               <ButtonGroup>
                 <Button variant="secondary" onClick={handleURLEncode}>Encode</Button>
                 <Button variant="secondary" onClick={handleURLDecode}>Decode</Button>
               </ButtonGroup>
             </div>
             <div className="flex flex-col gap-2">
-              <span className="block text-gray-500">HTML Entity</span>
+              <span className="block text-gray-500 text-sm">HTML Entity</span>
               <div className="flex items-center gap-2">
                 <ButtonGroup>
                   <Button variant="secondary" onClick={handleHTMLEntityEncode}>Encode</Button>
@@ -101,11 +102,11 @@ export default function StringEncodeDecodePage() {
                 </ButtonGroup>
                 <div className="flex flex-row items-center gap-2">
                   <Checkbox id="use-named-references" checked={useNamedReferences} onCheckedChange={handleSetUseNamedReferences} />
-                  <label htmlFor="use-named-references" className="block text-gray-500 text-sm">Use Named References</label>
+                  <Label htmlFor="use-named-references">Use Named References</Label>
                 </div>
                 <div className="flex flex-row items-center gap-2">
                   <Checkbox id="encode-everything" checked={encodeEverything} onCheckedChange={handleSetEncodeEverything} />
-                  <label htmlFor="encode-everything" className="block text-gray-500 text-sm">Encode Everything</label>
+                  <Label htmlFor="encode-everything">Encode Everything</Label>
                 </div>
               </div>
             </div>
@@ -118,7 +119,7 @@ export default function StringEncodeDecodePage() {
         </div>
 
         <div className="flex flex-col gap-3">
-          <label htmlFor="string-output" className="block text-gray-500">Output <span className="text-xs">(Read Only)</span></label>
+          <Label htmlFor="string-output">Output <span className="text-xs">(Read Only)</span></Label>
           <textarea readOnly value={output} id="string-output" className="block w-full h-40 border border-gray-300 rounded-md p-2" />
           <div className="flex flex-wrap gap-3">
             <Button variant="secondary" onClick={handleCopy}>Copy</Button>
@@ -142,7 +143,6 @@ export default function StringEncodeDecodePage() {
           <p className="text-gray-500 text-sm mb-2"><span className="font-bold">Use Named References: </span>Named references are HTML entities like &amp;amp;, &amp;lt;, &amp;gt;, &amp;quot;, &amp;apos;, &amp;nbsp;, etc.</p>
           <p className="text-gray-500 text-sm mb-2"><span className="font-bold">Encode Everything: </span>Encode everything is a flag that tells the encoder to encode all characters, not just the ones that need to be encoded.</p>
         </div>
-
       </div>
     </div>
   );

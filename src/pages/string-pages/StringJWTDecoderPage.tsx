@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { jwtDecode } from 'jwt-decode';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { Label } from '@/components/ui/label.tsx';
 
 export default function StringJWTDecoderPage() {
   const [jwtToken, setJwtToken] = useState('');
@@ -57,7 +58,7 @@ export default function StringJWTDecoderPage() {
       </div>
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-3">
-          <label htmlFor="jwt-input" className="block text-gray-500">JWT Token</label>
+          <Label htmlFor="jwt-input">JWT Token</Label>
           <input 
             type="text" 
             id="jwt-input" 
@@ -71,7 +72,7 @@ export default function StringJWTDecoderPage() {
           <Button variant="destructive-min" onClick={handleClearAll}>Clear All</Button>
         </div>
         <div className="flex flex-col gap-3">
-          <label htmlFor="jwt-header" className="block text-gray-500">Header</label>
+          <Label htmlFor="jwt-header">Header</Label>
           <textarea 
             readOnly value={header} 
             id="jwt-header"
@@ -82,7 +83,7 @@ export default function StringJWTDecoderPage() {
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <label htmlFor="jwt-payload" className="block text-gray-500">Payload</label>
+          <Label htmlFor="jwt-payload">Payload</Label>
           <textarea 
             rows={20} 
             readOnly 
