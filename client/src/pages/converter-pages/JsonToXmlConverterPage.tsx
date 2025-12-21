@@ -14,11 +14,27 @@ export default function JsonToXmlConverterPage() {
   const handleJsonChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setJson(event.target.value);
   }
-  
-  const handleConvert = () => {
+
+  const handleConvert = async () => {
     try {
-      const xmlResult = 'jsonToXml(json);'
-      setXml(xmlResult);
+      // Parse JSON to validate it
+      const jsonObj = JSON.parse(json);
+
+      const res = await fetch('/api/converter/json-to-xml', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(jsonObj),
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      const data = await res.json();
+      console.log(data);
+      setXml(data.xml);
     } catch (error) {
       console.log(error)
       toast.error('Invalid JSON format', { position: 'top-center' });
