@@ -5,6 +5,7 @@ import { useState } from "react";
 import { encode, decode } from "he";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from '@/components/ui/label.tsx';
+import { toast } from 'sonner';
 
 export default function StringEncodeDecodePage() {
   const [input, setInput] = useState("");
@@ -49,7 +50,8 @@ export default function StringEncodeDecodePage() {
   }
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(output);
+    void navigator.clipboard.writeText(output);
+    toast.success('Copied to clipboard', { position: 'top-center' });
   }
 
   const handleClearInput = () => {

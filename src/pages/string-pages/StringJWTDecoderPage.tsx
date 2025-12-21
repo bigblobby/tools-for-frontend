@@ -56,7 +56,7 @@ export default function StringJWTDecoderPage() {
         <h1 className="text-2xl font-bold">JWT Decoder</h1>
         <p className="text-gray-500">Decode a JWT token and display the header and payload.</p>
       </div>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-3">
           <Label htmlFor="jwt-input">JWT Token</Label>
           <input 
@@ -66,13 +66,13 @@ export default function StringJWTDecoderPage() {
             onChange={handleJWTTokenChange} 
             className="block w-full h-10 border border-gray-300 rounded-md p-2"
           />
-        </div>
-        <div className="flex gap-3">
-          <Button variant="secondary" onClick={handleDecodeJWT}>Decode</Button>
-          <Button variant="destructive-min" onClick={handleClearAll}>Clear All</Button>
+          <div className="flex gap-3">
+            <Button variant="secondary" onClick={handleDecodeJWT}>Decode</Button>
+            <Button variant="destructive-min" onClick={handleClearAll}>Clear All</Button>
+          </div>
         </div>
         <div className="flex flex-col gap-3">
-          <Label htmlFor="jwt-header">Header</Label>
+          <Label htmlFor="jwt-header">Header <span className="text-xs">(Read Only)</span></Label>
           <textarea 
             readOnly value={header} 
             id="jwt-header"
@@ -83,7 +83,7 @@ export default function StringJWTDecoderPage() {
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <Label htmlFor="jwt-payload">Payload</Label>
+          <Label htmlFor="jwt-payload">Payload <span className="text-xs">(Read Only)</span></Label>
           <textarea 
             rows={20} 
             readOnly 

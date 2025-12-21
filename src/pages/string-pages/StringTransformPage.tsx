@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Label } from '@/components/ui/label.tsx';
+import { toast } from 'sonner';
 
 export default function StringTransformPage() {
   const [input, setInput] = useState("");
@@ -49,7 +50,8 @@ export default function StringTransformPage() {
   }
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(output);
+    void navigator.clipboard.writeText(output);
+    toast.success('Copied to clipboard', { position: 'top-center' });
   }
 
   const handleClearOutput = () => {

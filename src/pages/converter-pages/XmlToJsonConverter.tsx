@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { xml2json } from 'xml-js';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label.tsx';
+import { toast } from 'sonner';
 
 export default function XmlToJsonConverter() {
   const [xml, setXml] = useState("");
@@ -17,6 +18,11 @@ export default function XmlToJsonConverter() {
 
   const handleConvert = () => {
     setJson(xml2json(xml, { compact: true, spaces: 2 }));
+  }
+  
+  const handleCopy = () => {
+    void navigator.clipboard.writeText(json);
+    toast.success('JSON copied to clipboard', { position: 'top-center' });
   }
 
   const handleClear = () => {
@@ -41,6 +47,7 @@ export default function XmlToJsonConverter() {
         </div>
         <div className="flex flex-wrap gap-3">
           <Button variant="secondary" onClick={handleConvert}>Convert</Button>
+          <Button variant="secondary" onClick={handleCopy}>Copy</Button>
           <Button variant="destructive-min" onClick={handleClear}>Clear</Button>
         </div>
       </div>

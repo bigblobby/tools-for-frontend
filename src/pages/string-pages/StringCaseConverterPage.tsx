@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { useState } from "react";
 import { Label } from '@/components/ui/label.tsx';
+import { toast } from 'sonner';
 
 export default function StringCaseConverterPage() {
   const [input, setInput] = useState("");
@@ -18,7 +19,8 @@ export default function StringCaseConverterPage() {
   }
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(output);
+    void navigator.clipboard.writeText(output);
+    toast.success('Copied to clipboard', { position: 'top-center' });
   }
 
   const handleClearOutput = () => {
