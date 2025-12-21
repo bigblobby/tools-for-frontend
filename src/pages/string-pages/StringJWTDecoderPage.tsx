@@ -1,12 +1,12 @@
-import { Button } from "@/components/ui/button";
-import { jwtDecode } from "jwt-decode";
-import { useState } from "react";
-import { toast } from "sonner";
+import { Button } from '@/components/ui/button';
+import { jwtDecode } from 'jwt-decode';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function StringJWTDecoderPage() {
-  const [jwtToken, setJwtToken] = useState("");
-  const [header, setHeader] = useState("");
-  const [payload, setPayload] = useState("");
+  const [jwtToken, setJwtToken] = useState('');
+  const [header, setHeader] = useState('');
+  const [payload, setPayload] = useState('');
 
   const handleJWTTokenChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setJwtToken(event.target.value);
@@ -15,7 +15,7 @@ export default function StringJWTDecoderPage() {
   const handleDecodeJWT = () => {
     try {
       if (!jwtToken.trim()) {
-        toast.error("Please enter a JWT token");
+        toast.error('Please enter a JWT token');
         return;
       }
 
@@ -28,26 +28,26 @@ export default function StringJWTDecoderPage() {
       if (error instanceof Error) {
         toast.error(error.message);
       } else {
-        toast.error("Failed to decode JWT token");
+        toast.error('Failed to decode JWT token');
       }
     }
-  }
+  };
 
   const handleCopyHeader = () => {
-    navigator.clipboard.writeText(header);
-    toast.success("Header copied to clipboard", { position: "top-center" });
-  }
+    void navigator.clipboard.writeText(header);
+    toast.success('Header copied to clipboard', { position: 'top-center' });
+  };
 
   const handleCopyPayload = () => {
-    navigator.clipboard.writeText(payload);
-    toast.success("Payload copied to clipboard", { position: "top-center" });
-  }
+    void navigator.clipboard.writeText(payload);
+    toast.success('Payload copied to clipboard', { position: 'top-center' });
+  };
 
   const handleClearAll = () => {
-    setJwtToken("");
-    setHeader("");
-    setPayload("");
-  }
+    setJwtToken('');
+    setHeader('');
+    setPayload('');
+  };
 
   return (
     <div className="flex flex-col gap-10">
@@ -58,22 +58,38 @@ export default function StringJWTDecoderPage() {
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-3">
           <label htmlFor="jwt-input" className="block text-gray-500">JWT Token</label>
-          <input type="text" id="jwt-input" value={jwtToken} onChange={handleJWTTokenChange} className="block w-full h-10 border border-gray-300 rounded-md p-2" />
+          <input 
+            type="text" 
+            id="jwt-input" 
+            value={jwtToken} 
+            onChange={handleJWTTokenChange} 
+            className="block w-full h-10 border border-gray-300 rounded-md p-2"
+          />
         </div>
         <div className="flex gap-3">
           <Button variant="secondary" onClick={handleDecodeJWT}>Decode</Button>
-          <Button variant="destructive-outline" onClick={handleClearAll}>Clear All</Button>
+          <Button variant="destructive-min" onClick={handleClearAll}>Clear All</Button>
         </div>
         <div className="flex flex-col gap-3">
           <label htmlFor="jwt-header" className="block text-gray-500">Header</label>
-          <textarea readOnly value={header} id="jwt-header" className="block w-full h-40 border border-gray-300 rounded-md p-2" />
+          <textarea 
+            readOnly value={header} 
+            id="jwt-header"
+            className="block w-full h-40 border border-gray-300 rounded-md p-2"
+          />
           <div>
             <Button variant="secondary" onClick={handleCopyHeader}>Copy Header</Button>
           </div>
         </div>
         <div className="flex flex-col gap-3">
           <label htmlFor="jwt-payload" className="block text-gray-500">Payload</label>
-          <textarea rows={20} readOnly value={payload} id="jwt-payload" className="block w-full border border-gray-300 rounded-md p-2" />
+          <textarea 
+            rows={20} 
+            readOnly 
+            value={payload} 
+            id="jwt-payload"
+            className="block w-full border border-gray-300 rounded-md p-2"
+          />
           <div>
             <Button variant="secondary" onClick={handleCopyPayload}>Copy Payload</Button>
           </div>

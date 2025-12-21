@@ -6,6 +6,7 @@ import StringEncodeDecodePage from "@/pages/string-pages/StringEncodeDecodePage"
 import StringHashGeneratorPage from "@/pages/string-pages/StringHashGeneratorPage";
 import StringCaseConverterPage from "@/pages/string-pages/StringCaseConverterPage";
 import StringJWTDecoderPage from "@/pages/string-pages/StringJWTDecoderPage";
+import StringJSONFormatterPage from '@/pages/string-pages/StringJSONFormatterPage.tsx';
 
 const stringRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -48,10 +49,16 @@ const stringJWTDecoderRoute = createRoute({
   component: StringJWTDecoderPage,
 });
 
+const stringJSONFormatterRoute = createRoute({
+  getParentRoute: () => stringRoute,
+  path: "/json-formatter",
+  component: StringJSONFormatterPage,
+});
+
 const stringHashGeneratorRoute = createRoute({
   getParentRoute: () => stringRoute,
   path: "/hash-generator",
   component: StringHashGeneratorPage,
 });
 
-export { stringRoute, stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute, stringJWTDecoderRoute };
+export { stringRoute, stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute, stringJSONFormatterRoute, stringJWTDecoderRoute };

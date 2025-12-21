@@ -46,6 +46,11 @@ export default function SideNavigation() {
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild onClick={handleOpenMobile}>
+                <Link to="/string/json-formatter">JSON Formatter</Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild onClick={handleOpenMobile}>
                 <Link to="/string/hash-generator">Hash Generator</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

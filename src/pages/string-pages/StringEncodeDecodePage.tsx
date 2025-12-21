@@ -112,7 +112,7 @@ export default function StringEncodeDecodePage() {
           </div>
           <div className="flex flex-col gap-3">
             <ButtonGroup>
-              <Button variant="destructive-outline" onClick={handleClearAll}>Clear All</Button>
+              <Button variant="destructive-min" onClick={handleClearAll}>Clear All</Button>
             </ButtonGroup>
           </div>
         </div>
@@ -122,7 +122,7 @@ export default function StringEncodeDecodePage() {
           <textarea readOnly value={output} id="string-output" className="block w-full h-40 border border-gray-300 rounded-md p-2" />
           <div className="flex flex-wrap gap-3">
             <Button variant="secondary" onClick={handleCopy}>Copy</Button>
-            <Button variant="destructive-outline" onClick={handleClearOutput}>Clear</Button>
+            <Button variant="destructive-min" onClick={handleClearOutput}>Clear</Button>
           </div>
         </div>
       </div>
