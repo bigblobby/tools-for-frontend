@@ -74,6 +74,11 @@ export default function SideNavigation() {
                 <Link to="/converter/xml-to-json">XML to JSON</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild onClick={handleOpenMobile}>
+                <Link to="/converter/json-to-xml">JSON to XML</Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
         <SidebarGroup>

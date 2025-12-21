@@ -14,7 +14,7 @@ import {
 } from '@/routes/string.routes';
 import { colorRoute, colorConverterRoute } from "@/routes/color.routes";
 import { numberRoute } from "@/routes/number.routes";
-import { converterRoute, xmlToJsonConverterRoute } from "@/routes/converter.routes";
+import { converterRoute, xmlToJsonConverterRoute, jsonToXmlConverterRoute } from "@/routes/converter.routes";
 import { dateTimeRoute, epochUnixDateTimeRoute } from '@/routes/date-time.routes.tsx';
 
 export const rootRoute = createRootRoute({
@@ -33,7 +33,7 @@ const routeTree = rootRoute.addChildren([
   stringRoute.addChildren([stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute, stringJSONFormatterRoute, stringJWTDecoderRoute]),
   colorRoute.addChildren([colorConverterRoute]),
   numberRoute.addChildren([]),
-  converterRoute.addChildren([xmlToJsonConverterRoute]),
+  converterRoute.addChildren([xmlToJsonConverterRoute, jsonToXmlConverterRoute]),
   dateTimeRoute.addChildren([epochUnixDateTimeRoute]),
 ]);
 

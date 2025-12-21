@@ -1,6 +1,7 @@
 import { createRoute } from "@tanstack/react-router";
 import { rootRoute } from ".";
 import XmlToJsonConverter from "@/pages/converter-pages/XmlToJsonConverter";
+import JsonToXmlConverterPage from '@/pages/converter-pages/JsonToXmlConverterPage.tsx';
 
 const converterRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -13,4 +14,10 @@ const xmlToJsonConverterRoute = createRoute({
   component: XmlToJsonConverter,
 });
 
-export { converterRoute, xmlToJsonConverterRoute };
+const jsonToXmlConverterRoute = createRoute({
+  getParentRoute: () => converterRoute,
+  path: "/json-to-xml",
+  component: JsonToXmlConverterPage,
+});
+
+export { converterRoute, xmlToJsonConverterRoute, jsonToXmlConverterRoute };
