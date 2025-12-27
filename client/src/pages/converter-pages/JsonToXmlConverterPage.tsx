@@ -2,10 +2,13 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
+import { useConverterQueries } from '@/queries/converter.queries';
 
 export default function JsonToXmlConverterPage() {
   const [xml, setXml] = useState("");
   const [json, setJson] = useState("");
+  const converterQueries = useConverterQueries();
+  const jsonToXml = converterQueries.jsonToXml();
 
   const handleXmlChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setXml(event.target.value);
@@ -16,29 +19,17 @@ export default function JsonToXmlConverterPage() {
   }
 
   const handleConvert = async () => {
-    try {
-      // Parse JSON to validate it
-      const jsonObj = JSON.parse(json);
+    const jsonObj = JSON.parse(json);
 
-      const res = await fetch('/api/converter/json-to-xml', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(jsonObj),
-      });
-
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-
-      const data = await res.json();
-      console.log(data);
-      setXml(data.xml);
-    } catch (error) {
-      console.log(error)
-      toast.error('Invalid JSON format', { position: 'top-center' });
-    }
+    void jsonToXml.mutate(jsonObj, {
+      onSuccess: (data: any) => {
+        setXml(data.xml);
+      },
+      onError: (error: any) => {
+        console.log(error);
+        toast.error('Invalid JSON format', { position: 'top-center' });
+      },
+    });
   }
 
   const handleCopy = () => {
