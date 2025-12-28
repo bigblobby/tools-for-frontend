@@ -55,6 +55,17 @@ if [ $BACKEND_WAIT_COUNT -ge $BACKEND_MAX_WAIT ]; then
     echo "⚠️  Warning: Backend may not be ready, but continuing..."
 fi
 
+# Ensure nginx is using init config (needed for certbot)
+echo "Ensuring nginx uses initial configuration for certbot..."
+if [ ! -f "nginx/nginx-init.conf" ]; then
+    echo "❌ nginx/nginx-init.conf not found!"
+    exit 1
+fi
+
+# Copy init config to nginx.conf so docker-compose uses it
+cp nginx/nginx-init.conf nginx/nginx.conf
+echo "✅ Using nginx-init.conf for certbot setup"
+
 # Ensure nginx is running with init config
 echo "Starting nginx with initial configuration..."
 docker compose up -d nginx
@@ -94,15 +105,35 @@ echo "Verifying certbot webroot is accessible..."
 if [ ! -d "certbot/www" ]; then
     echo "Creating certbot/www directory..."
     mkdir -p certbot/www
+    chmod 755 certbot/www
 fi
 
-# Test that nginx can serve files from the webroot
-echo "Testing nginx webroot access..."
-docker compose exec -T nginx sh -c "echo 'test' > /var/www/certbot/test.txt && cat /var/www/certbot/test.txt" > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-    echo "✅ Nginx webroot is accessible"
+# Create a test file to verify webroot is accessible via HTTP
+echo "Creating test file in webroot..."
+TEST_FILE="certbot/www/test-$(date +%s).txt"
+echo "test" > "$TEST_FILE"
+chmod 644 "$TEST_FILE"
+
+# Test that nginx can serve files from the webroot via HTTP
+echo "Testing nginx webroot HTTP access..."
+sleep 2  # Give nginx a moment to pick up the file
+TEST_URL="http://$DOMAIN/.well-known/acme-challenge/$(basename $TEST_FILE)"
+HTTP_TEST=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "$TEST_URL" 2>/dev/null || echo "000")
+
+if [ "$HTTP_TEST" = "200" ]; then
+    echo "✅ Nginx webroot is accessible via HTTP"
+    rm -f "$TEST_FILE"  # Clean up test file
 else
-    echo "⚠️  Warning: Could not write to nginx webroot"
+    echo "⚠️  Warning: Could not access webroot via HTTP (got status: $HTTP_TEST)"
+    echo "   Testing with IP address instead..."
+    IP_TEST=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "http://$SERVER_IP/.well-known/acme-challenge/$(basename $TEST_FILE)" 2>/dev/null || echo "000")
+    if [ "$IP_TEST" = "200" ]; then
+        echo "✅ Webroot accessible via IP, but domain may not be accessible from internet"
+        echo "   This could cause Let's Encrypt verification to fail"
+    else
+        echo "❌ Webroot not accessible. Check nginx configuration and firewall."
+    fi
+    rm -f "$TEST_FILE"  # Clean up test file
 fi
 
 # Check DNS resolution - CRITICAL for Let's Encrypt
@@ -219,27 +250,100 @@ echo "Or check if the certbot container is running:"
 echo "  docker compose ps"
 echo ""
 
-# Run certbot with verbose output
-# Note: This may take a while if DNS hasn't propagated
-# Using --dry-run first would be safer, but we'll do real request
-echo "Starting certbot (this may take a minute)..."
-docker compose run --rm certbot certonly \
-    --webroot \
-    --webroot-path=/var/www/certbot \
-    --email "$EMAIL" \
-    --agree-tos \
-    --no-eff-email \
-    --force-renewal \
-    --verbose \
-    -d "$DOMAIN" \
-    -d "www.$DOMAIN"
+# Test domain accessibility from outside before running certbot
+echo ""
+echo "Testing if domain is accessible from the internet..."
+EXTERNAL_TEST=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "http://$DOMAIN" 2>/dev/null || echo "000")
+if [ "$EXTERNAL_TEST" != "000" ] && [ "$EXTERNAL_TEST" != "" ]; then
+    echo "✅ Domain is accessible from internet (HTTP status: $EXTERNAL_TEST)"
+else
+    echo "⚠️  Warning: Domain may not be accessible from internet"
+    echo "   This will cause Let's Encrypt verification to fail"
+    echo "   Check firewall: sudo ufw status"
+    echo "   Test from outside: curl -I http://$DOMAIN"
+fi
 
-CERTBOT_EXIT_CODE=$?
+# Run certbot with timeout and better error handling
+echo ""
+echo "Starting certbot (with 5 minute timeout)..."
+echo "If this hangs, certbot is likely waiting for Let's Encrypt to verify your domain"
+echo ""
+
+# Use timeout command if available, otherwise run in background with kill after timeout
+if command -v timeout >/dev/null 2>&1; then
+    timeout 300 docker compose run --rm certbot certonly \
+        --webroot \
+        --webroot-path=/var/www/certbot \
+        --email "$EMAIL" \
+        --agree-tos \
+        --no-eff-email \
+        --force-renewal \
+        --verbose \
+        --non-interactive \
+        -d "$DOMAIN" \
+        -d "www.$DOMAIN" 2>&1 | tee /tmp/certbot-output.log
+    
+    CERTBOT_EXIT_CODE=${PIPESTATUS[0]}
+else
+    # Fallback: run in background and kill after timeout
+    docker compose run --rm certbot certonly \
+        --webroot \
+        --webroot-path=/var/www/certbot \
+        --email "$EMAIL" \
+        --agree-tos \
+        --no-eff-email \
+        --force-renewal \
+        --verbose \
+        --non-interactive \
+        -d "$DOMAIN" \
+        -d "www.$DOMAIN" > /tmp/certbot-output.log 2>&1 &
+    
+    CERTBOT_PID=$!
+    
+    # Wait up to 5 minutes
+    for i in {1..300}; do
+        if ! kill -0 $CERTBOT_PID 2>/dev/null; then
+            wait $CERTBOT_PID
+            CERTBOT_EXIT_CODE=$?
+            break
+        fi
+        sleep 1
+        if [ $i -eq 300 ]; then
+            echo "⏱️  Timeout after 5 minutes. Killing certbot..."
+            kill $CERTBOT_PID 2>/dev/null
+            CERTBOT_EXIT_CODE=124
+        fi
+    done
+    
+    cat /tmp/certbot-output.log
+fi
 
 echo ""
-if [ $CERTBOT_EXIT_CODE -ne 0 ]; then
+if [ $CERTBOT_EXIT_CODE -eq 124 ]; then
+    echo "⏱️  Certbot timed out after 5 minutes"
+    echo "This usually means Let's Encrypt cannot verify your domain"
+    echo ""
+    echo "Common causes:"
+    echo "  1. Port 80 is blocked by firewall"
+    echo "  2. Domain is not accessible from internet"
+    echo "  3. Nginx is not serving /.well-known/acme-challenge/ correctly"
+    echo ""
+    echo "Check certbot logs:"
+    if [ -f /tmp/certbot-output.log ]; then
+        tail -50 /tmp/certbot-output.log
+    fi
+    echo ""
+    echo "Test manually:"
+    echo "  curl -I http://$DOMAIN/.well-known/acme-challenge/test"
+    exit 1
+elif [ $CERTBOT_EXIT_CODE -ne 0 ]; then
     echo "❌ Certbot exited with error code: $CERTBOT_EXIT_CODE"
     echo "Check the output above for details"
+    if [ -f /tmp/certbot-output.log ]; then
+        echo ""
+        echo "Last 50 lines of certbot output:"
+        tail -50 /tmp/certbot-output.log
+    fi
 fi
 
 if [ $CERTBOT_EXIT_CODE -eq 0 ]; then
