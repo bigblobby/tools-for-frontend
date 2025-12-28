@@ -16,6 +16,12 @@ import { colorRoute, colorConverterRoute } from "@/routes/color.routes";
 import { numberRoute } from "@/routes/number.routes";
 import { converterRoute, xmlToJsonConverterRoute, jsonToXmlConverterRoute } from "@/routes/converter.routes";
 import { dateTimeRoute, epochUnixDateTimeRoute } from '@/routes/date-time.routes.tsx';
+import {
+  imageOptimiserRoute,
+  imagePlaceholderGeneratorRoute,
+  imageRoute,
+  imageToBase64Route
+} from '@/routes/image.routes.tsx';
 
 export const rootRoute = createRootRoute({
   component: BaseLayout,
@@ -35,6 +41,7 @@ const routeTree = rootRoute.addChildren([
   numberRoute.addChildren([]),
   converterRoute.addChildren([xmlToJsonConverterRoute, jsonToXmlConverterRoute]),
   dateTimeRoute.addChildren([epochUnixDateTimeRoute]),
+  imageRoute.addChildren([imageToBase64Route, imageOptimiserRoute, imagePlaceholderGeneratorRoute])
 ]);
 
 export const router = createRouter({ routeTree });

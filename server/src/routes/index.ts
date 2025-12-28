@@ -1,5 +1,6 @@
 import { Router, type Request, type Response } from 'express';
 import { createConverterRouter } from './converter.routes';
+import { createImageRouter } from './image.routes';
 
 export const createRouter = (): Router => {
   const router = Router();
@@ -9,6 +10,7 @@ export const createRouter = (): Router => {
   });
 
   router.use('/converter', createConverterRouter());
+  router.use('/image', createImageRouter());
 
   return router;
 };

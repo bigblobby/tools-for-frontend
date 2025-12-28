@@ -15,13 +15,18 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3001,
+    port: 3002,
     host: true,
     open: true,
     proxy: {
       '/api': {
         target: 'http://localhost:3001',
         changeOrigin: true,
+      },
+      '/placeholder': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/placeholder/, '/api/image/placeholder'),
       },
     },
   },

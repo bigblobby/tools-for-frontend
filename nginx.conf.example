@@ -1,0 +1,45 @@
+# Nginx configuration example for production
+# Place this file in /etc/nginx/sites-available/your-site
+# and create a symlink in /etc/nginx/sites-enabled/
+
+server {
+    listen 80;
+    server_name your-domain.com;
+
+    # Serve static files from client build
+    root /path/to/dev-tools/client/dist;
+    index index.html;
+
+    # Placeholder image route - proxy to backend API
+    location /placeholder {
+        proxy_pass http://localhost:3001/api/image/placeholder;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        
+        # Cache placeholder images
+        proxy_cache_valid 200 1y;
+        add_header Cache-Control "public, max-age=31536000";
+    }
+
+    # API routes - proxy to backend
+    location /api {
+        proxy_pass http://localhost:3001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Serve static assets with caching
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # Handle client-side routing - return index.html for all other routes
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
