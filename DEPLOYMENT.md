@@ -95,34 +95,51 @@ NODE_ENV=production
 PORT=3001
 ```
 
-### 4. Setup Swap Space (Recommended for Small Droplets)
+### 4. Setup Swap Space (REQUIRED for Small Droplets)
 
-If you're using a small Digital Ocean droplet (1GB RAM or less), you may encounter "signal: killed" errors during Docker builds due to insufficient memory. Set up swap space:
+**CRITICAL:** If you're using a small Digital Ocean droplet (1GB RAM or less), you **MUST** set up swap space before building. Without it, Docker builds will fail with "signal: killed" errors.
 
 ```bash
-# Run the swap setup script (creates 2GB swap by default)
+# Run the swap setup script (creates 4GB swap by default)
+# This is the minimum recommended for 512MB-1GB RAM systems
 sudo ./scripts/setup-swap.sh
 
-# Or specify a custom size (e.g., 4GB)
-sudo ./scripts/setup-swap.sh 4
+# For 512MB RAM systems, you may want even more swap (6-8GB)
+sudo ./scripts/setup-swap.sh 6
 ```
 
-This will create a swap file that prevents out-of-memory (OOM) errors during builds.
+**Why swap is needed:**
+- Docker builds are memory-intensive
+- With only 512MB RAM, builds will be killed by the OOM killer
+- Swap provides virtual memory to handle build spikes
+- 4-6GB swap is recommended for 512MB RAM systems
+
+**Verify swap is active:**
+```bash
+free -h
+# You should see swap space listed
+```
 
 ### 5. Build and Start Containers
 
-**Option A: Sequential Build (Recommended for Small Droplets)**
+**For 512MB RAM Systems: Sequential Build is REQUIRED**
 
-If you have limited RAM, build services sequentially to avoid memory issues:
+With only 512MB RAM, you **MUST** use sequential builds. Parallel builds will always fail.
 
 ```bash
-# Use the sequential build script
+# Use the sequential build script (optimized for low memory)
 ./scripts/build-sequential.sh
 ```
 
-**Option B: Parallel Build (Faster, Requires More RAM)**
+This script will:
+- Clean up unused Docker resources before building
+- Build services one at a time (backend, then nginx/frontend)
+- Clean up build cache between builds to free memory
+- Start all services after successful builds
 
-If you have sufficient RAM (2GB+), you can build in parallel:
+**For 2GB+ RAM Systems: Parallel Build (Optional)**
+
+If you have 2GB+ RAM, you can build in parallel (faster):
 
 ```bash
 # Build and start all services
@@ -138,10 +155,40 @@ docker compose logs -f
 **Troubleshooting Build Failures:**
 
 If you see "signal: killed" or "failed to execute bake: signal: killed" errors:
-1. Set up swap space (see step 4 above)
-2. Use the sequential build script instead of parallel builds
-3. Consider upgrading your droplet to a larger size
-4. Check available memory: `free -h`
+
+1. **Verify swap is set up and active:**
+   ```bash
+   free -h
+   # If no swap, run: sudo ./scripts/setup-swap.sh 6
+   ```
+
+2. **Use sequential builds** (required for 512MB RAM):
+   ```bash
+   ./scripts/build-sequential.sh
+   ```
+
+3. **Increase swap size** if builds still fail:
+   ```bash
+   # Disable current swap
+   sudo swapoff /swapfile
+   # Remove old swap file
+   sudo rm /swapfile
+   # Create larger swap (8GB)
+   sudo ./scripts/setup-swap.sh 8
+   ```
+
+4. **Check available memory:**
+   ```bash
+   free -h
+   docker system df
+   ```
+
+5. **Clean up Docker resources:**
+   ```bash
+   docker system prune -a --volumes
+   ```
+
+6. **Consider upgrading** your droplet to at least 1GB RAM for better performance
 
 ### 6. Configure Firewall
 
@@ -294,33 +341,49 @@ docker image prune -a
 
 ### Build fails with "signal: killed" or "failed to execute bake: signal: killed"
 
-This error occurs when Docker builds run out of memory (OOM - Out of Memory). This is common on small Digital Ocean droplets (1GB RAM or less).
+This error occurs when Docker builds run out of memory (OOM - Out of Memory). This is **very common** on small Digital Ocean droplets, especially with 512MB RAM.
 
-**Solutions:**
+**For 512MB RAM Systems - Follow These Steps in Order:**
 
-1. **Set up swap space** (Recommended first step):
+1. **Set up swap space** (REQUIRED - do this first):
    ```bash
-   sudo ./scripts/setup-swap.sh
+   # Minimum 4GB, recommended 6-8GB for 512MB RAM
+   sudo ./scripts/setup-swap.sh 6
+   
+   # Verify it's active
+   free -h
    ```
 
-2. **Use sequential builds** instead of parallel:
+2. **Use sequential builds** (REQUIRED - never use parallel builds):
    ```bash
    ./scripts/build-sequential.sh
    ```
-   This builds services one at a time, reducing peak memory usage.
 
-3. **Check available memory**:
+3. **If builds still fail, increase swap:**
    ```bash
-   free -h
+   sudo swapoff /swapfile
+   sudo rm /swapfile
+   sudo ./scripts/setup-swap.sh 8
    ```
-   If you have less than 1GB free, consider adding swap or upgrading your droplet.
 
-4. **Upgrade your droplet** to a larger size (2GB+ RAM recommended for parallel builds).
-
-5. **Clean up Docker resources** before building:
+4. **Clean up Docker resources** before building:
    ```bash
-   docker system prune -a
+   docker system prune -a --volumes
    ```
+
+5. **Check memory usage during build:**
+   ```bash
+   # In another terminal, monitor memory
+   watch -n 1 free -h
+   ```
+
+**General Solutions (for all systems):**
+
+- **Set up swap space** (minimum 4GB for small droplets)
+- **Use sequential builds** for systems with <2GB RAM
+- **Check available memory**: `free -h`
+- **Clean up Docker resources**: `docker system prune -a`
+- **Upgrade your droplet** to at least 1GB RAM (2GB+ recommended for better performance)
 
 ### Backend not responding
 

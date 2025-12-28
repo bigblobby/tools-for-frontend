@@ -2,11 +2,11 @@
 
 # Setup swap space on Digital Ocean droplet to prevent OOM during Docker builds
 # Usage: sudo ./scripts/setup-swap.sh [size_in_gb]
-# Default: 2GB swap
+# Default: 4GB swap (recommended for systems with 512MB-1GB RAM)
 
 set -e
 
-SWAP_SIZE=${1:-2}
+SWAP_SIZE=${1:-4}
 SWAP_FILE="/swapfile"
 
 # Check if swap already exists
