@@ -99,13 +99,57 @@ PORT=3001
 
 **CRITICAL:** If you're using a small Digital Ocean droplet (1GB RAM or less), you **MUST** set up swap space before building. Without it, Docker builds will fail with "signal: killed" errors.
 
+**Option A: Use the Script (if available)**
+
 ```bash
+# Make sure you're in the project root directory
+cd /opt/tools-for-frontend  # or wherever you cloned the repo
+
+# Make script executable
+chmod +x scripts/setup-swap.sh
+
 # Run the swap setup script (creates 4GB swap by default)
 # This is the minimum recommended for 512MB-1GB RAM systems
 sudo ./scripts/setup-swap.sh
 
 # For 512MB RAM systems, you may want even more swap (6-8GB)
 sudo ./scripts/setup-swap.sh 6
+```
+
+**Option B: Manual Setup (if script not available)**
+
+If the script isn't available, you can set up swap manually:
+
+```bash
+# Set swap size (6GB recommended for 512MB RAM)
+SWAP_SIZE=6
+SWAP_FILE="/swapfile"
+
+# Check if swap already exists
+if swapon --show | grep -q "$SWAP_FILE"; then
+    echo "Swap already exists"
+    swapon --show
+else
+    # Create swap file
+    echo "Creating ${SWAP_SIZE}GB swap file..."
+    sudo fallocate -l ${SWAP_SIZE}G "$SWAP_FILE" || sudo dd if=/dev/zero of="$SWAP_FILE" bs=1G count=$SWAP_SIZE
+    
+    # Set permissions
+    sudo chmod 600 "$SWAP_FILE"
+    
+    # Format as swap
+    sudo mkswap "$SWAP_FILE"
+    
+    # Enable swap
+    sudo swapon "$SWAP_FILE"
+    
+    # Make it permanent
+    echo "$SWAP_FILE none swap sw 0 0" | sudo tee -a /etc/fstab
+    
+    # Verify
+    echo "Swap created successfully:"
+    free -h
+fi
 ```
 
 **Why swap is needed:**
@@ -118,6 +162,7 @@ sudo ./scripts/setup-swap.sh 6
 ```bash
 free -h
 # You should see swap space listed
+swapon --show
 ```
 
 ### 5. Build and Start Containers
@@ -126,9 +171,51 @@ free -h
 
 With only 512MB RAM, you **MUST** use sequential builds. Parallel builds will always fail.
 
+**Option A: Use the Script (if available)**
+
 ```bash
+# Make sure you're in the project root directory
+cd /opt/tools-for-frontend  # or wherever you cloned the repo
+
+# Make script executable
+chmod +x scripts/build-sequential.sh
+
 # Use the sequential build script (optimized for low memory)
 ./scripts/build-sequential.sh
+```
+
+**Option B: Manual Sequential Build (if script not available)**
+
+If the script isn't available, build manually:
+
+```bash
+# Make sure you're in the project root directory
+cd /opt/tools-for-frontend  # or wherever you cloned the repo
+
+# Clean up any existing containers
+docker compose down 2>/dev/null || true
+docker system prune -f 2>/dev/null || true
+
+# Build backend first
+echo "Building backend service..."
+docker compose build backend
+
+# Clean up build cache to free memory
+docker builder prune -f
+
+# Build nginx (which includes frontend)
+echo "Building nginx service (includes frontend)..."
+docker compose build nginx
+
+# Final cleanup
+docker builder prune -f
+
+# Start all services
+echo "Starting all services..."
+docker compose up -d
+
+# Check status
+docker compose ps
 ```
 
 This script will:
@@ -159,12 +246,13 @@ If you see "signal: killed" or "failed to execute bake: signal: killed" errors:
 1. **Verify swap is set up and active:**
    ```bash
    free -h
-   # If no swap, run: sudo ./scripts/setup-swap.sh 6
+   swapon --show
+   # If no swap, set it up manually (see Option B above)
    ```
 
 2. **Use sequential builds** (required for 512MB RAM):
    ```bash
-   ./scripts/build-sequential.sh
+   # Either use the script or build manually (see above)
    ```
 
 3. **Increase swap size** if builds still fail:
@@ -173,8 +261,7 @@ If you see "signal: killed" or "failed to execute bake: signal: killed" errors:
    sudo swapoff /swapfile
    # Remove old swap file
    sudo rm /swapfile
-   # Create larger swap (8GB)
-   sudo ./scripts/setup-swap.sh 8
+   # Create larger swap (8GB) - use manual commands from Option B above
    ```
 
 4. **Check available memory:**
@@ -347,23 +434,37 @@ This error occurs when Docker builds run out of memory (OOM - Out of Memory). Th
 
 1. **Set up swap space** (REQUIRED - do this first):
    ```bash
-   # Minimum 4GB, recommended 6-8GB for 512MB RAM
-   sudo ./scripts/setup-swap.sh 6
+   # Manual setup (if script not available):
+   SWAP_SIZE=6
+   SWAP_FILE="/swapfile"
    
-   # Verify it's active
+   sudo fallocate -l ${SWAP_SIZE}G "$SWAP_FILE" || sudo dd if=/dev/zero of="$SWAP_FILE" bs=1G count=$SWAP_SIZE
+   sudo chmod 600 "$SWAP_FILE"
+   sudo mkswap "$SWAP_FILE"
+   sudo swapon "$SWAP_FILE"
+   echo "$SWAP_FILE none swap sw 0 0" | sudo tee -a /etc/fstab
+   
+   # Verify
    free -h
    ```
 
 2. **Use sequential builds** (REQUIRED - never use parallel builds):
    ```bash
-   ./scripts/build-sequential.sh
+   # Build manually:
+   docker compose down 2>/dev/null || true
+   docker system prune -f 2>/dev/null || true
+   docker compose build backend
+   docker builder prune -f
+   docker compose build nginx
+   docker builder prune -f
+   docker compose up -d
    ```
 
 3. **If builds still fail, increase swap:**
    ```bash
    sudo swapoff /swapfile
    sudo rm /swapfile
-   sudo ./scripts/setup-swap.sh 8
+   # Then repeat step 1 with SWAP_SIZE=8
    ```
 
 4. **Clean up Docker resources** before building:
@@ -379,7 +480,7 @@ This error occurs when Docker builds run out of memory (OOM - Out of Memory). Th
 
 **General Solutions (for all systems):**
 
-- **Set up swap space** (minimum 4GB for small droplets)
+- **Set up swap space** (minimum 4GB for small droplets, 6-8GB for 512MB RAM)
 - **Use sequential builds** for systems with <2GB RAM
 - **Check available memory**: `free -h`
 - **Clean up Docker resources**: `docker system prune -a`

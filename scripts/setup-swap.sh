@@ -24,6 +24,33 @@ if [ -f "$SWAP_FILE" ]; then
     exit 0
 fi
 
+# Check available disk space
+echo "Checking available disk space..."
+AVAILABLE_KB=$(df / | tail -1 | awk '{print $4}')
+AVAILABLE_GB=$((AVAILABLE_KB / 1024 / 1024))
+
+echo "Available disk space: ${AVAILABLE_GB}GB"
+echo "Requested swap size: ${SWAP_SIZE}GB"
+
+# Add 1GB buffer for safety
+REQUIRED=$((SWAP_SIZE + 1))
+if [ "$AVAILABLE_GB" -lt "$REQUIRED" ]; then
+    echo ""
+    echo "ERROR: Not enough disk space!"
+    echo "  Available: ${AVAILABLE_GB}GB"
+    echo "  Required: ${REQUIRED}GB (${SWAP_SIZE}GB swap + 1GB buffer)"
+    echo ""
+    echo "Options:"
+    echo "  1. Use a smaller swap size: sudo ./scripts/setup-swap.sh 1"
+    echo "  2. Clean up disk space first (see commands below)"
+    echo ""
+    echo "Cleanup commands:"
+    echo "  docker system prune -a --volumes  # Remove unused Docker resources"
+    echo "  sudo journalctl --vacuum-time=3d  # Remove old logs"
+    echo "  sudo apt autoremove -y            # Remove unused packages"
+    exit 1
+fi
+
 echo "Creating ${SWAP_SIZE}GB swap file at $SWAP_FILE..."
 
 # Create swap file

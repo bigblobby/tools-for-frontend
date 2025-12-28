@@ -30,9 +30,10 @@ services:
     build:
       context: .
       dockerfile: ./nginx/Dockerfile
-      # Reduce memory usage during build (256MB for very low memory systems)
+      # Memory limit for 1GB RAM systems (requires swap space)
+      # With swap, Node.js can use more than physical RAM
       args:
-        NODE_OPTIONS: "--max-old-space-size=256"
+        NODE_OPTIONS: "--max-old-space-size=768"
     container_name: tools-for-frontend-nginx
     ports:
       - "80:80"
