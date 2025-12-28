@@ -30,7 +30,8 @@ RUN apk add --no-cache wget
 RUN rm /etc/nginx/conf.d/default.conf
 
 # Copy custom nginx configuration
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+# Use nginx-init.conf initially, then switch to nginx.conf after certificates are obtained
+COPY nginx/nginx-init.conf /etc/nginx/conf.d/default.conf
 
 # Copy built frontend files from frontend-builder stage
 COPY --from=frontend-builder /app/dist /usr/share/nginx/html

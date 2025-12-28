@@ -107,52 +107,78 @@ sudo ufw allow 443/tcp  # HTTPS (if using SSL)
 sudo ufw enable
 ```
 
-### 6. Set Up SSL with Let's Encrypt (Optional but Recommended)
+### 6. Set Up SSL with Let's Encrypt (Automatic HTTPS)
 
-If you have a domain name, set up SSL using Certbot:
+The Docker setup includes automatic Let's Encrypt certificate management. To set it up:
+
+**Prerequisites:**
+- Your domain name must point to your server's IP address
+- Ports 80 and 443 must be open in your firewall
+
+**Initial Setup:**
+
+1. Start the containers (without SSL first):
+```bash
+docker compose up -d --build
+```
+
+2. Run the initialization script to obtain certificates:
+```bash
+./scripts/init-letsencrypt.sh toolsforfrontend.com your@email.com
+```
+
+Replace:
+- `your@email.com` with your email address (for certificate expiration notices)
+
+Note: The domain `toolsforfrontend.com` is already configured. If you want to use a different domain, update `nginx/nginx-ssl.conf` first.
+
+3. The script will:
+   - Request a certificate from Let's Encrypt
+   - Update the nginx configuration with SSL settings
+   - Restart nginx to enable HTTPS
+
+**Automatic Renewal:**
+
+The `certbot` container automatically checks for certificate renewal every 12 hours. Certificates are valid for 90 days, so this ensures they're renewed before expiration.
+
+**Optional: Set up automatic nginx reload after renewal**
+
+For automatic nginx reload after certificate renewal, set up a cron job on your server:
 
 ```bash
-# Install Certbot
-sudo apt install certbot python3-certbot-nginx -y
+# Edit crontab
+crontab -e
 
-# Stop nginx container temporarily
-docker compose stop nginx
-
-# Obtain certificate (replace with your domain)
-sudo certbot certonly --standalone -d yourdomain.com -d www.yourdomain.com
-
-# Update nginx configuration to use SSL
-# You'll need to modify nginx/nginx.conf to include SSL configuration
+# Add this line (adjust path to your project):
+0 3 * * * cd /path/to/dev-tools && ./scripts/renew-certs.sh >> /var/log/certbot-renewal.log 2>&1
 ```
 
-Update `nginx/nginx.conf` to include SSL:
+This runs the renewal check daily at 3 AM and reloads nginx if certificates were renewed.
 
-```nginx
-server {
-    listen 80;
-    server_name yourdomain.com;
-    return 301 https://$server_name$request_uri;
-}
+**Manual Renewal (if needed):**
 
-server {
-    listen 443 ssl http2;
-    server_name yourdomain.com;
+```bash
+# Option 1: Use the renewal script
+./scripts/renew-certs.sh
 
-    ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
-
-    # ... rest of your nginx config ...
-}
+# Option 2: Manual renewal
+docker compose run --rm certbot renew
+docker compose restart nginx
 ```
 
-Then mount the SSL certificates in `docker-compose.yml`:
+**Verification:**
 
-```yaml
-nginx:
-  volumes:
-    - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    - /etc/letsencrypt:/etc/letsencrypt:ro
-```
+After setup, your site should be available at:
+- `https://toolsforfrontend.com` (HTTPS - secure)
+- `http://toolsforfrontend.com` (HTTP - automatically redirects to HTTPS)
+
+**Troubleshooting:**
+
+If certificate generation fails:
+1. Ensure your domain DNS is pointing to the server IP
+2. Check that ports 80 and 443 are open: `sudo ufw status`
+3. Verify nginx is running: `docker compose ps`
+4. Check certbot logs: `docker compose logs certbot`
 
 ## Updating the Application
 
