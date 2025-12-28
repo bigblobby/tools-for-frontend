@@ -55,16 +55,12 @@ if [ $BACKEND_WAIT_COUNT -ge $BACKEND_MAX_WAIT ]; then
     echo "⚠️  Warning: Backend may not be ready, but continuing..."
 fi
 
-# Ensure nginx is using init config (needed for certbot)
-echo "Ensuring nginx uses initial configuration for certbot..."
-if [ ! -f "nginx/nginx-init.conf" ]; then
-    echo "❌ nginx/nginx-init.conf not found!"
+# Verify nginx config exists
+if [ ! -f "nginx/nginx.conf" ]; then
+    echo "❌ nginx/nginx.conf not found!"
     exit 1
 fi
-
-# Copy init config to nginx.conf so docker-compose uses it
-cp nginx/nginx-init.conf nginx/nginx.conf
-echo "✅ Using nginx-init.conf for certbot setup"
+echo "✅ Using unified nginx configuration"
 
 # Ensure nginx is running with init config
 echo "Starting nginx with initial configuration..."
@@ -322,7 +318,7 @@ echo ""
 # Use timeout command if available, otherwise run in background with kill after timeout
 # Use --entrypoint="" to override the background renewal entrypoint from docker-compose.yml
 if command -v timeout >/dev/null 2>&1; then
-    # Run certbot and capture both output and exit code properly
+    # Run certbot and capture output
     timeout 300 docker compose run --rm --entrypoint="" certbot sh -c "certbot certonly \
         --webroot \
         --webroot-path=/var/www/certbot \
@@ -333,17 +329,10 @@ if command -v timeout >/dev/null 2>&1; then
         --verbose \
         --non-interactive \
         -d '$DOMAIN' \
-        -d 'www.$DOMAIN'; exit_code=\$?; echo \"CERTBOT_EXIT_CODE:\$exit_code\" >&2; exit \$exit_code" 2>&1 | tee /tmp/certbot-output.log
+        -d 'www.$DOMAIN'" 2>&1 | tee /tmp/certbot-output.log
     
-    # Extract exit code from output or use PIPESTATUS
-    if grep -q "CERTBOT_EXIT_CODE:" /tmp/certbot-output.log; then
-        CERTBOT_EXIT_CODE=$(grep "CERTBOT_EXIT_CODE:" /tmp/certbot-output.log | sed 's/.*CERTBOT_EXIT_CODE:\([0-9]*\).*/\1/')
-    else
-        CERTBOT_EXIT_CODE=${PIPESTATUS[0]}
-    fi
-    
-    # Clean up the exit code line from output
-    sed -i '/CERTBOT_EXIT_CODE:/d' /tmp/certbot-output.log 2>/dev/null || true
+    # Capture exit code (timeout preserves the command's exit code)
+    CERTBOT_EXIT_CODE=${PIPESTATUS[0]}
 else
     # Fallback: run in background and kill after timeout
     docker compose run --rm --entrypoint="" certbot sh -c "certbot certonly \
@@ -440,26 +429,9 @@ if [ "$CERT_EXISTS" = true ] || [ $CERTBOT_EXIT_CODE -eq 0 ]; then
         echo "✅ Certificate files verified"
     fi
     
-    # Copy SSL config to nginx.conf (domain is already set in nginx-ssl.conf)
+    # Unified nginx.conf already has HTTPS configuration
+    # Just need to restart nginx to pick up the SSL certificates
     echo ""
-    echo "Updating nginx configuration..."
-    if [ ! -f "nginx/nginx-ssl.conf" ]; then
-        echo "❌ Error: nginx/nginx-ssl.conf not found!"
-        echo "   Cannot update nginx configuration"
-        exit 1
-    fi
-    
-    cp nginx/nginx-ssl.conf nginx/nginx.conf
-    
-    # Verify the copy worked
-    if ! grep -q "listen 443 ssl" nginx/nginx.conf; then
-        echo "❌ Error: SSL configuration not found in nginx.conf after copy"
-        exit 1
-    fi
-    
-    echo "✅ Nginx configuration updated"
-    
-    # Test nginx configuration before restarting
     echo "Testing nginx configuration..."
     if docker compose exec -T nginx nginx -t 2>&1 | grep -q "successful"; then
         echo "✅ Nginx configuration is valid"
@@ -468,7 +440,7 @@ if [ "$CERT_EXISTS" = true ] || [ $CERTBOT_EXIT_CODE -eq 0 ]; then
         docker compose exec -T nginx nginx -t
     fi
     
-    echo "Restarting nginx with SSL configuration..."
+    echo "Restarting nginx to enable HTTPS..."
     docker compose restart nginx
     
     # Wait for nginx to be ready
