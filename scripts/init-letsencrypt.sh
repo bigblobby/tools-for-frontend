@@ -108,7 +108,25 @@ fi
 # Check DNS resolution - CRITICAL for Let's Encrypt
 echo "Checking DNS resolution for $DOMAIN..."
 SERVER_IP=$(curl -s ifconfig.me || curl -s ipinfo.io/ip || echo "unknown")
-DOMAIN_IP=$(dig +short $DOMAIN | tail -n1 || echo "")
+
+# Use external DNS servers (what Let's Encrypt uses) instead of local resolver
+# Try multiple DNS servers in case one hasn't propagated yet
+DOMAIN_IP=""
+for dns_server in "8.8.8.8" "1.1.1.1" "8.8.4.4"; do
+    DOMAIN_IP=$(dig @$dns_server +short $DOMAIN | tail -n1 | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' || echo "")
+    if [ -n "$DOMAIN_IP" ] && [ "$DOMAIN_IP" != "" ]; then
+        echo "Resolved via $dns_server: $DOMAIN -> $DOMAIN_IP"
+        break
+    fi
+done
+
+# If still no result, try local resolver as fallback
+if [ -z "$DOMAIN_IP" ] || [ "$DOMAIN_IP" = "" ]; then
+    DOMAIN_IP=$(dig +short $DOMAIN | tail -n1 | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' || echo "")
+    if [ -n "$DOMAIN_IP" ]; then
+        echo "Resolved via local DNS: $DOMAIN -> $DOMAIN_IP"
+    fi
+fi
 
 DNS_OK=false
 if [ -n "$DOMAIN_IP" ] && [ "$DOMAIN_IP" != "" ]; then
@@ -120,14 +138,15 @@ if [ -n "$DOMAIN_IP" ] && [ "$DOMAIN_IP" != "" ]; then
             DNS_OK=true
         else
             echo "⚠️  Warning: Domain IP ($DOMAIN_IP) doesn't match server IP ($SERVER_IP)"
+            echo "   This might be okay if you're using a load balancer or CDN"
         fi
     else
         echo "⚠️  Could not determine server IP, but domain resolves to: $DOMAIN_IP"
         DNS_OK=true  # Assume OK if we can't check
     fi
 else
-    echo "❌ Could not resolve $DOMAIN"
-    echo "   DNS is not configured or hasn't propagated yet"
+    echo "❌ Could not resolve $DOMAIN using external DNS servers"
+    echo "   DNS may not be configured or hasn't propagated to public DNS yet"
 fi
 
 if [ "$DNS_OK" = false ]; then
