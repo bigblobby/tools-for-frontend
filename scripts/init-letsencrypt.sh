@@ -320,33 +320,34 @@ echo "If this hangs, certbot is likely waiting for Let's Encrypt to verify your 
 echo ""
 
 # Use timeout command if available, otherwise run in background with kill after timeout
+# Use --entrypoint="" to override the background renewal entrypoint from docker-compose.yml
 if command -v timeout >/dev/null 2>&1; then
-    timeout 300 docker compose run --rm certbot certonly \
+    timeout 300 docker compose run --rm --entrypoint="" certbot sh -c "certbot certonly \
         --webroot \
         --webroot-path=/var/www/certbot \
-        --email "$EMAIL" \
+        --email '$EMAIL' \
         --agree-tos \
         --no-eff-email \
         --force-renewal \
         --verbose \
         --non-interactive \
-        -d "$DOMAIN" \
-        -d "www.$DOMAIN" 2>&1 | tee /tmp/certbot-output.log
+        -d '$DOMAIN' \
+        -d 'www.$DOMAIN'" 2>&1 | tee /tmp/certbot-output.log
     
     CERTBOT_EXIT_CODE=${PIPESTATUS[0]}
 else
     # Fallback: run in background and kill after timeout
-    docker compose run --rm certbot certonly \
+    docker compose run --rm --entrypoint="" certbot sh -c "certbot certonly \
         --webroot \
         --webroot-path=/var/www/certbot \
-        --email "$EMAIL" \
+        --email '$EMAIL' \
         --agree-tos \
         --no-eff-email \
         --force-renewal \
         --verbose \
         --non-interactive \
-        -d "$DOMAIN" \
-        -d "www.$DOMAIN" > /tmp/certbot-output.log 2>&1 &
+        -d '$DOMAIN' \
+        -d 'www.$DOMAIN'" > /tmp/certbot-output.log 2>&1 &
     
     CERTBOT_PID=$!
     
