@@ -322,6 +322,7 @@ echo ""
 # Use timeout command if available, otherwise run in background with kill after timeout
 # Use --entrypoint="" to override the background renewal entrypoint from docker-compose.yml
 if command -v timeout >/dev/null 2>&1; then
+    # Run certbot and capture both output and exit code properly
     timeout 300 docker compose run --rm --entrypoint="" certbot sh -c "certbot certonly \
         --webroot \
         --webroot-path=/var/www/certbot \
@@ -332,9 +333,17 @@ if command -v timeout >/dev/null 2>&1; then
         --verbose \
         --non-interactive \
         -d '$DOMAIN' \
-        -d 'www.$DOMAIN'" 2>&1 | tee /tmp/certbot-output.log
+        -d 'www.$DOMAIN'; exit_code=\$?; echo \"CERTBOT_EXIT_CODE:\$exit_code\" >&2; exit \$exit_code" 2>&1 | tee /tmp/certbot-output.log
     
-    CERTBOT_EXIT_CODE=${PIPESTATUS[0]}
+    # Extract exit code from output or use PIPESTATUS
+    if grep -q "CERTBOT_EXIT_CODE:" /tmp/certbot-output.log; then
+        CERTBOT_EXIT_CODE=$(grep "CERTBOT_EXIT_CODE:" /tmp/certbot-output.log | sed 's/.*CERTBOT_EXIT_CODE:\([0-9]*\).*/\1/')
+    else
+        CERTBOT_EXIT_CODE=${PIPESTATUS[0]}
+    fi
+    
+    # Clean up the exit code line from output
+    sed -i '/CERTBOT_EXIT_CODE:/d' /tmp/certbot-output.log 2>/dev/null || true
 else
     # Fallback: run in background and kill after timeout
     docker compose run --rm --entrypoint="" certbot sh -c "certbot certonly \
@@ -370,6 +379,22 @@ else
 fi
 
 echo ""
+
+# Check if certificates were actually created (more reliable than exit code)
+CERT_EXISTS=false
+if [ -f "certbot/conf/live/$DOMAIN/fullchain.pem" ] && [ -f "certbot/conf/live/$DOMAIN/privkey.pem" ]; then
+    CERT_EXISTS=true
+    echo "✅ Certificates found - certbot succeeded!"
+elif [ $CERTBOT_EXIT_CODE -eq 0 ]; then
+    # Exit code says success, but files don't exist yet - wait a moment
+    echo "Waiting for certificate files to be written..."
+    sleep 2
+    if [ -f "certbot/conf/live/$DOMAIN/fullchain.pem" ] && [ -f "certbot/conf/live/$DOMAIN/privkey.pem" ]; then
+        CERT_EXISTS=true
+        echo "✅ Certificates found!"
+    fi
+fi
+
 if [ $CERTBOT_EXIT_CODE -eq 124 ]; then
     echo "⏱️  Certbot timed out after 5 minutes"
     echo "This usually means Let's Encrypt cannot verify your domain"
@@ -397,9 +422,13 @@ elif [ $CERTBOT_EXIT_CODE -ne 0 ]; then
     fi
 fi
 
-if [ $CERTBOT_EXIT_CODE -eq 0 ]; then
+if [ "$CERT_EXISTS" = true ] || [ $CERTBOT_EXIT_CODE -eq 0 ]; then
     echo ""
-    echo "✅ Certificate obtained successfully!"
+    if [ "$CERT_EXISTS" = true ]; then
+        echo "✅ Certificate obtained successfully!"
+    else
+        echo "✅ Certificate obtained successfully! (verified by exit code)"
+    fi
     
     # Verify certificates exist
     if [ ! -f "certbot/conf/live/$DOMAIN/fullchain.pem" ] || [ ! -f "certbot/conf/live/$DOMAIN/privkey.pem" ]; then
