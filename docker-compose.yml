@@ -5,9 +5,13 @@ services:
       context: ./server
       dockerfile: Dockerfile
     container_name: dev-tools-backend
-    environment:
-      - NODE_ENV=production
-      - PORT=3001
+    env_file:
+      - ./server/.env
+    # Environment variables from .env file will be loaded automatically
+    # You can override them here if needed:
+    # environment:
+    #   - NODE_ENV=production
+    #   - PORT=3001
     ports:
       - "3001:3001"
     networks:

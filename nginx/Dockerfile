@@ -12,7 +12,12 @@ RUN npm ci
 # Copy frontend source code
 COPY client/ .
 
+# Copy .env file if it exists (for Vite environment variables)
+# Vite automatically reads .env files during build
+COPY client/.env* ./
+
 # Build the frontend application
+# Vite will embed VITE_* environment variables at build time
 RUN npm run build
 
 # Nginx stage

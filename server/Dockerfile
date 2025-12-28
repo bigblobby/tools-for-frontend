@@ -58,6 +58,9 @@ RUN npm prune --production
 # Copy built files from builder stage
 COPY --from=builder /app/dist ./dist
 
+# Note: .env file is loaded via docker-compose env_file directive
+# Environment variables are set in docker-compose.yml
+
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001
