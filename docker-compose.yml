@@ -3,6 +3,9 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+      # Reduce memory usage during build
+      args:
+        NODE_OPTIONS: "--max-old-space-size=512"
     container_name: tools-for-frontend-backend
     env_file:
       - ./server/.env
@@ -27,6 +30,9 @@ services:
     build:
       context: .
       dockerfile: ./nginx/Dockerfile
+      # Reduce memory usage during build
+      args:
+        NODE_OPTIONS: "--max-old-space-size=512"
     container_name: tools-for-frontend-nginx
     ports:
       - "80:80"

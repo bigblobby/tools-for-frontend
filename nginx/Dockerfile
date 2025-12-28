@@ -1,6 +1,10 @@
 # Build frontend stage
 FROM node:20-alpine AS frontend-builder
 
+# Accept build argument for Node.js memory limit
+ARG NODE_OPTIONS=""
+ENV NODE_OPTIONS=$NODE_OPTIONS
+
 WORKDIR /app
 
 # Copy frontend package files

@@ -95,9 +95,34 @@ NODE_ENV=production
 PORT=3001
 ```
 
-### 4. Build and Start Containers
+### 4. Setup Swap Space (Recommended for Small Droplets)
 
-From the project root directory:
+If you're using a small Digital Ocean droplet (1GB RAM or less), you may encounter "signal: killed" errors during Docker builds due to insufficient memory. Set up swap space:
+
+```bash
+# Run the swap setup script (creates 2GB swap by default)
+sudo ./scripts/setup-swap.sh
+
+# Or specify a custom size (e.g., 4GB)
+sudo ./scripts/setup-swap.sh 4
+```
+
+This will create a swap file that prevents out-of-memory (OOM) errors during builds.
+
+### 5. Build and Start Containers
+
+**Option A: Sequential Build (Recommended for Small Droplets)**
+
+If you have limited RAM, build services sequentially to avoid memory issues:
+
+```bash
+# Use the sequential build script
+./scripts/build-sequential.sh
+```
+
+**Option B: Parallel Build (Faster, Requires More RAM)**
+
+If you have sufficient RAM (2GB+), you can build in parallel:
 
 ```bash
 # Build and start all services
@@ -110,7 +135,15 @@ docker compose ps
 docker compose logs -f
 ```
 
-### 5. Configure Firewall
+**Troubleshooting Build Failures:**
+
+If you see "signal: killed" or "failed to execute bake: signal: killed" errors:
+1. Set up swap space (see step 4 above)
+2. Use the sequential build script instead of parallel builds
+3. Consider upgrading your droplet to a larger size
+4. Check available memory: `free -h`
+
+### 6. Configure Firewall
 
 If you're using UFW (Ubuntu Firewall):
 
@@ -121,7 +154,7 @@ sudo ufw allow 443/tcp  # HTTPS (if using SSL)
 sudo ufw enable
 ```
 
-### 6. Set Up SSL with Let's Encrypt (Automatic HTTPS)
+### 7. Set Up SSL with Let's Encrypt (Automatic HTTPS)
 
 The Docker setup includes automatic Let's Encrypt certificate management. To set it up:
 
@@ -258,6 +291,36 @@ docker image prune -a
 ```
 
 ## Troubleshooting
+
+### Build fails with "signal: killed" or "failed to execute bake: signal: killed"
+
+This error occurs when Docker builds run out of memory (OOM - Out of Memory). This is common on small Digital Ocean droplets (1GB RAM or less).
+
+**Solutions:**
+
+1. **Set up swap space** (Recommended first step):
+   ```bash
+   sudo ./scripts/setup-swap.sh
+   ```
+
+2. **Use sequential builds** instead of parallel:
+   ```bash
+   ./scripts/build-sequential.sh
+   ```
+   This builds services one at a time, reducing peak memory usage.
+
+3. **Check available memory**:
+   ```bash
+   free -h
+   ```
+   If you have less than 1GB free, consider adding swap or upgrading your droplet.
+
+4. **Upgrade your droplet** to a larger size (2GB+ RAM recommended for parallel builds).
+
+5. **Clean up Docker resources** before building:
+   ```bash
+   docker system prune -a
+   ```
 
 ### Backend not responding
 
