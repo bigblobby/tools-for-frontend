@@ -398,21 +398,75 @@ elif [ $CERTBOT_EXIT_CODE -ne 0 ]; then
 fi
 
 if [ $CERTBOT_EXIT_CODE -eq 0 ]; then
-    echo "Certificate obtained successfully!"
+    echo ""
+    echo "✅ Certificate obtained successfully!"
+    
+    # Verify certificates exist
+    if [ ! -f "certbot/conf/live/$DOMAIN/fullchain.pem" ] || [ ! -f "certbot/conf/live/$DOMAIN/privkey.pem" ]; then
+        echo "⚠️  Warning: Certificate files not found where expected"
+        echo "   Looking for: certbot/conf/live/$DOMAIN/fullchain.pem"
+        echo "   Available certificates:"
+        ls -la certbot/conf/live/ 2>/dev/null || echo "   No certificates found"
+    else
+        echo "✅ Certificate files verified"
+    fi
     
     # Copy SSL config to nginx.conf (domain is already set in nginx-ssl.conf)
+    echo ""
     echo "Updating nginx configuration..."
+    if [ ! -f "nginx/nginx-ssl.conf" ]; then
+        echo "❌ Error: nginx/nginx-ssl.conf not found!"
+        echo "   Cannot update nginx configuration"
+        exit 1
+    fi
+    
     cp nginx/nginx-ssl.conf nginx/nginx.conf
+    
+    # Verify the copy worked
+    if ! grep -q "listen 443 ssl" nginx/nginx.conf; then
+        echo "❌ Error: SSL configuration not found in nginx.conf after copy"
+        exit 1
+    fi
+    
+    echo "✅ Nginx configuration updated"
+    
+    # Test nginx configuration before restarting
+    echo "Testing nginx configuration..."
+    if docker compose exec -T nginx nginx -t 2>&1 | grep -q "successful"; then
+        echo "✅ Nginx configuration is valid"
+    else
+        echo "⚠️  Warning: Nginx configuration test failed, but continuing..."
+        docker compose exec -T nginx nginx -t
+    fi
     
     echo "Restarting nginx with SSL configuration..."
     docker compose restart nginx
     
+    # Wait for nginx to be ready
+    echo "Waiting for nginx to be ready..."
+    sleep 3
+    
+    # Verify nginx is running
+    if docker compose ps nginx | grep -q "Up"; then
+        echo "✅ Nginx is running"
+    else
+        echo "❌ Error: Nginx failed to start. Check logs:"
+        docker compose logs --tail=20 nginx
+        exit 1
+    fi
+    
     echo ""
+    echo "═══════════════════════════════════════════════════════════════"
     echo "✅ SSL setup complete!"
+    echo "═══════════════════════════════════════════════════════════════"
+    echo ""
     echo "Your site should now be available at:"
     echo "  - https://$DOMAIN"
     echo "  - https://www.$DOMAIN"
+    echo ""
     echo "HTTP traffic will automatically redirect to HTTPS"
+    echo ""
+    echo "Test with: curl -I https://$DOMAIN"
 else
     echo "❌ Certificate request failed. Please check:"
     echo "  1. Domain DNS is pointing to this server"
