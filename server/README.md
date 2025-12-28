@@ -1,6 +1,6 @@
 # Dev Tools Server
 
-TypeScript Express backend server for the dev-tools application.
+TypeScript Express backend server for the tools-for-frontend application.
 
 ## Getting Started
 

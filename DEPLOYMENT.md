@@ -1,6 +1,6 @@
 # Deployment Guide for Digital Ocean
 
-This guide explains how to deploy the dev-tools application to Digital Ocean using Docker and nginx.
+This guide explains how to deploy the tools-for-frontend application to Digital Ocean using Docker and nginx.
 
 ## Quick Start (Local Testing)
 
@@ -61,8 +61,8 @@ docker compose version
 cd /opt
 
 # Clone your repository (replace with your actual repo URL)
-git clone <your-repo-url> dev-tools
-cd dev-tools
+git clone <your-repo-url> tools-for-frontend
+cd tools-for-frontend
 ```
 
 ### 3. Configure Environment Variables
@@ -150,7 +150,7 @@ For automatic nginx reload after certificate renewal, set up a cron job on your 
 crontab -e
 
 # Add this line (adjust path to your project):
-0 3 * * * cd /path/to/dev-tools && ./scripts/renew-certs.sh >> /var/log/certbot-renewal.log 2>&1
+0 3 * * * cd /path/to/tools-for-frontend && ./scripts/renew-certs.sh >> /var/log/certbot-renewal.log 2>&1
 ```
 
 This runs the renewal check daily at 3 AM and reloads nginx if certificates were renewed.
@@ -257,7 +257,7 @@ docker image prune -a
 2. Verify nginx is running: `docker compose ps`
 3. Check if frontend files exist in nginx container:
    ```bash
-   docker exec dev-tools-nginx ls -la /usr/share/nginx/html
+   docker exec tools-for-frontend-nginx ls -la /usr/share/nginx/html
    ```
 
 ### Port conflicts

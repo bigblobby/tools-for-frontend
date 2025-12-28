@@ -3,7 +3,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    container_name: dev-tools-backend
+    container_name: tools-for-frontend-backend
     env_file:
       - ./server/.env
     # Environment variables from .env file will be loaded automatically
@@ -14,7 +14,7 @@ services:
     ports:
       - "3001:3001"
     networks:
-      - dev-tools-network
+      - tools-for-frontend-network
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/api/health"]
@@ -27,7 +27,7 @@ services:
     build:
       context: .
       dockerfile: ./nginx/Dockerfile
-    container_name: dev-tools-nginx
+    container_name: tools-for-frontend-nginx
     ports:
       - "80:80"
       - "443:443"
@@ -38,7 +38,7 @@ services:
       - ./certbot/conf:/etc/letsencrypt:ro
       - ./certbot/www:/var/www/certbot:ro
     networks:
-      - dev-tools-network
+      - tools-for-frontend-network
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
@@ -48,7 +48,7 @@ services:
 
   certbot:
     image: certbot/certbot:latest
-    container_name: dev-tools-certbot
+    container_name: tools-for-frontend-certbot
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
@@ -57,9 +57,9 @@ services:
     # 0 3 * * * cd /path/to/project && ./scripts/renew-certs.sh
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --quiet; sleep 12h & wait $${!}; done;'"
     networks:
-      - dev-tools-network
+      - tools-for-frontend-network
     restart: unless-stopped
 
 networks:
-  dev-tools-network:
+  tools-for-frontend-network:
     driver: bridge
