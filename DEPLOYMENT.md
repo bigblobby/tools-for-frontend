@@ -56,14 +56,28 @@ docker compose version
 
 ### 2. Clone Your Repository
 
+**IMPORTANT:** Replace `<your-repo-url>` below with your actual repository URL.
+
+Examples of valid repository URLs:
+- HTTPS: `https://github.com/username/tools-for-frontend.git`
+- SSH: `git@github.com:username/tools-for-frontend.git`
+
 ```bash
 # Navigate to a suitable directory
 cd /opt
 
-# Clone your repository (replace with your actual repo URL)
+# Clone your repository (REPLACE <your-repo-url> with your actual repository URL)
 git clone <your-repo-url> tools-for-frontend
 cd tools-for-frontend
 ```
+
+**Troubleshooting:**
+- If using SSH and you get "Could not read from remote repository", ensure:
+  1. Your SSH key is added to your Git provider (GitHub/GitLab/etc.)
+  2. Your SSH key is added to the SSH agent: `ssh-add ~/.ssh/id_rsa`
+  3. Test SSH connection: `ssh -T git@github.com` (replace with your provider)
+- If using HTTPS and you get authentication errors, you may need to use a personal access token instead of a password
+- Make sure the repository URL is correct and the repository exists
 
 ### 3. Configure Environment Variables
 
@@ -266,6 +280,86 @@ If ports 80 or 3001 are already in use:
 
 1. Find what's using the port: `sudo lsof -i :80`
 2. Either stop the conflicting service or change ports in `docker-compose.yml`
+
+### Git clone fails: "Could not read from remote repository"
+
+This error means Git cannot authenticate with your repository. Follow these steps based on your setup:
+
+#### Option A: Using HTTPS (Recommended for beginners)
+
+1. **Get your repository URL:**
+   - Go to your repository on GitHub/GitLab/etc.
+   - Click the green "Code" button
+   - Copy the HTTPS URL (looks like: `https://github.com/username/repo.git`)
+
+2. **Clone using HTTPS:**
+   ```bash
+   git clone https://github.com/username/tools-for-frontend.git tools-for-frontend
+   ```
+
+3. **If prompted for credentials:**
+   - **GitHub**: Use a Personal Access Token (not your password)
+     - Create one: GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
+     - Give it `repo` permissions
+     - Use the token as your password when prompted
+   - **GitLab**: Use a Personal Access Token or your account password
+
+#### Option B: Using SSH (More secure, requires setup)
+
+1. **Check if you have an SSH key:**
+   ```bash
+   ls -la ~/.ssh/id_rsa.pub
+   ```
+
+2. **If no key exists, generate one:**
+   ```bash
+   ssh-keygen -t ed25519 -C "your_email@example.com"
+   # Press Enter to accept default location
+   # Optionally set a passphrase
+   ```
+
+3. **Display your public key:**
+   ```bash
+   cat ~/.ssh/id_rsa.pub
+   ```
+
+4. **Add the key to your Git provider:**
+   - **GitHub**: Settings → SSH and GPG keys → New SSH key → Paste your key
+   - **GitLab**: Preferences → SSH Keys → Add new key → Paste your key
+
+5. **Add key to SSH agent:**
+   ```bash
+   eval "$(ssh-agent -s)"
+   ssh-add ~/.ssh/id_rsa
+   ```
+
+6. **Test SSH connection:**
+   ```bash
+   # For GitHub:
+   ssh -T git@github.com
+   # Should see: "Hi username! You've successfully authenticated..."
+   
+   # For GitLab:
+   ssh -T git@gitlab.com
+   ```
+
+7. **Clone using SSH:**
+   ```bash
+   git clone git@github.com:username/tools-for-frontend.git tools-for-frontend
+   ```
+
+#### Quick Fix: Use HTTPS with Token
+
+If you want the quickest solution:
+
+1. Create a Personal Access Token on your Git provider
+2. Clone with HTTPS:
+   ```bash
+   git clone https://github.com/username/tools-for-frontend.git tools-for-frontend
+   ```
+3. When prompted:
+   - Username: your GitHub/GitLab username
+   - Password: paste your Personal Access Token (not your account password)
 
 ## Production Considerations
 
