@@ -108,32 +108,82 @@ if [ ! -d "certbot/www" ]; then
     chmod 755 certbot/www
 fi
 
-# Create a test file to verify webroot is accessible via HTTP
+# Create test directory structure (nginx expects .well-known/acme-challenge/ subdirectory)
 echo "Creating test file in webroot..."
-TEST_FILE="certbot/www/test-$(date +%s).txt"
-echo "test" > "$TEST_FILE"
+mkdir -p "certbot/www/.well-known/acme-challenge"
+TEST_FILE="certbot/www/.well-known/acme-challenge/test-$(date +%s).txt"
+echo "test-content" > "$TEST_FILE"
 chmod 644 "$TEST_FILE"
+TEST_FILENAME=$(basename "$TEST_FILE")
 
-# Test that nginx can serve files from the webroot via HTTP
-echo "Testing nginx webroot HTTP access..."
+# Verify file exists in container
+echo "Verifying file exists in nginx container..."
+if docker compose exec -T nginx test -f "/var/www/certbot/$TEST_FILENAME"; then
+    echo "✅ File exists in container at /var/www/certbot/$TEST_FILENAME"
+else
+    echo "❌ File not found in container. Checking volume mount..."
+    docker compose exec -T nginx ls -la /var/www/certbot/ || true
+    echo "⚠️  Volume mount may not be working correctly"
+fi
+
+# Test from inside the container first
+echo "Testing webroot from inside nginx container..."
+CONTAINER_TEST=$(docker compose exec -T nginx wget --quiet --tries=1 --spider --timeout=5 "http://localhost/.well-known/acme-challenge/$TEST_FILENAME" 2>&1 && echo "OK" || echo "FAIL")
+if [ "$CONTAINER_TEST" = "OK" ]; then
+    echo "✅ Webroot accessible from inside container"
+else
+    echo "⚠️  Webroot not accessible from inside container"
+    echo "   Checking nginx configuration..."
+    docker compose exec -T nginx nginx -t 2>&1 || true
+    echo "   Checking if location block is correct..."
+    docker compose exec -T nginx cat /etc/nginx/conf.d/default.conf | grep -A 3 "acme-challenge" || true
+fi
+
+# Test that nginx can serve files from the webroot via HTTP (from outside)
+echo "Testing nginx webroot HTTP access from outside..."
 sleep 2  # Give nginx a moment to pick up the file
-TEST_URL="http://$DOMAIN/.well-known/acme-challenge/$(basename $TEST_FILE)"
+
+# Try with domain first
+TEST_URL="http://$DOMAIN/.well-known/acme-challenge/$TEST_FILENAME"
 HTTP_TEST=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "$TEST_URL" 2>/dev/null || echo "000")
 
 if [ "$HTTP_TEST" = "200" ]; then
-    echo "✅ Nginx webroot is accessible via HTTP"
-    rm -f "$TEST_FILE"  # Clean up test file
+    echo "✅ Nginx webroot is accessible via HTTP (domain)"
+    WEBROOT_OK=true
 else
-    echo "⚠️  Warning: Could not access webroot via HTTP (got status: $HTTP_TEST)"
+    echo "⚠️  Could not access webroot via domain (got status: $HTTP_TEST)"
     echo "   Testing with IP address instead..."
-    IP_TEST=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "http://$SERVER_IP/.well-known/acme-challenge/$(basename $TEST_FILE)" 2>/dev/null || echo "000")
+    IP_TEST=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 "http://$SERVER_IP/.well-known/acme-challenge/$TEST_FILENAME" 2>/dev/null || echo "000")
     if [ "$IP_TEST" = "200" ]; then
-        echo "✅ Webroot accessible via IP, but domain may not be accessible from internet"
-        echo "   This could cause Let's Encrypt verification to fail"
+        echo "✅ Webroot accessible via IP address"
+        echo "   Domain DNS may not be resolving from this server, but should work for Let's Encrypt"
+        WEBROOT_OK=true
     else
-        echo "❌ Webroot not accessible. Check nginx configuration and firewall."
+        echo "❌ Webroot not accessible via IP either (got status: $IP_TEST)"
+        echo "   This will cause Let's Encrypt verification to fail"
+        echo ""
+        echo "   Troubleshooting steps:"
+        echo "   1. Check if nginx is running: docker compose ps nginx"
+        echo "   2. Check nginx logs: docker compose logs nginx"
+        echo "   3. Test manually: curl -v http://$SERVER_IP/.well-known/acme-challenge/$TEST_FILENAME"
+        echo "   4. Check firewall: sudo ufw status"
+        WEBROOT_OK=false
     fi
-    rm -f "$TEST_FILE"  # Clean up test file
+fi
+
+# Clean up test file
+rm -f "$TEST_FILE"
+
+if [ "$WEBROOT_OK" = false ]; then
+    echo ""
+    echo "⚠️  Webroot test failed. Let's Encrypt will likely fail."
+    echo "   However, you can try continuing - sometimes it works despite this test."
+    read -p "Continue anyway? [y/N] " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Exiting. Please fix the webroot issue first."
+        exit 1
+    fi
 fi
 
 # Check DNS resolution - CRITICAL for Let's Encrypt
