@@ -26,13 +26,68 @@ cd "$PROJECT_ROOT"
 # Create necessary directories
 mkdir -p certbot/conf certbot/www
 
+# Check if containers need to be built
+if ! docker compose ps --format json 2>/dev/null | grep -q "tools-for-frontend-backend"; then
+    echo "Containers not found. Building containers first..."
+    echo "This may take several minutes, especially on low-memory systems..."
+    docker compose build
+fi
+
+# Ensure backend is running first (nginx depends on it)
+echo "Starting backend (nginx depends on it)..."
+docker compose up -d backend
+
+# Wait for backend to be ready
+echo "Waiting for backend to be ready..."
+BACKEND_MAX_WAIT=60
+BACKEND_WAIT_COUNT=0
+while [ $BACKEND_WAIT_COUNT -lt $BACKEND_MAX_WAIT ]; do
+    if docker compose exec -T backend wget --quiet --tries=1 --spider http://localhost:3001/api/health 2>/dev/null; then
+        echo "Backend is ready!"
+        break
+    fi
+    echo "Waiting for backend... ($BACKEND_WAIT_COUNT/$BACKEND_MAX_WAIT seconds)"
+    sleep 2
+    BACKEND_WAIT_COUNT=$((BACKEND_WAIT_COUNT + 2))
+done
+
+if [ $BACKEND_WAIT_COUNT -ge $BACKEND_MAX_WAIT ]; then
+    echo "⚠️  Warning: Backend may not be ready, but continuing..."
+fi
+
 # Ensure nginx is running with init config
 echo "Starting nginx with initial configuration..."
 docker compose up -d nginx
 
-# Wait for nginx to be ready
+# Wait for nginx to be ready (actually check, don't just sleep)
 echo "Waiting for nginx to be ready..."
-sleep 5
+NGINX_MAX_WAIT=60
+NGINX_WAIT_COUNT=0
+while [ $NGINX_WAIT_COUNT -lt $NGINX_MAX_WAIT ]; do
+    # Check if nginx container is running
+    if ! docker compose ps nginx | grep -q "Up"; then
+        echo "Nginx container is not running. Checking logs..."
+        docker compose logs --tail=20 nginx
+        echo "❌ Nginx failed to start. Please check the logs above."
+        exit 1
+    fi
+    
+    # Check if nginx is responding
+    if docker compose exec -T nginx wget --quiet --tries=1 --spider http://localhost/ 2>/dev/null; then
+        echo "Nginx is ready!"
+        break
+    fi
+    echo "Waiting for nginx... ($NGINX_WAIT_COUNT/$NGINX_MAX_WAIT seconds)"
+    sleep 2
+    NGINX_WAIT_COUNT=$((NGINX_WAIT_COUNT + 2))
+done
+
+if [ $NGINX_WAIT_COUNT -ge $NGINX_MAX_WAIT ]; then
+    echo "❌ Nginx did not become ready within $NGINX_MAX_WAIT seconds."
+    echo "Checking nginx logs..."
+    docker compose logs --tail=30 nginx
+    exit 1
+fi
 
 # Request certificate for both main domain and www subdomain
 echo "Requesting certificate from Let's Encrypt..."
