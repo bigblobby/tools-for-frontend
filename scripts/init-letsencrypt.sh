@@ -89,8 +89,121 @@ if [ $NGINX_WAIT_COUNT -ge $NGINX_MAX_WAIT ]; then
     exit 1
 fi
 
+# Verify the certbot www directory is accessible from nginx
+echo "Verifying certbot webroot is accessible..."
+if [ ! -d "certbot/www" ]; then
+    echo "Creating certbot/www directory..."
+    mkdir -p certbot/www
+fi
+
+# Test that nginx can serve files from the webroot
+echo "Testing nginx webroot access..."
+docker compose exec -T nginx sh -c "echo 'test' > /var/www/certbot/test.txt && cat /var/www/certbot/test.txt" > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    echo "✅ Nginx webroot is accessible"
+else
+    echo "⚠️  Warning: Could not write to nginx webroot"
+fi
+
+# Check DNS resolution - CRITICAL for Let's Encrypt
+echo "Checking DNS resolution for $DOMAIN..."
+SERVER_IP=$(curl -s ifconfig.me || curl -s ipinfo.io/ip || echo "unknown")
+DOMAIN_IP=$(dig +short $DOMAIN | tail -n1 || echo "")
+
+DNS_OK=false
+if [ -n "$DOMAIN_IP" ] && [ "$DOMAIN_IP" != "" ]; then
+    echo "Domain $DOMAIN resolves to: $DOMAIN_IP"
+    if [ "$SERVER_IP" != "unknown" ]; then
+        echo "Server IP appears to be: $SERVER_IP"
+        if [ "$DOMAIN_IP" = "$SERVER_IP" ]; then
+            echo "✅ DNS is correctly pointing to this server"
+            DNS_OK=true
+        else
+            echo "⚠️  Warning: Domain IP ($DOMAIN_IP) doesn't match server IP ($SERVER_IP)"
+        fi
+    else
+        echo "⚠️  Could not determine server IP, but domain resolves to: $DOMAIN_IP"
+        DNS_OK=true  # Assume OK if we can't check
+    fi
+else
+    echo "❌ Could not resolve $DOMAIN"
+    echo "   DNS is not configured or hasn't propagated yet"
+fi
+
+if [ "$DNS_OK" = false ]; then
+    echo ""
+    echo "═══════════════════════════════════════════════════════════════"
+    echo "⚠️  DNS CONFIGURATION REQUIRED"
+    echo "═══════════════════════════════════════════════════════════════"
+    echo ""
+    echo "Let's Encrypt requires your domain to be properly configured"
+    echo "before it can issue certificates."
+    echo ""
+    echo "You need to:"
+    echo "  1. Point your domain $DOMAIN to this server's IP address"
+    echo "  2. Point www.$DOMAIN to this server's IP address"
+    echo ""
+    if [ "$SERVER_IP" != "unknown" ]; then
+        echo "Your server IP appears to be: $SERVER_IP"
+        echo ""
+        echo "Configure these DNS records:"
+        echo "  Type: A"
+        echo "  Name: @ (or $DOMAIN)"
+        echo "  Value: $SERVER_IP"
+        echo ""
+        echo "  Type: A"
+        echo "  Name: www"
+        echo "  Value: $SERVER_IP"
+    else
+        echo "Run this command to find your server IP:"
+        echo "  curl ifconfig.me"
+    fi
+    echo ""
+    echo "After configuring DNS, wait for propagation (can take minutes to hours)"
+    echo "Then verify with: dig $DOMAIN"
+    echo ""
+    echo "═══════════════════════════════════════════════════════════════"
+    echo ""
+    read -p "Continue anyway? (This will likely fail) [y/N] " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        echo "Exiting. Please configure DNS first, then run this script again."
+        exit 1
+    fi
+    echo "Continuing with certificate request (may hang or fail)..."
+    echo ""
+fi
+
+# Check if certbot can reach Let's Encrypt servers
+echo "Checking connectivity to Let's Encrypt servers..."
+if docker compose run --rm --entrypoint="" certbot sh -c "wget --spider --timeout=5 https://acme-v02.api.letsencrypt.org/directory 2>&1" > /dev/null 2>&1; then
+    echo "✅ Can reach Let's Encrypt servers"
+else
+    echo "⚠️  Warning: Cannot reach Let's Encrypt servers"
+    echo "   This might be a network issue"
+fi
+
 # Request certificate for both main domain and www subdomain
+echo ""
 echo "Requesting certificate from Let's Encrypt..."
+echo "This may take 30-60 seconds (or longer if DNS is still propagating)..."
+echo ""
+echo "⚠️  If this hangs for more than 2-3 minutes, it usually means:"
+echo "  1. DNS hasn't propagated yet (can take up to 48 hours)"
+echo "  2. Port 80 is not accessible from the internet"
+echo "  3. Let's Encrypt servers cannot reach your domain"
+echo ""
+echo "You can check what's happening in another terminal with:"
+echo "  docker compose logs -f"
+echo ""
+echo "Or check if the certbot container is running:"
+echo "  docker compose ps"
+echo ""
+
+# Run certbot with verbose output
+# Note: This may take a while if DNS hasn't propagated
+# Using --dry-run first would be safer, but we'll do real request
+echo "Starting certbot (this may take a minute)..."
 docker compose run --rm certbot certonly \
     --webroot \
     --webroot-path=/var/www/certbot \
@@ -98,10 +211,19 @@ docker compose run --rm certbot certonly \
     --agree-tos \
     --no-eff-email \
     --force-renewal \
+    --verbose \
     -d "$DOMAIN" \
     -d "www.$DOMAIN"
 
-if [ $? -eq 0 ]; then
+CERTBOT_EXIT_CODE=$?
+
+echo ""
+if [ $CERTBOT_EXIT_CODE -ne 0 ]; then
+    echo "❌ Certbot exited with error code: $CERTBOT_EXIT_CODE"
+    echo "Check the output above for details"
+fi
+
+if [ $CERTBOT_EXIT_CODE -eq 0 ]; then
     echo "Certificate obtained successfully!"
     
     # Copy SSL config to nginx.conf (domain is already set in nginx-ssl.conf)
