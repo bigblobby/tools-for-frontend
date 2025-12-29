@@ -14,6 +14,18 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    // Optimize for low memory systems
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        // Reduce memory usage by limiting chunk size
+        manualChunks: undefined,
+      },
+    },
+    // Reduce memory usage during build
+    minify: 'esbuild', // esbuild is faster and uses less memory than terser
+  },
   server: {
     port: 3002,
     host: true,
