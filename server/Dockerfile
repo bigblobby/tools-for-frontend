@@ -1,6 +1,10 @@
 # Build stage
 FROM node:20-alpine AS builder
 
+# Accept build argument for Node.js memory limit
+ARG NODE_OPTIONS=""
+ENV NODE_OPTIONS=$NODE_OPTIONS
+
 WORKDIR /app
 
 # Install build dependencies for canvas
