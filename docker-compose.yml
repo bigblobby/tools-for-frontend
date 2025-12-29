@@ -24,18 +24,21 @@ services:
       retries: 3
       start_period: 40s
 
-  nginx:
+  caddy:
     build:
       context: .
-      dockerfile: ./nginx/Dockerfile
-    container_name: dev-tools-nginx
+      dockerfile: ./caddy/Dockerfile
+    container_name: dev-tools-caddy
     ports:
       - "80:80"
       - "443:443"
+      - "443:443/udp"
     depends_on:
       - backend
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
     networks:
       - dev-tools-network
     restart: unless-stopped
@@ -48,3 +51,7 @@ services:
 networks:
   dev-tools-network:
     driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:

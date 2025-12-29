@@ -1,6 +1,6 @@
 # Deployment Guide for Digital Ocean
 
-This guide explains how to deploy the dev-tools application to Digital Ocean using Docker and nginx.
+This guide explains how to deploy the dev-tools application to Digital Ocean using Docker and Caddy (with automatic SSL/TLS).
 
 ## Quick Start (Local Testing)
 
@@ -107,52 +107,55 @@ sudo ufw allow 443/tcp  # HTTPS (if using SSL)
 sudo ufw enable
 ```
 
-### 6. Set Up SSL with Let's Encrypt (Optional but Recommended)
+### 6. Set Up SSL with Caddy (Automatic)
 
-If you have a domain name, set up SSL using Certbot:
+Caddy automatically obtains and renews SSL certificates from Let's Encrypt. To enable automatic HTTPS:
 
-```bash
-# Install Certbot
-sudo apt install certbot python3-certbot-nginx -y
+1. **Update the Caddyfile** with your domain name:
 
-# Stop nginx container temporarily
-docker compose stop nginx
+Edit `Caddyfile` and replace `:80` with your domain:
 
-# Obtain certificate (replace with your domain)
-sudo certbot certonly --standalone -d yourdomain.com -d www.yourdomain.com
+```caddy
+yourdomain.com {
+    # Enable automatic HTTPS (Let's Encrypt)
+    tls yourdomain.com
 
-# Update nginx configuration to use SSL
-# You'll need to modify nginx/nginx.conf to include SSL configuration
-```
-
-Update `nginx/nginx.conf` to include SSL:
-
-```nginx
-server {
-    listen 80;
-    server_name yourdomain.com;
-    return 301 https://$server_name$request_uri;
-}
-
-server {
-    listen 443 ssl http2;
-    server_name yourdomain.com;
-
-    ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
-
-    # ... rest of your nginx config ...
+    # ... rest of configuration ...
 }
 ```
 
-Then mount the SSL certificates in `docker-compose.yml`:
+Or for multiple domains:
+
+```caddy
+yourdomain.com, www.yourdomain.com {
+    tls {
+        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+    }
+    # ... rest of configuration ...
+}
+```
+
+2. **For DNS challenge** (recommended for production), you can use environment variables in docker-compose.yml:
 
 ```yaml
-nginx:
-  volumes:
-    - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    - /etc/letsencrypt:/etc/letsencrypt:ro
+caddy:
+  environment:
+    - CLOUDFLARE_API_TOKEN=your_token_here
 ```
+
+3. **Restart the Caddy container**:
+
+```bash
+docker compose up -d --build caddy
+```
+
+Caddy will automatically:
+- Obtain SSL certificates from Let's Encrypt
+- Renew certificates before they expire
+- Redirect HTTP to HTTPS
+- Handle all SSL/TLS configuration
+
+**Note**: For local development, the default `:80` configuration works without SSL. For production, always use your domain name in the Caddyfile.
 
 ## Updating the Application
 
@@ -179,7 +182,7 @@ docker compose logs -f
 
 # Specific service
 docker compose logs -f backend
-docker compose logs -f nginx
+docker compose logs -f caddy
 ```
 
 ### Check Container Status
@@ -227,12 +230,13 @@ docker image prune -a
 
 ### Frontend not loading
 
-1. Check nginx logs: `docker compose logs nginx`
-2. Verify nginx is running: `docker compose ps`
-3. Check if frontend files exist in nginx container:
+1. Check Caddy logs: `docker compose logs caddy`
+2. Verify Caddy is running: `docker compose ps`
+3. Check if frontend files exist in Caddy container:
    ```bash
-   docker exec dev-tools-nginx ls -la /usr/share/nginx/html
+   docker exec dev-tools-caddy ls -la /usr/share/caddy
    ```
+4. Verify Caddyfile syntax: `docker exec dev-tools-caddy caddy validate --config /etc/caddy/Caddyfile`
 
 ### Port conflicts
 
@@ -262,7 +266,7 @@ services:
 
 ## Health Checks
 
-The setup includes health checks for backend and nginx. You can verify:
+The setup includes health checks for backend and Caddy. You can verify:
 
 ```bash
 # Check health status
@@ -276,6 +280,7 @@ Healthy containers will show as "healthy" in the status.
 1. Keep Docker and system packages updated
 2. Use non-root users in containers (already configured for backend)
 3. Regularly update application dependencies
-4. Use SSL/TLS for all production deployments
-5. Implement rate limiting in nginx (can be added to nginx.conf)
+4. Use SSL/TLS for all production deployments (automatically handled by Caddy)
+5. Implement rate limiting in Caddy (can be added to Caddyfile using `rate_limit` directive)
 6. Regularly review and update security configurations
+7. Caddy automatically renews SSL certificates, but ensure ports 80 and 443 are open for Let's Encrypt validation
