@@ -142,19 +142,39 @@ jobs:
           fi
           
           echo "Images found in registry, pulling..."
-          # Pull latest images
-          docker compose pull || {
-            echo "Error: Failed to pull images"
+          # Pull images explicitly to ensure they're available
+          echo "Pulling backend image..."
+          docker pull "$BACKEND_IMAGE" || {
+            echo "Error: Failed to pull backend image"
             exit 1
           }
+          
+          echo "Pulling caddy image..."
+          docker pull "$CADDY_IMAGE" || {
+            echo "Error: Failed to pull caddy image"
+            exit 1
+          }
+          
+          echo "Verifying images are available locally..."
+          if ! docker image inspect "$BACKEND_IMAGE" >/dev/null 2>&1; then
+            echo "Error: Backend image not found locally after pull"
+            exit 1
+          fi
+          
+          if ! docker image inspect "$CADDY_IMAGE" >/dev/null 2>&1; then
+            echo "Error: Caddy image not found locally after pull"
+            exit 1
+          fi
+          
+          echo "Images pulled successfully"
           
           # Stop and remove old containers
           echo "Stopping old containers..."
           docker compose down
           
-          # Start new containers
+          # Start new containers (should use pulled images, not build)
           echo "Starting new containers..."
-          docker compose up -d || {
+          docker compose up -d --no-build || {
             echo "Error: Failed to start containers"
             exit 1
           }
