@@ -25,6 +25,8 @@ export default defineConfig({
     },
     // Reduce memory usage during build
     minify: 'esbuild', // esbuild is faster and uses less memory than terser
+    // Disable source maps to reduce memory usage
+    sourcemap: false,
   },
   server: {
     port: 3002,

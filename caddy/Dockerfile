@@ -1,13 +1,16 @@
 # Build frontend stage
 FROM node:20-alpine AS frontend-builder
 
+# Set Node.js memory limit to prevent OOM (768MB for 1GB droplet)
+ENV NODE_OPTIONS="--max-old-space-size=768"
+
 WORKDIR /app
 
 # Copy frontend package files
 COPY client/package*.json ./
 
-# Install dependencies
-RUN npm ci
+# Install dependencies (skip audit to save memory/time)
+RUN npm ci --no-audit
 
 # Copy frontend source code
 COPY client/ .
@@ -18,6 +21,7 @@ COPY client/.env* ./
 
 # Build the frontend application
 # Vite will embed VITE_* environment variables at build time
+ENV NODE_ENV=production
 RUN npm run build
 
 # Caddy stage
