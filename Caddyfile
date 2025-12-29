@@ -1,12 +1,12 @@
 {
     # Global options
-    auto_https off
+    auto_https on
     # For production, set auto_https on and use your domain name
 }
 
 # HTTP server (port 80)
 # For production, replace :80 with your domain name (e.g., yourdomain.com)
-:80 {
+toolsforfrontend.com, www.toolsforfrontend.com {
     # Increase body size limit for file uploads
     request_body_max_size 10M
 
@@ -59,16 +59,16 @@
 # HTTPS server (port 443)
 # For production, replace :443 with your domain name (e.g., yourdomain.com)
 # When using a domain, Caddy automatically handles both HTTP and HTTPS
-:443 {
+toolsforfrontend.com, www.toolsforfrontend.com {
     # For local development with self-signed certificate
-    tls internal
+#    tls internal
     
     # For production, use automatic Let's Encrypt:
     # tls yourdomain.com
     # Or with DNS challenge:
-    # tls {
-    #     dns cloudflare {env.CLOUDFLARE_API_TOKEN}
-    # }
+#     tls {
+#         dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+#     }
 
     # Increase body size limit for file uploads
     request_body_max_size 10M
