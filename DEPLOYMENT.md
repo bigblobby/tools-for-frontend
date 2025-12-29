@@ -2,6 +2,69 @@
 
 This guide explains how to deploy the tools-for-frontend application to Digital Ocean using Docker and Caddy (with automatic SSL/TLS).
 
+## CI/CD Deployment (Recommended)
+
+The project uses GitHub Actions to build Docker images and deploy them automatically. This avoids memory issues when building on small Digital Ocean droplets.
+
+### Setup CI/CD
+
+1. **Configure GitHub Secrets**:
+   - Go to your repository → Settings → Secrets and variables → Actions
+   - Add the following secrets:
+     - `DROPLET_HOST`: Your Digital Ocean droplet IP address or hostname
+     - `DROPLET_USER`: SSH username (usually `root` or your user)
+     - `DROPLET_SSH_KEY`: Your private SSH key for accessing the droplet
+
+2. **Configure Image Registry**:
+   - The workflow automatically builds and pushes images to GitHub Container Registry (ghcr.io)
+   - Images are tagged with: `ghcr.io/<your-username>/<repo-name>/backend:latest` and `ghcr.io/<your-username>/<repo-name>/caddy:latest`
+
+3. **Configure docker-compose.yml**:
+   - Set environment variable on your server:
+     ```bash
+     export IMAGE_REPO=your-username/dev-tools
+     ```
+   - Or create a `.env` file in the project root:
+     ```env
+     IMAGE_REPO=your-username/dev-tools
+     ```
+
+4. **Initial Server Setup**:
+   - Follow steps 1-3 in "Server Setup" below (install Docker, clone repo, configure .env)
+   - Make sure Docker is installed and your user can run docker commands
+
+5. **Deployment**:
+   - Push to `main` or `master` branch → Images are built automatically
+   - After build completes → Deployment workflow runs automatically
+   - Or trigger manually: Actions → Deploy to Digital Ocean → Run workflow
+
+### Manual Deployment (Alternative)
+
+If you prefer to deploy manually after images are built:
+
+```bash
+# SSH into your server
+ssh user@your-droplet
+
+# Navigate to project directory
+cd /opt/tools-for-frontend  # or wherever you cloned the repo
+
+# Login to GitHub Container Registry
+echo $GITHUB_TOKEN | docker login ghcr.io -u YOUR_USERNAME --password-stdin
+
+# Set environment variables
+export IMAGE_REGISTRY=ghcr.io
+export IMAGE_REPO=your-username/dev-tools
+
+# Pull and start containers
+docker compose pull
+docker compose up -d
+```
+
+## Manual Build and Deploy (Legacy)
+
+If you need to build on the server (not recommended for small droplets):
+
 ## Quick Start (Local Testing)
 
 Before deploying to production, you can test the Docker setup locally:
@@ -81,22 +144,49 @@ NODE_ENV=production
 PORT=3001
 ```
 
-### 4. Build and Start Containers
+### 4. Configure Image Registry (for CI/CD deployment)
 
-From the project root directory:
+If using CI/CD, create a `.env` file in the project root:
 
 ```bash
-# Build and start all services
+cd /opt/tools-for-frontend  # or your project directory
+nano .env
+```
+
+Add:
+```env
+IMAGE_REPO=your-username/dev-tools
+```
+
+Replace `your-username/dev-tools` with your actual GitHub username and repository name (e.g., `tomdempster/dev-tools`).
+
+### 5. Build and Start Containers
+
+**Option A: Using pre-built images (Recommended - CI/CD)**
+
+```bash
+# Login to GitHub Container Registry (first time only)
+echo $GITHUB_TOKEN | docker login ghcr.io -u YOUR_USERNAME --password-stdin
+
+# Pull and start containers
+docker compose pull
+docker compose up -d
+```
+
+**Option B: Build locally (if you have enough memory)**
+
+```bash
+# Uncomment build sections in docker-compose.yml first
 docker compose up -d --build
+```
 
-# Check status
+**Check status**:
+```bash
 docker compose ps
-
-# View logs
 docker compose logs -f
 ```
 
-### 5. Configure Firewall
+### 6. Configure Firewall
 
 If you're using UFW (Ubuntu Firewall):
 
@@ -107,7 +197,7 @@ sudo ufw allow 443/tcp  # HTTPS (if using SSL)
 sudo ufw enable
 ```
 
-### 6. Set Up SSL with Caddy (Automatic)
+### 7. Set Up SSL with Caddy (Automatic)
 
 Caddy automatically obtains and renews SSL certificates from Let's Encrypt. To enable automatic HTTPS:
 
@@ -159,17 +249,33 @@ Caddy will automatically:
 
 ## Updating the Application
 
-To update your application:
+### Using CI/CD (Recommended)
+
+Simply push your changes to the `main` or `master` branch:
+- Images are built automatically in GitHub Actions
+- Deployment happens automatically after successful build
+- No need to SSH into the server
+
+### Manual Update
+
+If you need to update manually:
 
 ```bash
-# Pull latest changes
+# SSH into server
+ssh user@your-droplet
+
+# Navigate to project directory
+cd /opt/tools-for-frontend
+
+# Pull latest code (optional, if you want latest docker-compose.yml)
 git pull
 
-# Rebuild and restart containers
-docker compose up -d --build
+# Pull latest images and restart
+docker compose pull
+docker compose up -d
 
-# If you only changed code (not dependencies), you can use:
-docker compose restart
+# Or if you need to rebuild locally (not recommended on small droplets):
+docker compose up -d --build
 ```
 
 ## Monitoring and Maintenance

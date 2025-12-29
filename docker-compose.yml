@@ -1,9 +1,14 @@
 
 services:
   backend:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
+    # Use pre-built image from GitHub Container Registry
+    # Set IMAGE_REPO environment variable (e.g., your-username/dev-tools)
+    # Or uncomment the build section below for local development
+    image: ghcr.io/${IMAGE_REPO:-bigblobby/tools-for-frontend}/backend:${IMAGE_TAG:-latest}
+    # Uncomment below for local development/builds:
+    # build:
+    #   context: ./server
+    #   dockerfile: Dockerfile
     container_name: tools-for-frontend-backend
     env_file:
       - ./server/.env
@@ -25,9 +30,14 @@ services:
       start_period: 40s
 
   caddy:
-    build:
-      context: .
-      dockerfile: ./caddy/Dockerfile
+    # Use pre-built image from GitHub Container Registry
+    # Set IMAGE_REPO environment variable (e.g., your-username/dev-tools)
+    # Or uncomment the build section below for local development
+    image: ghcr.io/${IMAGE_REPO:-bigblobby/tools-for-frontend}/caddy:${IMAGE_TAG:-latest}
+    # Uncomment below for local development/builds:
+    # build:
+    #   context: .
+    #   dockerfile: ./caddy/Dockerfile
     container_name: tools-for-frontend-caddy
     ports:
       - "80:80"

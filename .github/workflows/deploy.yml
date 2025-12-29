@@ -1,0 +1,93 @@
+name: Deploy to Digital Ocean
+
+on:
+  workflow_run:
+    workflows: ["Build and Push Docker Images"]
+    types:
+      - completed
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Image tag to deploy (default: latest)'
+        required: false
+        default: 'latest'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DROPLET_SSH_KEY }}
+
+      - name: Add server to known hosts
+        run: |
+          ssh-keyscan -H ${{ secrets.DROPLET_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Determine image tag
+        id: image-tag
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "tag=${{ github.event.inputs.image_tag }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create deployment script
+        run: |
+          cat > deploy.sh << 'DEPLOY_SCRIPT'
+          #!/bin/bash
+          set -e
+          
+          # Navigate to project directory (try common locations)
+          cd /opt/tools-for-frontend 2>/dev/null || \
+          cd ~/tools-for-frontend 2>/dev/null || \
+          cd ~/dev-tools 2>/dev/null || \
+          { echo "Error: Could not find project directory"; exit 1; }
+          
+          # Login to GitHub Container Registry
+          echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          
+          # Set environment variables for docker-compose
+          export IMAGE_REPO="$IMAGE_REPO"
+          export IMAGE_TAG="$IMAGE_TAG"
+          
+          # Pull latest images
+          docker compose pull
+          
+          # Stop and remove old containers
+          docker compose down
+          
+          # Start new containers
+          docker compose up -d
+          
+          # Clean up old images
+          docker image prune -f
+          
+          echo "Deployment completed successfully"
+          DEPLOY_SCRIPT
+          chmod +x deploy.sh
+
+      - name: Copy deployment script to server
+        run: |
+          scp deploy.sh ${{ secrets.DROPLET_USER }}@${{ secrets.DROPLET_HOST }}:/tmp/deploy.sh
+
+      - name: Execute deployment on server
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          IMAGE_REPO: ${{ github.repository }}
+          IMAGE_TAG: ${{ steps.image-tag.outputs.tag }}
+        run: |
+          ssh ${{ secrets.DROPLET_USER }}@${{ secrets.DROPLET_HOST }} \
+            "GITHUB_TOKEN='$GITHUB_TOKEN' GITHUB_ACTOR='$GITHUB_ACTOR' IMAGE_REPO='$IMAGE_REPO' IMAGE_TAG='$IMAGE_TAG' bash /tmp/deploy.sh && rm /tmp/deploy.sh"
+
