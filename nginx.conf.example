@@ -7,7 +7,7 @@ server {
     server_name your-domain.com;
 
     # Serve static files from client build
-    root /path/to/dev-tools/client/dist;
+    root /path/to/tools-for-frontend/client/dist;
     index index.html;
 
     # Placeholder image route - proxy to backend API

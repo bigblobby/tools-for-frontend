@@ -1,6 +1,6 @@
 # Deployment Guide for Digital Ocean
 
-This guide explains how to deploy the dev-tools application to Digital Ocean using Docker and Caddy (with automatic SSL/TLS).
+This guide explains how to deploy the tools-for-frontend application to Digital Ocean using Docker and Caddy (with automatic SSL/TLS).
 
 ## Quick Start (Local Testing)
 
@@ -61,8 +61,8 @@ docker compose version
 cd /opt
 
 # Clone your repository (replace with your actual repo URL)
-git clone <your-repo-url> dev-tools
-cd dev-tools
+git clone <your-repo-url> tools-for-frontend
+cd tools-for-frontend
 ```
 
 ### 3. Configure Environment Variables
@@ -234,9 +234,9 @@ docker image prune -a
 2. Verify Caddy is running: `docker compose ps`
 3. Check if frontend files exist in Caddy container:
    ```bash
-   docker exec dev-tools-caddy ls -la /usr/share/caddy
+   docker exec tools-for-frontend-caddy ls -la /usr/share/caddy
    ```
-4. Verify Caddyfile syntax: `docker exec dev-tools-caddy caddy validate --config /etc/caddy/Caddyfile`
+4. Verify Caddyfile syntax: `docker exec tools-for-frontend-caddy caddy validate --config /etc/caddy/Caddyfile`
 
 ### Port conflicts
 
