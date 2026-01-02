@@ -24,10 +24,10 @@ export default function ImagePlaceholderGeneratorPage() {
           <div className="max-w-sm">
             <div className="flex flex-col gap-3">
               <div>
-                <img src="http://localhost:3002/placeholder/400x400" alt="" />
+                <img src={location.origin + "/placeholder/400x400"} alt="" />
               </div>
               <InputGroup>
-                <InputGroupInput value="http://localhost:3002/placeholder/400x400" readOnly onClick={
+                <InputGroupInput value={location.origin + "/placeholder/400x400"} readOnly onClick={
                   (event) => {
                     (event.target as HTMLInputElement).select();
                   }
@@ -38,7 +38,7 @@ export default function ImagePlaceholderGeneratorPage() {
                     title="Open"
                     size="icon-xs"
                     onClick={() => {
-                      window.open("http://localhost:3002/placeholder/400x400", "_blank")
+                      window.open(location.origin + "/placeholder/400x400", "_blank")
                     }}
                   >
                     {<IconExternalLink />}
