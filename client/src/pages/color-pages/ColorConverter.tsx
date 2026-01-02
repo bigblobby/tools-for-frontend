@@ -1,26 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import Color from "colorjs.io";
 import { toast } from "sonner";
 import { Label } from '@/components/ui/label.tsx';
 
 export default function ColorConverter() {
   const [inputColor, setInputColor] = useState("oklch(42.4% 0.199 265.638)");
-  const [hexColor, setHexColor] = useState<string | null>(null);
-  const [hslColor, setHslColor] = useState<Color | null>(null);
-  const [rgbColor, setRgbColor] = useState<Color | null>(null);
-  const [oklchColor, setOklchColor] = useState<Color | null>(null);
-  const [oklabColor, setOklabColor] = useState<Color | null>(null);
-  const [lchColor, setLchColor] = useState<Color | null>(null);
-  const [hwbColor, setHwbColor] = useState<Color | null>(null);
-  const [labColor, setLabColor] = useState<Color | null>(null);
 
-  const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputColor(e.target.value);
-  }
-
-  const handleSetColor = (color: string) => {
+  const colorValues = useMemo(() => {
     try {
-      const colorObj = new Color(color);
+      const colorObj = new Color(inputColor);
       const hslColor = new Color('hsl', [colorObj.hsl.h, colorObj.hsl.s, colorObj.hsl.l]);
       const rgbColor = new Color('srgb', [colorObj.srgb.r, colorObj.srgb.g, colorObj.srgb.b]);
       const oklchColor = new Color('oklch', [colorObj.oklch.l, colorObj.oklch.c, colorObj.oklch.h]);
@@ -31,23 +19,38 @@ export default function ColorConverter() {
       const hwbColor = new Color('hwb', [colorObj.hwb.h, colorObj.hwb.w, colorObj.hwb.b]);
       const labColor = new Color('lab', [colorObj.lab.l, colorObj.lab.a, colorObj.lab.b]);
 
-      setHslColor(hslColor);
-      setRgbColor(rgbColor);
-      setOklchColor(oklchColor);
-      setOklabColor(oklabColor);
-      setLchColor(lchColor);
-      setHexColor(longhex);
-      setHwbColor(hwbColor);
-      setLabColor(labColor);
+      return {
+        hexColor: longhex,
+        hslColor,
+        rgbColor,
+        oklchColor,
+        oklabColor,
+        lchColor,
+        hwbColor,
+        labColor,
+      };
     } catch (error) {
       console.error(error);
-      // Silently fail.
+      return {
+        hexColor: null,
+        hslColor: null,
+        rgbColor: null,
+        oklchColor: null,
+        oklabColor: null,
+        lchColor: null,
+        hwbColor: null,
+        labColor: null,
+      };
     }
+  }, [inputColor]);
+
+  const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputColor(e.target.value);
   }
 
   const handleCopyColor = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
-    navigator.clipboard.writeText(event.currentTarget.textContent?.split(":")[1].trim() || "");
+    void navigator.clipboard.writeText(event.currentTarget.textContent?.split(":")[1].trim() || "");
     toast.success("Copied to clipboard", { position: "top-center" });
   }
 
@@ -55,10 +58,6 @@ export default function ColorConverter() {
     event.preventDefault();
     event.currentTarget.select();
   }
-
-  useEffect(() => {
-    handleSetColor(inputColor);
-  }, [inputColor]);
 
   return (
     <div>
@@ -78,35 +77,35 @@ export default function ColorConverter() {
             <div className="grid grid-cols-2 gap-2 auto-rows-[1fr]">
               <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">Hex:</span>
-                <span>{hexColor?.toUpperCase()}</span>
+                <span>{colorValues.hexColor?.toUpperCase()}</span>
               </div>
               <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">HSL:</span>
-                <span>{hslColor?.toString()}</span>
+                <span>{colorValues.hslColor?.toString()}</span>
               </div>
               <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">RGB:</span>
-                <span>{rgbColor?.toString()}</span>
+                <span>{colorValues.rgbColor?.toString()}</span>
               </div>
               <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">OKLCH:</span>
-                <span>{oklchColor?.toString()}</span>
+                <span>{colorValues.oklchColor?.toString()}</span>
               </div>
               <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">OKLAB:</span>
-                <span>{oklabColor?.toString()}</span>
+                <span>{colorValues.oklabColor?.toString()}</span>
               </div>
               <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">LCH:</span>
-                <span>{lchColor?.toString()}</span>
+                <span>{colorValues.lchColor?.toString()}</span>
               </div>
               <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">HWB:</span>
-                <span>{hwbColor?.toString()}</span>
+                <span>{colorValues.hwbColor?.toString()}</span>
               </div>
               <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">LAB:</span>
-                <span>{labColor?.toString()}</span>
+                <span>{colorValues.labColor?.toString()}</span>
               </div>
             </div>
           </div>

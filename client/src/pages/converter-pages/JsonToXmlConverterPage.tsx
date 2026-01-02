@@ -8,7 +8,7 @@ export default function JsonToXmlConverterPage() {
   const [xml, setXml] = useState("");
   const [json, setJson] = useState("");
   const converterQueries = useConverterQueries();
-  const jsonToXml = converterQueries.jsonToXml();
+  const jsonToXml = converterQueries.jsonToXml;
 
   const handleXmlChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setXml(event.target.value);
@@ -22,10 +22,10 @@ export default function JsonToXmlConverterPage() {
     const jsonObj = JSON.parse(json);
 
     void jsonToXml.mutate(jsonObj, {
-      onSuccess: (data: any) => {
+      onSuccess: (data: { xml: string }) => {
         setXml(data.xml);
       },
-      onError: (error: any) => {
+      onError: (error: Error) => {
         console.log(error);
         toast.error('Invalid JSON format', { position: 'top-center' });
       },

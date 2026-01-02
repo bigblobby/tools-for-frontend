@@ -19,5 +19,8 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      'react-refresh/only-export-components': 'off', // TODO this will need to be fixed either by me or ShadCN https://github.com/shadcn-ui/ui/issues/7736
+    }
   },
 ])
