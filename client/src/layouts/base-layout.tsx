@@ -12,7 +12,7 @@ export default function BaseLayout() {
     <SidebarProvider>
       <div className="flex w-full">
         <SideNavigation />
-        <main className="flex-1 h-screen overflow-y-auto">
+        <main className="flex-1 h-dvh overflow-y-auto">
           <div className="p-4 md:p-8">
             <SidebarTrigger className="md:hidden mb-4" />
             <Outlet />

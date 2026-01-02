@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useRouterState } from '@tanstack/react-router';
 
 export default function useMostUseTools() {
@@ -13,7 +13,7 @@ export default function useMostUseTools() {
 
     try {
       const stored = localStorage.getItem('page_view_counts');
-      let pageViewCounts: Record<string, number> = stored ? JSON.parse(stored) : {};
+      const pageViewCounts: Record<string, number> = stored ? JSON.parse(stored) : {};
 
       pageViewCounts[pathname] = (pageViewCounts[pathname] || 0) + 1;
 
@@ -22,8 +22,8 @@ export default function useMostUseTools() {
       console.warn('Failed to save page view counts:', error);
     }
   }, [pathname]);
-
-  return useMemo(() => {
+  
+  return (() => {
     try {
       const stored = localStorage.getItem('page_view_counts');
       if (!stored) {
@@ -40,5 +40,5 @@ export default function useMostUseTools() {
       console.warn('Failed to load page view counts:', error);
       return [];
     }
-  }, [pathname]);
+  })();
 }
