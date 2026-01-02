@@ -9,8 +9,9 @@ toolsforfrontend.com {
 
   # Handle placeholder route (maps to /api/image/placeholder)
   handle /placeholder/* {
+    uri strip_prefix /placeholder
     reverse_proxy localhost:3001 {
-      rewrite /placeholder /api/image/placeholder
+      header_up X-Forwarded-Path /api/image/placeholder
     }
   }
 
