@@ -7,7 +7,7 @@ import { createRouter } from './routes';
 dotenv.config();
 
 const app: Express = express();
-const PORT = process.env.PORT || 3001;
+const PORT = (process.env.PORT || 3001) as number;
 
 // Disable ETag to prevent 304 responses
 app.set('etag', false);
@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', createRouter());
 
-app.listen(PORT, () => {
+app.listen(PORT, '127.0.0.1', () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
 

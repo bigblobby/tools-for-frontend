@@ -93,6 +93,14 @@ jobs:
               else
                 pm2 start "$DEPLOY_PATH/ecosystem.config.js"
               fi
+              
+              # Debug: Check PM2 status and logs
+              echo "=== PM2 Status ==="
+              pm2 list
+              echo "=== PM2 Logs (last 30 lines) ==="
+              pm2 logs tools-for-frontend-server --lines 30 --nostream || echo "No logs available"
+              echo "=== Checking if port 3001 is listening ==="
+              netstat -tlnp | grep 3001 || ss -tlnp | grep 3001 || echo "Port 3001 not found in netstat/ss"
             else
               echo "ERROR: server directory not found at $DEPLOY_PATH/server"
               exit 1
