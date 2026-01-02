@@ -10,9 +10,11 @@ export default function SideNavigation() {
 
   return (
     <Sidebar>
-      <SidebarHeader>
+      <SidebarHeader className="p-4">
         <Link to="/">
-          <h1 className="text-4xl font-mono tracking-wider font-bold text-blue-800">TFF</h1>
+          <h1 className="text-xl font-mono font-bold text-blue-800">
+            Tools for Frontend
+          </h1>
         </Link>
       </SidebarHeader>
       <SidebarContent>
