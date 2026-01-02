@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export default function StringCountPage() {
   const [wordCount, setWordCount] = useState(0);

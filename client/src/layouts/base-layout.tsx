@@ -1,8 +1,11 @@
-import { Outlet } from "@tanstack/react-router";
+import { Outlet } from '@tanstack/react-router';
 import SideNavigation from "@/components/SideNavigation";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import useMostRecentPages from '@/hooks/useMostRecentPages.ts';
 
 export default function BaseLayout() {
+  useMostRecentPages();
+  
   return (
     <SidebarProvider>
       <div className="flex w-full">

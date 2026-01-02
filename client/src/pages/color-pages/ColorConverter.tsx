@@ -75,35 +75,35 @@ export default function ColorConverter() {
           <div className="flex flex-col gap-2">
             <Label>Output colors</Label>
             <div className="grid grid-cols-2 gap-2 auto-rows-[1fr]">
-              <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
+              <div className="flex flex-col border rounded-md py-2 px-4 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">Hex:</span>
                 <span>{colorValues.hexColor?.toUpperCase()}</span>
               </div>
-              <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
+              <div className="flex flex-col border rounded-md py-2 px-4 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">HSL:</span>
                 <span>{colorValues.hslColor?.toString()}</span>
               </div>
-              <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
+              <div className="flex flex-col border rounded-md py-2 px-4 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">RGB:</span>
                 <span>{colorValues.rgbColor?.toString()}</span>
               </div>
-              <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
+              <div className="flex flex-col border rounded-md py-2 px-4 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">OKLCH:</span>
                 <span>{colorValues.oklchColor?.toString()}</span>
               </div>
-              <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
+              <div className="flex flex-col border rounded-md py-2 px-4 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">OKLAB:</span>
                 <span>{colorValues.oklabColor?.toString()}</span>
               </div>
-              <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
+              <div className="flex flex-col border rounded-md py-2 px-4 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">LCH:</span>
                 <span>{colorValues.lchColor?.toString()}</span>
               </div>
-              <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
+              <div className="flex flex-col border rounded-md py-2 px-4 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">HWB:</span>
                 <span>{colorValues.hwbColor?.toString()}</span>
               </div>
-              <div className="flex flex-col border rounded-md p-2 cursor-pointer" onClick={handleCopyColor}>
+              <div className="flex flex-col border rounded-md py-2 px-4 cursor-pointer" onClick={handleCopyColor}>
                 <span className="font-bold">LAB:</span>
                 <span>{colorValues.labColor?.toString()}</span>
               </div>
