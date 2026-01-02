@@ -11,7 +11,7 @@ export default function Homepage() {
 
   const sections = [
     {
-      title: '✨ Tools for strings...',
+      title: '🧵 Tools for strings...',
       tools: [
         {
           title: 'String Count',
