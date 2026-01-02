@@ -2,9 +2,12 @@ import { Button } from '@/components/ui/button';
 import useMostRecentPages from '@/hooks/useMostRecentPages';
 import { getPageTitle } from '@/utilities/page.utilities';
 import { Link } from '@tanstack/react-router';
+import useMostUseTools from '@/hooks/use-most-used-tools.ts';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default function Homepage() {
   const recentPages = useMostRecentPages();
+  const mostUsedTools = useMostUseTools();
 
   const sections = [
     {
@@ -94,19 +97,50 @@ export default function Homepage() {
   return (
     <div className="space-y-8">
       {
-        recentPages.length > 0 && (
+        (recentPages.length > 0 || mostUsedTools.length > 0) && (
           <div>
             <h2 className="text-2xl font-bold mb-2">Tools for you...</h2>
-            <h3 className="mb-2">👀 Your most recently used tools...</h3>
-            <ul className="flex gap-2">
-              {recentPages.slice().reverse().map((path: string, index: number) => (
-                <li key={index}>
-                  <Button variant="secondary" size="lg" asChild>
-                    <Link to={path}>{getPageTitle(path)}</Link>
-                  </Button>
-                </li>
-              ))}
-            </ul>
+            <div className="space-y-8">
+              {recentPages.length > 0 && (
+                <div>
+                  <h3 className="mb-2">👀 Your recent tools...</h3>
+                  <ul className="flex flex-wrap gap-2">
+                    {recentPages.slice().reverse().map((path: string, index: number) => (
+                      <li key={index}>
+                        <Button variant="secondary" size="lg" asChild>
+                          <Link to={path}>{getPageTitle(path)}</Link>
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {mostUsedTools.length > 0 && (
+                <div>
+                  <h3 className="mb-2">
+                    ⭐️ Your most used tools...{" "}
+                    <Tooltip useTouch={true}>
+                      <TooltipTrigger className="cursor-help" asChild>
+                        <button className="text-xs text-blue-500">How is this tracked?</button>
+                      </TooltipTrigger>
+                      <TooltipContent className="w-56">
+                        <p>The browser tracks page views in local storage, so we know which page you view the most. Which translates to the tool you use to most.... we hope.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </h3>
+                  <ul className="flex flex-wrap gap-2">
+                    {mostUsedTools.slice(0, 5).map((path: string, index: number) => (
+                      <li key={index}>
+                        <Button variant="secondary" size="lg" asChild>
+                          <Link to={path}>{getPageTitle(path)}</Link>
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
         )
       }
