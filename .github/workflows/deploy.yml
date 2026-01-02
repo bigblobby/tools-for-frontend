@@ -85,7 +85,14 @@ jobs:
             if [ -d "server" ]; then
               cd server
               npm ci --production
-              pm2 restart tools-for-frontend-server || pm2 start "$DEPLOY_PATH/server/dist/index.js" --name tools-for-frontend-server --cwd "$DEPLOY_PATH/server"
+              
+              # Restart server (using PM2 or systemd)
+              # Option 1: PM2
+              if pm2 list | grep -q "tools-for-frontend-server"; then
+                pm2 restart tools-for-frontend-server
+              else
+                pm2 start "$DEPLOY_PATH/ecosystem.config.js"
+              fi
             else
               echo "ERROR: server directory not found at $DEPLOY_PATH/server"
               exit 1
