@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createImageController } from '../controllers/image.controller';
+import { createImageController } from '@/controllers/image.controller';
 
 export const createImageRouter = (): Router => {
   const router = Router();
