@@ -40,17 +40,6 @@ jobs:
       - name: Build server
         working-directory: server
         run: npm run build
-        
-      - name: List build outputs
-        run: |
-          echo "=== Current directory ==="
-          pwd
-          echo "=== Directory contents ==="
-          ls -la
-          echo "=== Client dist ==="
-          ls -la client/dist || echo "client/dist not found"
-          echo "=== Server dist ==="
-          ls -la server/dist || echo "server/dist not found"
       
       # Deploy to server
       - name: Deploy to server
@@ -75,12 +64,6 @@ jobs:
             DEPLOY_PATH="${DEPLOY_PATH:-/var/www/tools-for-frontend}"
             cd "$DEPLOY_PATH"
 
-            # Debug: List what was copied
-            echo "=== Contents of DEPLOY_PATH ==="
-            ls -la
-            echo "=== Checking server directory ==="
-            ls -la server/ || echo "server directory not found"
-
             # Install production dependencies for server
             if [ -d "server" ]; then
               cd server
@@ -93,14 +76,6 @@ jobs:
               else
                 pm2 start "$DEPLOY_PATH/ecosystem.config.js"
               fi
-              
-              # Debug: Check PM2 status and logs
-              echo "=== PM2 Status ==="
-              pm2 list
-              echo "=== PM2 Logs (last 30 lines) ==="
-              pm2 logs tools-for-frontend-server --lines 30 --nostream || echo "No logs available"
-              echo "=== Checking if port 3001 is listening ==="
-              netstat -tlnp | grep 3001 || ss -tlnp | grep 3001 || echo "Port 3001 not found in netstat/ss"
             else
               echo "ERROR: server directory not found at $DEPLOY_PATH/server"
               exit 1
