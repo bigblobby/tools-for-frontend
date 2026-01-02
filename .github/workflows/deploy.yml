@@ -74,16 +74,37 @@ jobs:
           script: |
             cd "$DEPLOY_PATH"
             
+            # Debug: List what was copied
+            echo "=== Contents of DEPLOY_PATH ==="
+            ls -la
+            echo "=== Checking server directory ==="
+            ls -la server/ || echo "server directory not found"
+            
             # Install production dependencies for server
-            cd server
-            npm ci --production
+            if [ -d "server" ]; then
+              cd server
+              
+              # Check if package files exist
+              if [ ! -f "package-lock.json" ]; then
+                echo "ERROR: package-lock.json not found in server directory"
+                exit 1
+              fi
+              
+              npm ci --production
+              
+              # Restart server (using PM2 or systemd)
+              # Option 1: PM2
+              pm2 restart tools-for-frontend-server || pm2 start "$DEPLOY_PATH/server/dist/index.js" --name tools-for-frontend-server --cwd "$DEPLOY_PATH/server"
+            else
+              echo "ERROR: server directory not found at $DEPLOY_PATH/server"
+              exit 1
+            fi
             
-            # Restart server (using PM2 or systemd)
-            # Option 1: PM2
-            pm2 restart tools-for-frontend-server || pm2 start dist/index.js --name tools-for-frontend-server
-            
-            # Option 2: systemd (uncomment if using systemd)
-            # sudo systemctl restart tools-for-frontend-server
-            
-            # Reload Caddy
-            sudo caddy reload --config "$DEPLOY_PATH/Caddyfile"
+            # Reload Caddy (go back to deploy path first)
+            cd "$DEPLOY_PATH"
+            if [ -f "Caddyfile" ]; then
+              sudo caddy reload --config "$DEPLOY_PATH/Caddyfile"
+            else
+              echo "ERROR: Caddyfile not found at $DEPLOY_PATH/Caddyfile"
+              exit 1
+            fi
