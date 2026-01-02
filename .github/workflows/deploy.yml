@@ -40,6 +40,17 @@ jobs:
       - name: Build server
         working-directory: server
         run: npm run build
+        
+      - name: List build outputs
+        run: |
+          echo "=== Current directory ==="
+          pwd
+          echo "=== Directory contents ==="
+          ls -la
+          echo "=== Client dist ==="
+          ls -la client/dist || echo "client/dist not found"
+          echo "=== Server dist ==="
+          ls -la server/dist || echo "server/dist not found"
       
       # Deploy to server
       - name: Deploy to server
