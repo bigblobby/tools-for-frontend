@@ -18,6 +18,7 @@ const MAX_FILESIZE = 1000000;
 export default function ImageToBase64Page() {
   const [format, setFormat] = useState('raw');
   const [currentFile, setCurrentFile] = useState<DisplayFile | null>(null);
+  const [key, setKey] = useState(1);
 
   const transformOutput = (file: DisplayFile | null, format: string): string => {
     if (!file) {
@@ -68,6 +69,7 @@ export default function ImageToBase64Page() {
         <div className="flex h-[600px]">
           <div className="basis-1/2 max-w-1/2">
             <DragAndDrop
+              key={key}
               fileLimit={1}
               filesizeLimit={MAX_FILESIZE}
               handleFiles={handleFiles}
@@ -96,7 +98,10 @@ export default function ImageToBase64Page() {
             <Textarea className="flex-grow-1 h-full" value={output} readOnly />
             <div className="space-x-3">
               <Button variant="secondary" onClick={handleCopy}>Copy</Button>
-              <Button variant="destructive-min">Clear</Button>
+              <Button variant="destructive-min" onClick={() => {
+                setKey(prevKey => prevKey + 1);
+                setCurrentFile(null);
+              }}>Clear</Button>
             </div>
           </div>
         </div>

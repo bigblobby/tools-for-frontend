@@ -78,24 +78,24 @@ export default function DragAndDrop({
       });
 
       if (acceptedFiles.length < files.length && files.length === 1) {
-        toast.error(`Your file is too large. Max: ${getFilesize(filesizeLimit)}.`);
+        toast.error(`Your file is too large. Max: ${getFilesize(filesizeLimit)}.`, { position:'top-center' });
         return;
       } else if (acceptedFiles.length < files.length) {
-        toast.error(`Some of your files were too large. Max: ${getFilesize(filesizeLimit)}.`);
+        toast.error(`Some of your files were too large. Max: ${getFilesize(filesizeLimit)}.`, { position:'top-center' });
         return;
       }
 
       if (images.length + acceptedFiles.length > fileLimit) {
-        toast.error(`You can only upload ${fileLimit} image(s) at a time.`);
+        toast.error(`You can only upload ${fileLimit} image(s) at a time.`, { position:'top-center' });
         return;
       }
     }
 
     if (files.length !== allowedFiles.length && allowedFiles.length === 0) {
-      toast.error('Sorry! These files can\'t be accepted as they\'re the wrong type.');
+      toast.error('Sorry! These files can\'t be accepted as they\'re the wrong type.', { position:'top-center' });
       return;
     } else if (files.length !== allowedFiles.length) {
-      toast.error('Sorry! Some of your files can\'t be accepted as they\'re the wrong type.');
+      toast.error('Sorry! Some of your files can\'t be accepted as they\'re the wrong type.', { position:'top-center' });
       return;
     } else {
       if (onDropCallback) {
