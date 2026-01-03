@@ -4,11 +4,16 @@ import type { DisplayFile } from '@/interfaces/file.interface.ts';
 import { useState } from 'react';
 import { useConverterQueries } from '@/queries/converter.queries.tsx';
 import { toast } from 'sonner';
+import { Label } from '@/components/ui/label.tsx';
+import { Input } from '@/components/ui/input.tsx';
 
 const MAX_FILESIZE = 5 * 1024 * 1024;
 
 export default function ImageOptimiserPage() {
   const [currentFiles, setCurrentFiles] = useState<DisplayFile[]>([]);
+  const [width, setWidth] = useState('');
+  const [height, setHeight] = useState('');
+  const [quality, setQuality] = useState('80');
   const converterQueries = useConverterQueries();
   const optimiseImages = converterQueries.optimiseImages;
 
@@ -23,13 +28,13 @@ export default function ImageOptimiserPage() {
   const handleOptimise = () => {
     const formData = new FormData();
 
-    for (let file of currentFiles) {
+    for (const file of currentFiles) {
       formData.append('images', file.uploadImage);
     }
 
-    formData.append('width', '500');
-    formData.append('height', '500');
-    formData.append('quality', '80');
+    formData.append('width', width);
+    formData.append('height', height);
+    formData.append('quality', quality);
     // formData.append('fitment', this.state.fitment);
     // formData.append('position', this.state.position);
     // formData.append('output', this.state.output);
@@ -73,7 +78,23 @@ export default function ImageOptimiserPage() {
           </div>
           <div className="basis-1/2 max-w-1/2 flex flex-col gap-4 pl-4">
             <div className="flex-grow-1 h-full">
+              <div className="flex flex-col gap-3">
+                <div className="flex gap-3">
+                  <div className="basis-1/2 space-y-2">
+                    <Label htmlFor="width">Width</Label>
+                    <Input id="width" type="number" value={width} onChange={(e) => setWidth(e.target.value)} placeholder="Leave empty for auto sizing" />
+                  </div>
+                  <div className="basis-1/2 space-y-2">
+                    <Label htmlFor="height">Height</Label>
+                    <Input id="height" type="number" value={height} onChange={(e) => setHeight(e.target.value)} placeholder="Leave empty for auto sizing" />
+                  </div>
+                </div>
 
+                <div className="space-y-2">
+                  <Label htmlFor="quality">Quality</Label>
+                  <Input id="quality" type="number" value={quality} onChange={(e) => setQuality(e.target.value)} placeholder="Between 1 and 100" />
+                </div>
+              </div>
             </div>
             <div className="space-x-3">
               <Button variant="secondary" onClick={handleOptimise}>Optimise</Button>

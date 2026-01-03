@@ -53,20 +53,31 @@ export const createImageController = () => {
 
         const optimisedImages = await Promise.all(
           files.map(async (file) => {
-            const optimizedBuffer = await sharp(file.buffer)
-              .resize(Number(width) || undefined, Number(height) || undefined, {
-                fit: 'inside',
-                withoutEnlargement: true,
-              })
-              .jpeg({ quality: Number(quality) || 85, progressive: true })
-              .toBuffer();
+            let sharpInstance = sharp(file.buffer)
+              .resize(
+                width ? Number(width) : undefined,
+                height ? Number(height) : undefined,
+                {
+                  fit: 'inside',
+                  withoutEnlargement: true,
+                }
+              );
 
+            if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg') {
+              sharpInstance = sharpInstance.jpeg({ quality: Number(quality) || 85, progressive: true });
+            } else if (file.mimetype === 'image/png') {
+              sharpInstance = sharpInstance.png({ quality: Number(quality) || 85 });
+            } else {
+              sharpInstance = sharpInstance.jpeg({ quality: Number(quality) || 85, progressive: true });
+            }
+
+            const optimisedBuffer = await sharpInstance.toBuffer();
             const originalName = file.originalname.replace(/\.[^/.]+$/, '');
-            const newFileName = `${originalName}_optimized.jpg`;
+            const newFileName = `${originalName}_optimised.${file.mimetype.split('/')[1]}`;
 
             return {
               name: newFileName,
-              buffer: optimizedBuffer,
+              buffer: optimisedBuffer,
             };
           })
         );
