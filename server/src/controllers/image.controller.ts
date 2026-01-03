@@ -67,6 +67,8 @@ export const createImageController = () => {
               sharpInstance = sharpInstance.jpeg({ quality: Number(quality) || 85, progressive: true });
             } else if (file.mimetype === 'image/png') {
               sharpInstance = sharpInstance.png({ quality: Number(quality) || 85 });
+            } else if (file.mimetype === 'image/webp') {
+              sharpInstance = sharpInstance.webp({ quality: Number(quality) || 85 });
             } else {
               sharpInstance = sharpInstance.jpeg({ quality: Number(quality) || 85, progressive: true });
             }
