@@ -9,7 +9,6 @@ interface PlaceholderImageInputProps {
 function PlaceholderImageInput({
   path,
 }: PlaceholderImageInputProps) {
-  console.log('Rerender')
   const [isCopied, setIsCopied] = useState(false);
 
   const copyToClipboard = () => {
