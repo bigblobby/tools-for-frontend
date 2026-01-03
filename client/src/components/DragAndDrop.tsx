@@ -138,7 +138,7 @@ export default function DragAndDrop({
   };
 
   return (
-    <div className="drag-and-drop">
+    <div className="h-full">
       <input
         className="hidden"
         ref={fileUploadRef}
@@ -148,7 +148,7 @@ export default function DragAndDrop({
         onChange={handleManualUpload}
       />
       <div
-        className="relative bg-gray-50 h-96 cursor-pointer rounded-md border-dashed border-2"
+        className="relative bg-gray-50 h-full cursor-pointer rounded-md border-dashed border-2"
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
