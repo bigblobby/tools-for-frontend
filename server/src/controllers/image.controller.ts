@@ -1,22 +1,24 @@
 import { type Request, type Response } from 'express';
+import { parseColor } from '@/helpers/color.helpers';
 
 export const createImageController = () => {
   return {
     getPlaceholderImage: (req: Request, res: Response) => {
       const [width, height] = req.params.dimensions.split('x').map(Number);
+      const { color, bgColor } = req.query;
 
-      // Validate dimensions
+      let parsedColor = parseColor(color as string);
+      let parsedBgColor = parseColor(bgColor as string);
+      
       if (!width || !height) {
         return res.status(400).send('Invalid dimensions');
       }
-
-      // Calculate font size based on image size (responsive)
+      
       const fontSize = Math.min(width, height) / 10;
-
-      // Generate SVG
+      
       const svg = `
         <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-          <rect width="100%" height="100%" fill="#cccccc"/>
+          <rect width="100%" height="100%" fill="${parsedBgColor || '#cccccc'}"/>
           <text 
             x="50%" 
             y="50%" 
@@ -25,16 +27,15 @@ export const createImageController = () => {
             font-family="Arial, sans-serif" 
             font-size="${fontSize}" 
             font-weight="bold" 
-            fill="#666666"
+            fill="${parsedColor || '#666666'}"
           >
             ${width} × ${height}
           </text>
         </svg>
       `.trim();
-
-      // Send as SVG image
+      
       res.setHeader('Content-Type', 'image/svg+xml');
-      res.setHeader('Cache-Control', 'public, max-age=31536000'); // Cache for 1 year
+      res.setHeader('Cache-Control', 'public, max-age=31536000');
       return res.send(svg);
     }
   };
