@@ -73,9 +73,9 @@ export default function ImageToBase64Page() {
               fileLimit={1}
               filesizeLimit={MAX_FILESIZE}
               handleFiles={handleFiles}
-              text={"Drag and drop your image or click here"}
+              text={"Drag and drop your images or click here"}
               helpText={"(1 image only)"}
-              acceptedFileTypes={['image/png', 'image/jpeg', 'image/svg+xml']}
+              acceptedFileTypes={['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml']}
             />
           </div>
           <div className="basis-1/2 max-w-1/2 flex flex-col gap-4 pl-4">

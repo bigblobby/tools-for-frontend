@@ -1,5 +1,5 @@
 import type { DisplayFile } from '@/interfaces/file.interface';
-import { useRef, useState } from 'react';
+import { useRef, useState, type DragEvent, type ChangeEvent } from 'react';
 import { toast } from 'sonner';
 import { fileListBase64, getFilesize } from '@/utilities/file.utilities.ts';
 import { Folder, X } from 'lucide-react';
@@ -11,7 +11,7 @@ interface DragAndDropProps {
   onDropCallback?: () => void,
   text: string;
   helpText: string;
-  acceptedFileTypes: ['image/png', 'image/jpeg', 'image/svg+xml']
+  acceptedFileTypes: ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml']
 }
 
 export default function DragAndDrop({
@@ -27,7 +27,7 @@ export default function DragAndDrop({
   const [images, setImages] = useState<DisplayFile[]>([]);
   const fileUploadRef = useRef<HTMLInputElement>(null);
 
-  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -36,7 +36,7 @@ export default function DragAndDrop({
     }
   };
 
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -47,7 +47,7 @@ export default function DragAndDrop({
     }
   };
 
-  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = async (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -55,13 +55,13 @@ export default function DragAndDrop({
     await handleSetFiles(files);
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     // This is needed - do not remove
     e.preventDefault();
     e.stopPropagation();
   };
 
-  const handleManualUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleManualUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const files: File[] = Array.from(e.target.files || []);
     await handleSetFiles(files);
     e.target.value = '';
@@ -78,24 +78,24 @@ export default function DragAndDrop({
       });
 
       if (acceptedFiles.length < files.length && files.length === 1) {
-        toast.error(`Your file is too large. Max: ${getFilesize(filesizeLimit)}.`, { position:'top-center' });
+        toast.error(`Your file is too large. Max: ${getFilesize(filesizeLimit)}.`, { position: 'top-center' });
         return;
       } else if (acceptedFiles.length < files.length) {
-        toast.error(`Some of your files were too large. Max: ${getFilesize(filesizeLimit)}.`, { position:'top-center' });
+        toast.error(`Some of your files were too large. Max: ${getFilesize(filesizeLimit)}.`, { position: 'top-center' });
         return;
       }
 
       if (images.length + acceptedFiles.length > fileLimit) {
-        toast.error(`You can only upload ${fileLimit} image(s) at a time.`, { position:'top-center' });
+        toast.error(`You can only upload ${fileLimit} image(s) at a time.`, { position: 'top-center' });
         return;
       }
     }
 
     if (files.length !== allowedFiles.length && allowedFiles.length === 0) {
-      toast.error('Sorry! These files can\'t be accepted as they\'re the wrong type.', { position:'top-center' });
+      toast.error('Sorry! These files can\'t be accepted as they\'re the wrong type.', { position: 'top-center' });
       return;
     } else if (files.length !== allowedFiles.length) {
-      toast.error('Sorry! Some of your files can\'t be accepted as they\'re the wrong type.', { position:'top-center' });
+      toast.error('Sorry! Some of your files can\'t be accepted as they\'re the wrong type.', { position: 'top-center' });
       return;
     } else {
       if (onDropCallback) {
@@ -157,29 +157,23 @@ export default function DragAndDrop({
       >
         {
           images.length === 0 && (
-            <div
-              className="absolute w-full top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 px-2 text-gray-500 text-center pointer-events-none">
-              <span>
-                <Folder/>
-              </span>
+            <div className="absolute w-full top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 px-2 text-gray-500 text-center pointer-events-none">
+              <span><Folder /></span>
               <h3>{text}</h3>
               <h4 className="text-xs">{helpText}</h4>
             </div>
           )
         }
 
-        <div
-          className={'absolute top-0 left-0 z-[1] h-full w-full pointer-events-none transition-all ' + (dragging ? 'bg-black/10' : ' ')}></div>
+        <div className={'absolute top-0 left-0 z-[1] h-full w-full pointer-events-none transition-all ' + (dragging ? 'bg-black/10' : ' ')}></div>
         <div className="flex flex-wrap content-baseline h-full p-2 rounded">
           {
             images.length > 0 && images.map(file => {
               return (
-                <div key={file.id} className="relative p-2 cursor-pointer group" style={getImageStyles()}
-                     onClick={(e) => removeImage(e, file.id)}>
-                  <div
-                    className="absolute z-[1] top-1 bottom-1 left-1 right-1 flex justify-center items-center bg-white/70 rounded opacity-0 transition-all group-hover:opacity-100">
+                <div key={file.id} className="relative p-2 cursor-pointer group" style={getImageStyles()} onClick={(e) => removeImage(e, file.id)}>
+                  <div className="absolute z-[1] top-1 bottom-1 left-1 right-1 flex justify-center items-center bg-white/70 rounded opacity-0 transition-all group-hover:opacity-100">
                     <p className="flex flex-col justify-center items-center text-xl text-black mb-0 mt-4">
-                      <span><X/></span>
+                      <span><X /></span>
                       <span>(Remove)</span>
                     </p>
                   </div>
@@ -187,10 +181,8 @@ export default function DragAndDrop({
                     className="relative bg-center bg-cover h-full rounded"
                     style={{ backgroundImage: `url(${file.displayImage})` }}
                   >
-                    <div
-                      className="absolute left-1 bottom-1 bg-white text-xs px-1 rounded">{getFilesize(file.uploadImage.size)}</div>
-                    <div
-                      className="absolute left-1 right-auto top-1 bottom-auto bg-white text-xs px-1 rounded">{file.width} x {file.height}</div>
+                    <div className="absolute left-1 bottom-1 bg-white text-xs px-1 rounded">{getFilesize(file.uploadImage.size)}</div>
+                    <div className="absolute left-1 right-auto top-1 bottom-auto bg-white text-xs px-1 rounded">{file.width} x {file.height}</div>
                   </div>
                 </div>
               );
