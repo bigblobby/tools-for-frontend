@@ -2,12 +2,16 @@ import DragAndDrop from '@/components/DragAndDrop.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import type { DisplayFile } from '@/interfaces/file.interface.ts';
 import { useState } from 'react';
+import { useConverterQueries } from '@/queries/converter.queries.tsx';
+import { toast } from 'sonner';
 
-const MAX_FILESIZE = 1000000;
+const MAX_FILESIZE = 5 * 1024 * 1024;
 
 export default function ImageOptimiserPage() {
-  const [, setCurrentFiles] = useState<DisplayFile[]>([]);
-  
+  const [currentFiles, setCurrentFiles] = useState<DisplayFile[]>([]);
+  const converterQueries = useConverterQueries();
+  const optimiseImages = converterQueries.optimiseImages;
+
   const handleFiles = (files: DisplayFile[]) => {
     if (files.length > 0) {
       setCurrentFiles(files);
@@ -15,7 +19,40 @@ export default function ImageOptimiserPage() {
       setCurrentFiles([]);
     }
   };
-  
+
+  const handleOptimise = () => {
+    const formData = new FormData();
+
+    for (let file of currentFiles) {
+      formData.append('images', file.uploadImage);
+    }
+
+    formData.append('width', '500');
+    formData.append('height', '500');
+    formData.append('quality', '80');
+    // formData.append('fitment', this.state.fitment);
+    // formData.append('position', this.state.position);
+    // formData.append('output', this.state.output);
+
+    optimiseImages.mutate(formData, {
+      onSuccess: async (data: Blob) => {
+        const url = window.URL.createObjectURL(data);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'optimized-images.zip';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+        toast.success('Images optimized and downloaded!', { position: 'top-center' });
+      },
+      onError: (error: Error) => {
+        console.log(error);
+        toast.error('Failed to optimize images', { position: 'top-center' });
+      },
+    })
+  }
+
   return (
     <div className="flex flex-row gap-10">
       <div className="flex-1 flex flex-col gap-6">
@@ -36,10 +73,10 @@ export default function ImageOptimiserPage() {
           </div>
           <div className="basis-1/2 max-w-1/2 flex flex-col gap-4 pl-4">
             <div className="flex-grow-1 h-full">
-              
+
             </div>
             <div className="space-x-3">
-              <Button variant="secondary">Optimise</Button>
+              <Button variant="secondary" onClick={handleOptimise}>Optimise</Button>
             </div>
           </div>
         </div>

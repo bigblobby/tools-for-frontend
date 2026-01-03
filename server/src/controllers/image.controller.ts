@@ -1,7 +1,10 @@
 import { type Request, type Response } from 'express';
 import { parseColor } from '@/helpers/color.helpers';
+import sharp from 'sharp';
+import archiver from 'archiver';
 
 export const createImageController = () => {
+  // @ts-ignore
   return {
     getPlaceholderImage: (req: Request, res: Response) => {
       const [width, height] = req.params.dimensions.split('x').map(Number);
@@ -9,13 +12,13 @@ export const createImageController = () => {
 
       const parsedColor = parseColor(color as string);
       const parsedBgColor = parseColor(bgColor as string);
-      
+
       if (!width || !height) {
         return res.status(400).send('Invalid dimensions');
       }
-      
+
       const fontSize = Math.min(width, height) / 10;
-      
+
       const svg = `
         <svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
           <rect width="100%" height="100%" fill="${parsedBgColor || '#cccccc'}"/>
@@ -33,10 +36,68 @@ export const createImageController = () => {
           </text>
         </svg>
       `.trim();
-      
+
       res.setHeader('Content-Type', 'image/svg+xml');
       res.setHeader('Cache-Control', 'public, max-age=31536000');
       return res.send(svg);
+    },
+    //@ts-ignore
+    optimiseImages: async (req: Request, res: Response) => {
+      try {
+        const files = req.files as Express.Multer.File[];
+        const { width, height, quality } = req.body;
+
+        if (!files || files.length === 0) {
+          return res.status(400).json({ error: 'No images provided' });
+        }
+
+        const optimisedImages = await Promise.all(
+          files.map(async (file) => {
+            const optimizedBuffer = await sharp(file.buffer)
+              .resize(Number(width) || undefined, Number(height) || undefined, {
+                fit: 'inside',
+                withoutEnlargement: true,
+              })
+              .jpeg({ quality: Number(quality) || 85, progressive: true })
+              .toBuffer();
+
+            const originalName = file.originalname.replace(/\.[^/.]+$/, '');
+            const newFileName = `${originalName}_optimized.jpg`;
+
+            return {
+              name: newFileName,
+              buffer: optimizedBuffer,
+            };
+          })
+        );
+
+        res.setHeader('Content-Type', 'application/zip');
+        res.setHeader('Content-Disposition', 'attachment; filename="optimized-images.zip"');
+
+        const archive = archiver('zip', {
+          zlib: { level: 9 },
+        });
+
+        archive.on('error', (err: any) => {
+          console.error('Archive error:', err);
+          if (!res.headersSent) {
+            res.status(500).json({ error: 'Failed to create zip file' });
+          }
+        });
+
+        archive.pipe(res);
+
+        optimisedImages.forEach((image) => {
+          archive.append(image.buffer, { name: image.name });
+        });
+
+        await archive.finalize();
+      } catch (error) {
+        console.error('Error optimizing images:', error);
+        if (!res.headersSent) {
+          return res.status(500).json({ error: 'Failed to optimize images' });
+        }
+      }
     }
   };
 };

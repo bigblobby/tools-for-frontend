@@ -18,8 +18,17 @@ export const useConverterQueries = () => {
     },
   });
 
+  const optimiseImages = useMutation({
+    mutationFn: async (formData: FormData) => {
+      return await api.post('/api/image/optimise', formData, {
+        responseType: 'blob',
+      });
+    }
+  });
+
   return {
     jsonToXml,
-    XmlToJson
+    XmlToJson,
+    optimiseImages,
   };
 };

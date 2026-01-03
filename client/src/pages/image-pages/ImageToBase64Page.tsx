@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button.tsx';
 import { toast } from 'sonner';
 
-const MAX_FILESIZE = 1000000;
+const MAX_FILESIZE = 10 * 1024 * 1024;
 
 export default function ImageToBase64Page() {
   const [format, setFormat] = useState('raw');
