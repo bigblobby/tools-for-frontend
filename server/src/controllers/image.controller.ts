@@ -7,8 +7,8 @@ export const createImageController = () => {
       const [width, height] = req.params.dimensions.split('x').map(Number);
       const { color, bgColor } = req.query;
 
-      let parsedColor = parseColor(color as string);
-      let parsedBgColor = parseColor(bgColor as string);
+      const parsedColor = parseColor(color as string);
+      const parsedBgColor = parseColor(bgColor as string);
       
       if (!width || !height) {
         return res.status(400).send('Invalid dimensions');
