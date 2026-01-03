@@ -1,22 +1,22 @@
-import { useState } from 'react';
+import { useState, type ChangeEvent } from 'react';
 import { toast } from 'sonner';
 import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { useConverterQueries } from '@/queries/converter.queries';
 
 export default function JsonToXmlConverterPage() {
-  const [xml, setXml] = useState("");
-  const [json, setJson] = useState("");
+  const [xml, setXml] = useState('');
+  const [json, setJson] = useState('');
   const converterQueries = useConverterQueries();
   const jsonToXml = converterQueries.jsonToXml;
 
-  const handleXmlChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleXmlChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setXml(event.target.value);
-  }
+  };
 
-  const handleJsonChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleJsonChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setJson(event.target.value);
-  }
+  };
 
   const handleConvert = async () => {
     const jsonObj = JSON.parse(json);
@@ -30,17 +30,17 @@ export default function JsonToXmlConverterPage() {
         toast.error('Invalid JSON format', { position: 'top-center' });
       },
     });
-  }
+  };
 
   const handleCopy = () => {
     void navigator.clipboard.writeText(xml);
     toast.success('XML copied to clipboard', { position: 'top-center' });
-  }
+  };
 
   const handleClear = () => {
-    setXml("");
-    setJson("");
-  }
+    setXml('');
+    setJson('');
+  };
 
   return (
     <div className="flex flex-row gap-10">
@@ -51,11 +51,11 @@ export default function JsonToXmlConverterPage() {
         </div>
         <div className="flex flex-col gap-3">
           <Label htmlFor="xml-input">JSON</Label>
-          <textarea value={json} id="xml-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleJsonChange} />
+          <textarea value={json} id="xml-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleJsonChange}/>
         </div>
         <div className="flex flex-col gap-3">
           <Label htmlFor="json-input">XML <span className="text-xs">(Read Only)</span></Label>
-          <textarea readOnly value={xml} id="json-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleXmlChange} />
+          <textarea readOnly value={xml} id="json-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleXmlChange}/>
         </div>
         <div className="flex flex-wrap gap-3">
           <Button variant="secondary" onClick={handleConvert}>Convert</Button>

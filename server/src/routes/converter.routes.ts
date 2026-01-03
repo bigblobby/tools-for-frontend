@@ -7,6 +7,7 @@ export const createConverterRouter = (): Router => {
   const controller = createConverterController();
 
   router.post('/json-to-xml', express.raw({ type: 'application/json' }), controller.jsonToXml);
+  router.post('/xml-to-json', express.raw({ type: 'application/xml' }), controller.xmlToJson);
 
   return router;
 };

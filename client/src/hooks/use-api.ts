@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { type AxiosRequestConfig } from "axios";
 
 export const useApi = () => {
   return {
@@ -6,8 +6,8 @@ export const useApi = () => {
       const response = await axios.get(url);
       return response.data;
     },
-    post: async (url: string, data: unknown) => {
-      const response = await axios.post(url, data);
+    post: async (url: string, data: unknown, config?: AxiosRequestConfig) => {
+      const response = await axios.post(url, data, config);
       return response.data;
     },
     put: async (url: string, data: unknown) => {

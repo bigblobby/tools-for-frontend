@@ -1,5 +1,5 @@
 import { type Request, type Response } from 'express';
-import { XMLBuilder } from 'fast-xml-parser';
+import { XMLBuilder, XMLParser } from 'fast-xml-parser';
 
 export const createConverterController = () => {
   return {
@@ -21,6 +21,25 @@ export const createConverterController = () => {
         console.error('Error converting JSON to XML:', error);
         res.status(500).json({ error: error instanceof Error ? error.message : 'Failed to convert JSON to XML' });
       }
+    },
+    xmlToJson: (_req: Request, res: Response) => {
+      try {
+        const xmlString = _req.body.toString('utf8');
+
+        const parser = new XMLParser({
+          ignoreAttributes: false,
+          attributeNamePrefix: '@_',
+          textNodeName: '#text',
+        });
+
+        const jsonObj = parser.parse(xmlString);
+        const jsonString = JSON.stringify(jsonObj, null, 2);
+
+        res.status(200).json({ json: jsonString });
+      } catch (error) {
+        console.error('Error converting XML to JSON:', error);
+        res.status(500).json({ error: error instanceof Error ? error.message : 'Failed to convert XML to JSON' });
+      }
     }
-  }
-}
+  };
+};
