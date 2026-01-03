@@ -1,22 +1,23 @@
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@/components/ui/input-group.tsx';
 import { IconCheck, IconCopy, IconExternalLink } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useState, memo } from 'react';
 
 interface PlaceholderImageInputProps {
   path: string;
 }
 
-export default function PlaceholderImageInput({
+function PlaceholderImageInput({
   path,
 }: PlaceholderImageInputProps) {
+  console.log('Rerender')
   const [isCopied, setIsCopied] = useState(false);
-  
+
   const copyToClipboard = () => {
     void navigator.clipboard.writeText(location.origin + path);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
-  }
-  
+  };
+
   return (
     <InputGroup>
       <InputGroupInput value={location.origin + path} readOnly onClick={
@@ -41,7 +42,7 @@ export default function PlaceholderImageInput({
           aria-label="Copy"
           title="Copy"
           size="icon-xs"
-          onClick={() => copyToClipboard()}
+          onClick={copyToClipboard}
         >
           {isCopied ? <IconCheck /> : <IconCopy />}
         </InputGroupButton>
@@ -49,3 +50,10 @@ export default function PlaceholderImageInput({
     </InputGroup>
   )
 }
+
+export default memo(PlaceholderImageInput, (prevProps, nextProps) => {
+  // This has been added because the React profiler is saying its re-rendering all the PlaceholderImageInput components
+  // when the copy is clicked even though it isn't... apparently this is something to do with reconciliation checks, but
+  // this needs more investigation, for now this fixes the problem.
+  return prevProps.path === nextProps.path;
+});
