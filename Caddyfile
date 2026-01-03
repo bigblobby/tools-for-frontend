@@ -8,8 +8,8 @@ toolsforfrontend.com www.toolsforfrontend.com {
   }
 
   # Handle placeholder route (maps to /api/image/placeholder)
-  handle /placeholder/* {
-    uri replace /placeholder /api/image/placeholder
+  handle /p/* {
+    uri replace /p /api/image/placeholder
     reverse_proxy localhost:3001
   }
 

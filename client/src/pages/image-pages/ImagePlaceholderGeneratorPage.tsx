@@ -12,9 +12,9 @@ export default function ImagePlaceholderGeneratorPage() {
           <div className="max-w-sm">
             <div className="flex flex-col gap-3">
               <div>
-                <img src={location.origin + "/placeholder/400x400"} alt="" />
+                <img src={location.origin + "/p/400x400"} alt="" />
               </div>
-              <PlaceholderImageInput path="/placeholder/400x400" />
+              <PlaceholderImageInput path="/p/400x400" />
             </div>
           </div>
         </div>
@@ -24,8 +24,8 @@ export default function ImagePlaceholderGeneratorPage() {
         <h2 className="text-xl">Size</h2>
         <p className="text-gray-500 text-sm">Generate an image of any size, just set the width and height.</p>
         <div className="flex flex-col gap-2 mt-3">
-          <PlaceholderImageInput path="/placeholder/400x400" />
-          <PlaceholderImageInput path="/placeholder/1200x300" />
+          <PlaceholderImageInput path="/p/400x400" />
+          <PlaceholderImageInput path="/p/1200x300" />
         </div>
       </div>
 
@@ -35,15 +35,15 @@ export default function ImagePlaceholderGeneratorPage() {
         <div className="flex flex-col gap-4 mt-5">
           <div className="flex flex-col gap-2">
             <p className="text-gray-500 text-sm">Change both the background and text color:</p>
-            <PlaceholderImageInput path="/placeholder/400x400?color=blue&bgColor=000000" />
+            <PlaceholderImageInput path="/p/400x400?color=blue&bgColor=000000" />
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-gray-500 text-sm">Only the background color:</p>
-            <PlaceholderImageInput path="/placeholder/400x400?bgColor=pink" />
+            <PlaceholderImageInput path="/p/400x400?bgColor=pink" />
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-gray-500 text-sm">Only the text color:</p>
-            <PlaceholderImageInput path="/placeholder/400x400?color=green" />
+            <PlaceholderImageInput path="/p/400x400?color=green" />
           </div>
         </div>
       </div>

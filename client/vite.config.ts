@@ -37,10 +37,10 @@ export default defineConfig({
         target: 'http://localhost:3001',
         changeOrigin: true,
       },
-      '/placeholder': {
+      '/p': {
         target: 'http://localhost:3001',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/placeholder/, '/api/image/placeholder'),
+        rewrite: (path) => path.replace(/^\/p/, '/api/image/placeholder'),
       },
     },
   },
