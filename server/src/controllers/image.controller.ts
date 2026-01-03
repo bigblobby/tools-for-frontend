@@ -4,7 +4,6 @@ import sharp from 'sharp';
 import archiver from 'archiver';
 
 export const createImageController = () => {
-  // @ts-ignore
   return {
     getPlaceholderImage: (req: Request, res: Response) => {
       const [width, height] = req.params.dimensions.split('x').map(Number);
@@ -41,14 +40,15 @@ export const createImageController = () => {
       res.setHeader('Cache-Control', 'public, max-age=31536000');
       return res.send(svg);
     },
-    //@ts-ignore
-    optimiseImages: async (req: Request, res: Response) => {
+
+    optimiseImages: async (req: Request, res: Response): Promise<void> => {
       try {
         const files = req.files as Express.Multer.File[];
         const { width, height, quality } = req.body;
 
         if (!files || files.length === 0) {
-          return res.status(400).json({ error: 'No images provided' });
+          res.status(400).json({ error: 'No images provided' });
+          return;
         }
 
         const optimisedImages = await Promise.all(
@@ -78,7 +78,7 @@ export const createImageController = () => {
           zlib: { level: 9 },
         });
 
-        archive.on('error', (err: any) => {
+        archive.on('error', (err: Error) => {
           console.error('Archive error:', err);
           if (!res.headersSent) {
             res.status(500).json({ error: 'Failed to create zip file' });
@@ -95,7 +95,7 @@ export const createImageController = () => {
       } catch (error) {
         console.error('Error optimizing images:', error);
         if (!res.headersSent) {
-          return res.status(500).json({ error: 'Failed to optimize images' });
+          res.status(500).json({ error: 'Failed to optimize images' });
         }
       }
     }
