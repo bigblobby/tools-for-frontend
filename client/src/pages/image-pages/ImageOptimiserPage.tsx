@@ -6,7 +6,7 @@ import { useState } from 'react';
 const MAX_FILESIZE = 1000000;
 
 export default function ImageOptimiserPage() {
-  const [currentFiles, setCurrentFiles] = useState<DisplayFile[]>([]);
+  const [, setCurrentFiles] = useState<DisplayFile[]>([]);
   
   const handleFiles = (files: DisplayFile[]) => {
     if (files.length > 0) {

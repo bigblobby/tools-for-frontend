@@ -1,5 +1,5 @@
 import type { DisplayFile } from '@/interfaces/file.interface';
-import { useRef, useState, type DragEvent, type ChangeEvent } from 'react';
+import { useRef, useState, type DragEvent, type ChangeEvent, type MouseEvent } from 'react';
 import { toast } from 'sonner';
 import { fileListBase64, getFilesize } from '@/utilities/file.utilities.ts';
 import { Folder, X } from 'lucide-react';
@@ -27,44 +27,42 @@ export default function DragAndDrop({
   const [images, setImages] = useState<DisplayFile[]>([]);
   const fileUploadRef = useRef<HTMLInputElement>(null);
 
-  const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleDragEnter = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
 
     if (!dragging) {
       setDragging(true);
     }
   };
 
-  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    console.log('Drag leave?');
+  const handleDragLeave = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
 
     if (dragging) {
       setDragging(false);
     }
   };
 
-  const handleDrop = async (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleDrop = async (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
 
-    const files: File[] = Array.from(e.dataTransfer.files);
+    const files: File[] = Array.from(event.dataTransfer.files);
     await handleSetFiles(files);
   };
 
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
     // This is needed - do not remove
-    e.preventDefault();
-    e.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
   };
 
-  const handleManualUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    const files: File[] = Array.from(e.target.files || []);
+  const handleManualUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    const files: File[] = Array.from(event.target.files || []);
     await handleSetFiles(files);
-    e.target.value = '';
+    event.target.value = '';
   };
 
   const handleSetFiles = async (files: File[]) => {
@@ -108,14 +106,12 @@ export default function DragAndDrop({
     handleFiles(allDisplayFiles);
   };
 
-  const removeImage = (e: React.MouseEvent<HTMLDivElement>, id: number) => {
-    e.stopPropagation();
+  const removeImage = (event: MouseEvent<HTMLDivElement>, id: number) => {
+    event.stopPropagation();
 
-    setImages(images => {
-      const updatedImages = images.filter(image => image.id !== id);
-      handleFiles(updatedImages);
-      return updatedImages;
-    });
+    const updatedImages = images.filter(image => image.id !== id);
+    setImages(updatedImages);
+    handleFiles(updatedImages);
   };
 
   const openFolder = () => {
