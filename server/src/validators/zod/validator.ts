@@ -1,7 +1,7 @@
 import { ZodObject, ZodError } from 'zod';
 import { NextFunction, Request, Response } from 'express';
 
-export const validate = (schema: ZodObject<any, any>) => {
+export const validate = (schema: ZodObject<any, any>) => {  // eslint-disable-line @typescript-eslint/no-explicit-any
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       await schema.parseAsync({
