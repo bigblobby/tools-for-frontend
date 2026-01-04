@@ -30,6 +30,8 @@ export const getPageTitle = (path: string): string => {
       return 'Image Optimiser';
     case '/image/placeholder':
       return 'Placeholder Image Generator';
+    case '/image/favicon-generator':
+      return 'Favicon Generator';
     default:
       return 'Unknown';
   }
