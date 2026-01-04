@@ -44,7 +44,7 @@ export const createImageController = () => {
     optimiseImages: async (req: Request, res: Response): Promise<void> => {
       try {
         const files = req.files as Express.Multer.File[];
-        const { width, height, quality } = req.body;
+        const { width, height, quality, fitment, position, output } = req.body;
 
         if (!files || files.length === 0) {
           res.status(400).json({ error: 'No images provided' });
@@ -55,27 +55,31 @@ export const createImageController = () => {
           files.map(async (file) => {
             let sharpInstance = sharp(file.buffer)
               .resize(
-                width ? Number(width) : undefined,
-                height ? Number(height) : undefined,
+                Number(width) || null,
+                Number(height) || null,
                 {
-                  fit: 'inside',
+                  fit: fitment || 'cover',
+                  position: position || 'centre',
                   withoutEnlargement: true,
                 }
               );
 
-            if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg') {
-              sharpInstance = sharpInstance.jpeg({ quality: Number(quality) || 85, progressive: true });
-            } else if (file.mimetype === 'image/png') {
+            const useOutput = Boolean(output) && output !== 'auto';
+            
+            if ((!useOutput && file.mimetype === 'image/png') || (useOutput && output === 'png')) {
+              console.log('Use png')
               sharpInstance = sharpInstance.png({ quality: Number(quality) || 85 });
-            } else if (file.mimetype === 'image/webp') {
+            } else if ((!useOutput && file.mimetype === 'image/webp') || (useOutput && output === 'webp')) {
+              console.log('Use webp')
               sharpInstance = sharpInstance.webp({ quality: Number(quality) || 85 });
             } else {
+              console.log('Use jpeg')
               sharpInstance = sharpInstance.jpeg({ quality: Number(quality) || 85, progressive: true });
             }
 
             const optimisedBuffer = await sharpInstance.toBuffer();
             const originalName = file.originalname.replace(/\.[^/.]+$/, '');
-            const newFileName = `${originalName}_optimised.${file.mimetype.split('/')[1]}`;
+            const newFileName = `${originalName}_optimised.${useOutput ? output : file.mimetype.split('/')[1]}`;
 
             return {
               name: newFileName,

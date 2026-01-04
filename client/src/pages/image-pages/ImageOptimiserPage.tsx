@@ -6,6 +6,7 @@ import { useConverterQueries } from '@/queries/converter.queries.tsx';
 import { toast } from 'sonner';
 import { Label } from '@/components/ui/label.tsx';
 import { Input } from '@/components/ui/input.tsx';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.tsx';
 
 const MAX_FILESIZE = 5 * 1024 * 1024;
 
@@ -14,6 +15,9 @@ export default function ImageOptimiserPage() {
   const [width, setWidth] = useState('');
   const [height, setHeight] = useState('');
   const [quality, setQuality] = useState('80');
+  const [fitment, setFitment] = useState('cover');
+  const [position, setPosition] = useState('centre');
+  const [outputFormat, setOutputFormat] = useState('auto');
   const converterQueries = useConverterQueries();
   const optimiseImages = converterQueries.optimiseImages;
 
@@ -35,25 +39,25 @@ export default function ImageOptimiserPage() {
     formData.append('width', width);
     formData.append('height', height);
     formData.append('quality', quality);
-    // formData.append('fitment', this.state.fitment);
-    // formData.append('position', this.state.position);
-    // formData.append('output', this.state.output);
+    formData.append('fitment', fitment);
+    formData.append('position', position);
+    formData.append('output', outputFormat);
 
     optimiseImages.mutate(formData, {
       onSuccess: async (data: Blob) => {
         const url = window.URL.createObjectURL(data);
         const link = document.createElement('a');
         link.href = url;
-        link.download = 'optimized-images.zip';
+        link.download = 'optimised-images.zip';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
-        toast.success('Images optimized and downloaded!', { position: 'top-center' });
+        toast.success('Images optimised and downloaded!', { position: 'top-center' });
       },
       onError: (error: Error) => {
         console.log(error);
-        toast.error('Failed to optimize images', { position: 'top-center' });
+        toast.error('Failed to optimise images', { position: 'top-center' });
       },
     })
   }
@@ -93,6 +97,57 @@ export default function ImageOptimiserPage() {
                 <div className="space-y-2">
                   <Label htmlFor="quality">Quality</Label>
                   <Input id="quality" type="number" value={quality} onChange={(e) => setQuality(e.target.value)} placeholder="Between 1 and 100" />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="quality">Fitment</Label>
+                  <Select value={fitment} onValueChange={(value) => setFitment(value)}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="w-full">
+                      <SelectItem value="cover">Cover</SelectItem>
+                      <SelectItem value="contain">Contain</SelectItem>
+                      <SelectItem value="fill">Fill</SelectItem>
+                      <SelectItem value="inside">Inside</SelectItem>
+                      <SelectItem value="outside">Outside</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="quality">Position</Label>
+                  <Select value={position} onValueChange={(value) => setPosition(value)}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="w-full">
+                      <SelectItem value="centre">Center</SelectItem>
+                      <SelectItem value="top">Top</SelectItem>
+                      <SelectItem value="right top">Top Right</SelectItem>
+                      <SelectItem value="right">Right</SelectItem>
+                      <SelectItem value="right bottom">Right Bottom</SelectItem>
+                      <SelectItem value="bottom">Bottom</SelectItem>
+                      <SelectItem value="left bottom">Left Bottom</SelectItem>
+                      <SelectItem value="left">Left</SelectItem>
+                      <SelectItem value="left top">Top Left</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="quality">Output format</Label>
+                  <Select value={outputFormat} onValueChange={(value) => setOutputFormat(value)}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="w-full">
+                      <SelectItem value="auto">Auto</SelectItem>
+                      <SelectItem value="jpeg">JPEG</SelectItem>
+                      <SelectItem value="png">PNG</SelectItem>
+                      <SelectItem value="webp">WEBP</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </div>
