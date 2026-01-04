@@ -17,6 +17,7 @@ import { numberRoute } from "@/routes/number.routes";
 import { converterRoute, xmlToJsonConverterRoute, jsonToXmlConverterRoute } from "@/routes/converter.routes";
 import { dateTimeRoute, epochUnixDateTimeRoute } from '@/routes/date-time.routes.tsx';
 import {
+  faviconGeneratorRoute,
   imageOptimiserRoute,
   imagePlaceholderGeneratorRoute,
   imageRoute,
@@ -41,7 +42,7 @@ const routeTree = rootRoute.addChildren([
   numberRoute.addChildren([]),
   converterRoute.addChildren([xmlToJsonConverterRoute, jsonToXmlConverterRoute]),
   dateTimeRoute.addChildren([epochUnixDateTimeRoute]),
-  imageRoute.addChildren([imageToBase64Route, imageOptimiserRoute, imagePlaceholderGeneratorRoute])
+  imageRoute.addChildren([imageToBase64Route, imageOptimiserRoute, imagePlaceholderGeneratorRoute, faviconGeneratorRoute])
 ]);
 
 export const router = createRouter({ routeTree });

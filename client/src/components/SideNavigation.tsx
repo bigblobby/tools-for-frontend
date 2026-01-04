@@ -111,6 +111,11 @@ export default function SideNavigation() {
                 <Link to="/image/placeholder">Placeholder images</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild onClick={handleOpenMobile}>
+                <Link to="/image/favicon-generator">Favicon Generator</Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>

@@ -26,9 +26,18 @@ export const useConverterQueries = () => {
     }
   });
 
+  const createIco = useMutation({
+    mutationFn: async (formData: FormData) => {
+      return await api.post('/api/image/create-ico', formData, {
+        responseType: 'blob',
+      });
+    }
+  });
+
   return {
     jsonToXml,
     XmlToJson,
     optimiseImages,
+    createIco
   };
 };

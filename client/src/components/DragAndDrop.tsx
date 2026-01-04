@@ -10,7 +10,7 @@ interface DragAndDropProps {
   handleFiles: (files: DisplayFile[]) => void,
   onDropCallback?: () => void,
   text: string;
-  helpText: string;
+  helpText?: string;
   acceptedFileTypes: ['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml']
 }
 

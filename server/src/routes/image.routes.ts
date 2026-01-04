@@ -22,6 +22,7 @@ export const createImageRouter = (): Router => {
 
   router.get('/placeholder/:dimensions', controller.getPlaceholderImage);
   router.post('/optimise', upload.array('images'), controller.optimiseImages);
+  router.post('/create-ico', upload.array('images'), controller.createIcoImages);
 
   return router;
 };

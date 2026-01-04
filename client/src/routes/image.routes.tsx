@@ -3,6 +3,7 @@ import { rootRoute } from ".";
 import ImageToBase64Page from '@/pages/image-pages/ImageToBase64Page.tsx';
 import ImageOptimiserPage from '@/pages/image-pages/ImageOptimiserPage.tsx';
 import ImagePlaceholderGeneratorPage from '@/pages/image-pages/ImagePlaceholderGeneratorPage.tsx';
+import FaviconGeneratorPage from '@/pages/image-pages/FaviconGeneratorPage.tsx';
 
 const imageRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -26,4 +27,11 @@ const imagePlaceholderGeneratorRoute = createRoute({
   path: "/placeholder",
   component: ImagePlaceholderGeneratorPage,
 });
-export { imageRoute, imageToBase64Route, imageOptimiserRoute, imagePlaceholderGeneratorRoute };
+
+const faviconGeneratorRoute = createRoute({
+  getParentRoute: () => imageRoute,
+  path: "/favicon-generator",
+  component: FaviconGeneratorPage,
+});
+
+export { imageRoute, imageToBase64Route, imageOptimiserRoute, imagePlaceholderGeneratorRoute, faviconGeneratorRoute };
