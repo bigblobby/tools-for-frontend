@@ -89,6 +89,10 @@ export default function Homepage() {
           title: 'Placeholder Image Generator',
           path: '/image/placeholder'
         },
+        {
+          title: 'Favicon Generator',
+          path: '/image/favicon-generator'
+        }
       ]
     }
   ];
