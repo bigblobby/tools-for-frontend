@@ -25,7 +25,7 @@ export const imageController = () => {
     optimiseImages: async (req: Request, res: Response): Promise<void> => {
       try {
         const files = req.files as Express.Multer.File[];
-        const { width, height, quality, fitment, position } = req.body;
+        const { width, height, quality, fitment, position, output } = req.body;
 
         if (!files || files.length === 0) {
           res.status(400).json({ error: 'No images provided' });
@@ -36,8 +36,8 @@ export const imageController = () => {
           files.map(async (file) => {
             let sharpInstance = sharp(file.buffer)
               .resize(
-                width ? Number(width) : undefined,
-                height ? Number(height) : undefined,
+                Number(width) || null,
+                Number(height) || null,
                 {
                   fit: fitment || 'cover',
                   position: position || 'centre',
@@ -45,11 +45,11 @@ export const imageController = () => {
                 }
               );
 
-            if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg') {
-              sharpInstance = sharpInstance.jpeg({ quality: Number(quality) || 85, progressive: true });
-            } else if (file.mimetype === 'image/png') {
+            const useOutput = Boolean(output) && output !== 'auto';
+
+            if ((!useOutput && file.mimetype === 'image/png') || (useOutput && output === 'png')) {
               sharpInstance = sharpInstance.png({ quality: Number(quality) || 85 });
-            } else if (file.mimetype === 'image/webp') {
+            } else if ((!useOutput && file.mimetype === 'image/webp') || (useOutput && output === 'webp')) {
               sharpInstance = sharpInstance.webp({ quality: Number(quality) || 85 });
             } else {
               sharpInstance = sharpInstance.jpeg({ quality: Number(quality) || 85, progressive: true });
@@ -57,7 +57,7 @@ export const imageController = () => {
 
             const optimisedBuffer = await sharpInstance.toBuffer();
             const originalName = file.originalname.replace(/\.[^/.]+$/, '');
-            const newFileName = `${originalName}_optimised.${file.mimetype.split('/')[1]}`;
+            const newFileName = `${originalName}_optimised.${useOutput ? output : file.mimetype.split('/')[1]}`;
 
             return {
               name: newFileName,

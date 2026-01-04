@@ -1,6 +1,8 @@
 import { Router, type Request } from 'express';
 import multer from 'multer';
 import { imageController } from '@/controllers/image.controller';
+import { validate } from '@/validators/zod/validator';
+import { getPlaceholderImageSchema, optimiseImageSchema } from '@/validators/zod/schemas/image.schemas';
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -20,8 +22,8 @@ export const createImageRouter = (): Router => {
   const router = Router();
   const controller = imageController();
 
-  router.get('/placeholder/:dimensions', controller.getPlaceholderImage);
-  router.post('/optimise', upload.array('images'), controller.optimiseImages);
+  router.get('/placeholder/:dimensions', validate(getPlaceholderImageSchema), controller.getPlaceholderImage);
+  router.post('/optimise', upload.array('images'), validate(optimiseImageSchema), controller.optimiseImages);
   router.post('/create-ico', upload.array('images'), controller.createIcoImages);
 
   return router;
