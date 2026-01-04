@@ -1,6 +1,6 @@
 import { Router, type Request } from 'express';
 import multer from 'multer';
-import { createImageController } from '@/controllers/image.controller';
+import { imageController } from '@/controllers/image.controller';
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -18,7 +18,7 @@ const upload = multer({
 
 export const createImageRouter = (): Router => {
   const router = Router();
-  const controller = createImageController();
+  const controller = imageController();
 
   router.get('/placeholder/:dimensions', controller.getPlaceholderImage);
   router.post('/optimise', upload.array('images'), controller.optimiseImages);
