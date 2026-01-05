@@ -14,31 +14,31 @@ export default function Homepage() {
       title: '🧵 Tools for strings...',
       tools: [
         {
-          title: 'String Count',
+          title: 'Count',
           path: '/string/count'
         },
         {
-          title: 'String Transform',
+          title: 'Transform',
           path: '/string/transform'
         },
         {
-          title: 'String Case Converter',
+          title: 'Case Converter',
           path: '/string/case-converter'
         },
         {
-          title: 'String Encode Decode',
+          title: 'Encode Decode',
           path: '/string/encode-decode'
         },
         {
-          title: 'String JWT Decoder',
+          title: 'JWT Decoder',
           path: '/string/jwt-decoder'
         },
         {
-          title: 'String JSON Formatter',
+          title: 'JSON Formatter',
           path: '/string/json-formatter'
         },
         {
-          title: 'String Hash Generator',
+          title: 'Hash Generator',
           path: '/string/hash-generator'
         },
       ]
@@ -56,11 +56,11 @@ export default function Homepage() {
       title: '⚡ Tools for converters...',
       tools: [
         {
-          title: 'XML to JSON Converter',
+          title: 'XML to JSON',
           path: '/converter/xml-to-json'
         },
         {
-          title: 'JSON to XML Converter',
+          title: 'JSON to XML',
           path: '/converter/json-to-xml'
         }
       ]
@@ -78,7 +78,7 @@ export default function Homepage() {
       title: '🖼️ Tools for images...',
       tools: [
         {
-          title: 'Image to Base64 Converter',
+          title: 'Image to Base64',
           path: '/image/base64'
         },
         {
@@ -129,7 +129,7 @@ export default function Homepage() {
                         <button className="text-xs text-blue-500">How is this tracked?</button>
                       </TooltipTrigger>
                       <TooltipContent className="w-56">
-                        <p>The browser tracks page views in local storage, so we know which page you view the most. Which translates to the tool you use to most.... we hope.</p>
+                        <p>The browser tracks page views in local storage, so we know which page you view the most. Which translates to the tool you use the most.... we hope.</p>
                       </TooltipContent>
                     </Tooltip>
                   </h3>

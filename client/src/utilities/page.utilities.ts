@@ -3,29 +3,29 @@ export const getPageTitle = (path: string): string => {
     case '/':
       return 'Home';
     case '/string/count':
-      return 'String Count';
+      return 'Count';
     case '/string/transform':
-      return 'String Transform';
+      return 'Transform';
     case '/string/case-converter':
-      return 'String Case Converter';
+      return 'Case Converter';
     case '/string/encode-decode':
-      return 'String Encode Decode';
+      return 'Encode Decode';
     case '/string/jwt-decoder':
-      return 'String JWT Decoder';
+      return 'JWT Decoder';
     case '/string/json-formatter':
-      return 'String JSON Formatter';
+      return 'JSON Formatter';
     case '/string/hash-generator':
-      return 'String Hash Generator';
+      return 'Hash Generator';
     case '/color/converter':
       return 'Color Converter';
     case '/converter/xml-to-json':
-      return 'XML to JSON Converter';
+      return 'XML to JSON';
     case '/converter/json-to-xml':
-      return 'JSON to XML Converter';
+      return 'JSON to XML';
     case '/date-time/epoch-unix':
       return 'Epoch Unix Date Time Converter';
     case '/image/base64':
-      return 'Image to Base64 Converter';
+      return 'Image to Base64';
     case '/image/optimise':
       return 'Image Optimiser';
     case '/image/placeholder':
