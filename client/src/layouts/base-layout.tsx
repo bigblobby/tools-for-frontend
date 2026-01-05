@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button.tsx';
 import { MoveLeft, Search } from 'lucide-react';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group.tsx';
 import { Popover, PopoverContent, PopoverAnchor } from '@/components/ui/popover.tsx';
-import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from '@/components/ui/command.tsx';
 import { useRef, useState } from 'react';
 
 const searchItems = [
@@ -60,8 +59,10 @@ export default function BaseLayout() {
   const [searchValue, setSearchValue] = useState('');
   useMostRecentPages();
   useMostUseTools();
-  
+
   const inputRef = useRef<HTMLInputElement>(null);
+  const popoverId = 'search-popover';
+  const inputId = 'search-input';
 
   const handleSelect = (path: string) => {
     void navigate({ to: path });
@@ -78,6 +79,37 @@ export default function BaseLayout() {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Escape') {
+      setOpen(false);
+      inputRef.current?.blur();
+    } else if (e.key === 'Tab' && open) {
+      // When tabbing from input and popover is open, move to first item
+      e.preventDefault();
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        const firstItem = document.querySelector(`#${popoverId} button[role="option"]`) as HTMLElement;
+        if (firstItem) {
+          firstItem.focus();
+        }
+      }, 0);
+    } else if (e.key === 'ArrowDown' && open) {
+      e.preventDefault();
+      const firstItem = document.querySelector(`#${popoverId} button[role="option"]`) as HTMLElement;
+      if (firstItem) {
+        firstItem.focus();
+      }
+    }
+  };
+
+  // Count total results for screen reader announcement
+  const totalResults = searchItems.reduce((acc, group) => {
+    return acc + group.items.filter((item) =>
+      item.title.toLowerCase().includes(searchValue.toLowerCase())
+    ).length;
+  }, 0);
+
+
   return (
     <SidebarProvider>
       <div className="flex w-full">
@@ -88,9 +120,20 @@ export default function BaseLayout() {
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverAnchor asChild>
                   <div onMouseDown={handleWrapperMouseDown}>
+                    <label htmlFor={inputId} className="sr-only">
+                      Search tools
+                    </label>
                     <InputGroup>
                       <InputGroupInput
                         ref={inputRef}
+                        id={inputId}
+                        type="search"
+                        role="combobox"
+                        aria-expanded={open}
+                        aria-controls={open ? popoverId : undefined}
+                        aria-autocomplete="list"
+                        aria-haspopup="listbox"
+                        aria-label="Search tools"
                         placeholder="Search..."
                         value={searchValue}
                         onChange={(e) => {
@@ -98,16 +141,20 @@ export default function BaseLayout() {
                           if (!open) setOpen(true);
                         }}
                         onFocus={() => setOpen(true)}
+                        onKeyDown={handleKeyDown}
                       />
-                      <InputGroupAddon>
+                      <InputGroupAddon aria-hidden="true">
                         <Search />
                       </InputGroupAddon>
                     </InputGroup>
                   </div>
                 </PopoverAnchor>
                 <PopoverContent
-                  className="w-[400px] p-0"
+                  id={popoverId}
+                  role="listbox"
+                  className="w-[400px] p-0 max-h-[400px] overflow-y-auto"
                   align="start"
+                  tabIndex={-1}
                   onInteractOutside={(e) => {
                     // Prevent closing when clicking on the input
                     const target = e.target as HTMLElement;
@@ -115,35 +162,113 @@ export default function BaseLayout() {
                       e.preventDefault();
                     }
                   }}
+                  onEscapeKeyDown={() => {
+                    setOpen(false);
+                    inputRef.current?.focus();
+                  }}
+                  onOpenAutoFocus={(e) => {
+                    // Prevent auto-focus on open, let the input keep focus
+                    e.preventDefault();
+                  }}
                 >
-                  <Command shouldFilter={false}>
-                    <CommandList>
-                      <CommandEmpty>No results found.</CommandEmpty>
-                      {searchItems.map((group) => {
-                        const filteredItems = group.items.filter((item) =>
-                          item.title.toLowerCase().includes(searchValue.toLowerCase())
-                        );
+                  {(() => {
+                    const allFilteredItems = searchItems.flatMap((group) => {
+                      const filtered = group.items.filter((item) =>
+                        item.title.toLowerCase().includes(searchValue.toLowerCase())
+                      );
+                      return filtered.length > 0 ? [{ category: group.category, items: filtered }] : [];
+                    });
 
-                        if (filteredItems.length === 0) return null;
+                    if (allFilteredItems.length === 0) {
+                      return (
+                        <div className="py-6 text-center text-sm text-muted-foreground" role="option" aria-label="No results found">
+                          No results found.
+                        </div>
+                      );
+                    }
 
-                        return (
-                          <CommandGroup key={group.category} heading={group.category}>
-                            {filteredItems.map((item) => (
-                              <CommandItem
+                    return (
+                      <div className="p-1">
+                        {allFilteredItems.map((group) => (
+                          <div key={group.category} className="mb-2">
+                            <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+                              {group.category}
+                            </div>
+                            {group.items.map((item) => (
+                              <button
                                 key={item.path}
-                                value={item.title}
-                                onSelect={() => handleSelect(item.path)}
+                                type="button"
+                                role="option"
+                                className="w-full text-left px-2 py-1.5 text-sm rounded-sm hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none"
+                                onClick={() => handleSelect(item.path)}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    handleSelect(item.path);
+                                  } else if (e.key === 'Tab' && !e.shiftKey) {
+                                    // Tab forward - move to next item or allow default if last
+                                    const items = Array.from(
+                                      document.querySelectorAll(`#${popoverId} button[role="option"]`)
+                                    ) as HTMLElement[];
+                                    const currentIndex = items.indexOf(e.currentTarget);
+                                    if (currentIndex < items.length - 1) {
+                                      e.preventDefault();
+                                      items[currentIndex + 1].focus();
+                                    }
+                                    // If it's the last item, allow default tab behavior
+                                  } else if (e.key === 'Tab' && e.shiftKey) {
+                                    // Shift+Tab - move to previous item or back to input
+                                    const items = Array.from(
+                                      document.querySelectorAll(`#${popoverId} button[role="option"]`)
+                                    ) as HTMLElement[];
+                                    const currentIndex = items.indexOf(e.currentTarget);
+                                    if (currentIndex > 0) {
+                                      e.preventDefault();
+                                      items[currentIndex - 1].focus();
+                                    } else {
+                                      e.preventDefault();
+                                      inputRef.current?.focus();
+                                    }
+                                  } else if (e.key === 'ArrowDown') {
+                                    e.preventDefault();
+                                    const items = Array.from(
+                                      document.querySelectorAll(`#${popoverId} button[role="option"]`)
+                                    ) as HTMLElement[];
+                                    const currentIndex = items.indexOf(e.currentTarget);
+                                    if (currentIndex < items.length - 1) {
+                                      items[currentIndex + 1].focus();
+                                    }
+                                  } else if (e.key === 'ArrowUp') {
+                                    e.preventDefault();
+                                    const items = Array.from(
+                                      document.querySelectorAll(`#${popoverId} button[role="option"]`)
+                                    ) as HTMLElement[];
+                                    const currentIndex = items.indexOf(e.currentTarget);
+                                    if (currentIndex > 0) {
+                                      items[currentIndex - 1].focus();
+                                    } else {
+                                      inputRef.current?.focus();
+                                    }
+                                  }
+                                }}
                               >
                                 {item.title}
-                              </CommandItem>
+                              </button>
                             ))}
-                          </CommandGroup>
-                        );
-                      })}
-                    </CommandList>
-                  </Command>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })()}
                 </PopoverContent>
               </Popover>
+              {open && searchValue && (
+                <div className="sr-only" aria-live="polite" aria-atomic="true">
+                  {totalResults === 0
+                    ? 'No results found'
+                    : `${totalResults} ${totalResults === 1 ? 'result' : 'results'} found`}
+                </div>
+              )}
             </div>
           </div>
 

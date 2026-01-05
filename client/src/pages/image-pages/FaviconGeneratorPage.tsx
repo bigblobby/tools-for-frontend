@@ -99,7 +99,7 @@ export default function FaviconGeneratorPage() {
               <li>Paste the following into the <code>&lt;head&gt;</code> of your HTML document.</li>
             </ol>
           </div>
-          <Textarea readOnly>{html}</Textarea>
+          <Textarea readOnly defaultValue={html} />
           <div>
             <Button variant="secondary" onClick={handleCopy}>Copy</Button>
           </div>
