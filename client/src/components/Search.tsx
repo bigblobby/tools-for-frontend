@@ -1,7 +1,6 @@
 import { Popover, PopoverAnchor, PopoverContent } from '@/components/ui/popover.tsx';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group.tsx';
 import { useRef, useState, useMemo } from 'react';
-import { useNavigate } from '@tanstack/react-router';
 import { Search as SearchIcon } from 'lucide-react';
 import { searchItems } from '@/constants/search.constants.ts';
 import { SearchResults } from '@/components/SearchResults.tsx';
@@ -11,7 +10,6 @@ const POPOVER_ID = 'search-popover';
 const INPUT_ID = 'search-input';
 
 export default function Search() {
-  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -25,12 +23,6 @@ export default function Search() {
     () => getTotalResults(searchItems, searchValue),
     [searchValue]
   );
-
-  const handleSelect = (path: string) => {
-    void navigate({ to: path });
-    setOpen(false);
-    setSearchValue('');
-  };
 
   const handleWrapperMouseDown = () => {
     inputRef.current?.focus();
@@ -60,7 +52,7 @@ export default function Search() {
 
   const focusFirstItem = () => {
     const firstItem = document.querySelector(
-      `#${POPOVER_ID} button[role="option"]`
+      `#${POPOVER_ID} a[role="option"]`
     ) as HTMLElement;
     if (firstItem) {
       firstItem.focus();
@@ -129,12 +121,7 @@ export default function Search() {
             e.preventDefault();
           }}
         >
-          <SearchResults
-            filteredItems={filteredItems}
-            onSelect={handleSelect}
-            popoverId={POPOVER_ID}
-            inputRef={inputRef}
-          />
+          <SearchResults filteredItems={filteredItems} />
         </PopoverContent>
       </Popover>
       {open && searchValue && (

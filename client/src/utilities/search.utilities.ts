@@ -13,9 +13,7 @@ export const filterSearchItems = (
   return searchItems
     .map((group) => ({
       category: group.category,
-      items: group.items.filter((item) =>
-        item.title.toLowerCase().includes(lowerSearchValue)
-      )
+      items: group.items.filter((item) => item.title.toLowerCase().includes(lowerSearchValue))
     }))
     .filter((group) => group.items.length > 0);
 };
@@ -29,9 +27,11 @@ export const getTotalResults = (
   }
 
   const lowerSearchValue = searchValue.toLowerCase();
+  
   return searchItems.reduce((acc, group) => {
-    return acc + group.items.filter((item) =>
-      item.title.toLowerCase().includes(lowerSearchValue)
+    return acc + group.items.filter((item) => {
+      return item.title.toLowerCase().includes(lowerSearchValue)
+      }
     ).length;
   }, 0);
 };

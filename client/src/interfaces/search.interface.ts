@@ -12,3 +12,10 @@ export interface FilteredSearchCategory extends SearchCategory {
   items: SearchItem[];
 }
 
+export interface SearchResultsProps {
+  filteredItems: FilteredSearchCategory[];
+}
+
+export interface SearchResultItemProps {
+  item: SearchItem;
+}
