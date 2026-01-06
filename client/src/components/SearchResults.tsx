@@ -1,15 +1,14 @@
 import type {
-  FilteredSearchCategory,
-  SearchItem,
+  FilteredPageCategory, PageItem
 } from '@/interfaces/search.interface.ts';
 import { Link } from '@tanstack/react-router';
 
 export interface SearchResultsProps {
-  filteredItems: FilteredSearchCategory[];
+  filteredItems: FilteredPageCategory[];
 }
 
 export interface SearchResultItemProps {
-  item: SearchItem;
+  item: PageItem;
 }
 
 const SearchResultItem = ({ item }: SearchResultItemProps) => {
@@ -47,7 +46,7 @@ export const SearchResults = ({
           <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
             {group.category}
           </div>
-          {group.items.map((item: SearchItem) => (
+          {group.items.map((item: PageItem) => (
             <SearchResultItem
               key={item.path}
               item={item}

@@ -1,10 +1,10 @@
 import { Popover, PopoverAnchor, PopoverContent } from '@/components/ui/popover.tsx';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group.tsx';
-import { useRef, useState, useMemo } from 'react';
+import { useRef, useState, useMemo, type ChangeEvent, type KeyboardEvent } from 'react';
 import { Search as SearchIcon } from 'lucide-react';
-import { searchItems } from '@/constants/search.constants.ts';
 import { SearchResults } from '@/components/SearchResults.tsx';
 import { filterSearchItems, getTotalResults } from '@/utilities/search.utilities.ts';
+import { pageCategories } from '@/constants/page.constants.ts';
 
 const POPOVER_ID = 'search-popover';
 const INPUT_ID = 'search-input';
@@ -15,12 +15,12 @@ export default function Search() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const filteredItems = useMemo(
-    () => filterSearchItems(searchItems, searchValue),
+    () => filterSearchItems(pageCategories, searchValue),
     [searchValue]
   );
 
   const totalResults = useMemo(
-    () => getTotalResults(searchItems, searchValue),
+    () => getTotalResults(pageCategories, searchValue),
     [searchValue]
   );
 
@@ -31,17 +31,17 @@ export default function Search() {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
     if (!open) {
       setOpen(true);
     }
   };
 
-  const handlePopoverInteractOutside = (e: Event) => {
-    const target = e.target as HTMLElement;
+  const handlePopoverInteractOutside = (event: Event) => {
+    const target = event.target as HTMLElement;
     if (target.closest('[data-slot="popover-anchor"]')) {
-      e.preventDefault();
+      event.preventDefault();
     }
   };
 
@@ -59,8 +59,8 @@ export default function Search() {
     }
   };
 
-  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Escape') {
+  const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Escape') {
       setOpen(false);
       inputRef.current?.blur();
       return;
@@ -71,8 +71,8 @@ export default function Search() {
     }
 
     // Tab or ArrowDown moves focus to first item
-    if (e.key === 'Tab' || e.key === 'ArrowDown') {
-      e.preventDefault();
+    if (event.key === 'Tab' || event.key === 'ArrowDown') {
+      event.preventDefault();
       setTimeout(() => focusFirstItem(), 0);
     }
   };

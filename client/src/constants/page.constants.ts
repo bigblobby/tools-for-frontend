@@ -1,8 +1,9 @@
-import type { SearchCategory } from './Search.types';
+import type { PageCategory } from '@/interfaces/search.interface.ts';
 
-export const searchItems: SearchCategory[] = [
+export const pageCategories: PageCategory[] = [
   {
-    category: 'String Utilities',
+    category: 'Strings',
+    icon: '🧵',
     items: [
       { title: 'Count', path: '/string/count' },
       { title: 'Transform', path: '/string/transform' },
@@ -14,13 +15,15 @@ export const searchItems: SearchCategory[] = [
     ]
   },
   {
-    category: 'Color Utilities',
+    category: 'Colors',
+    icon: '🎨',
     items: [
       { title: 'Color Converter', path: '/color/converter' },
     ]
   },
   {
     category: 'Converters',
+    icon: '🔄',
     items: [
       { title: 'XML to JSON', path: '/converter/xml-to-json' },
       { title: 'JSON to XML', path: '/converter/json-to-xml' },
@@ -28,12 +31,14 @@ export const searchItems: SearchCategory[] = [
   },
   {
     category: 'Date & Time',
+    icon: '⏰',
     items: [
       { title: 'Epoch Unix Date Time Converter', path: '/date-time/epoch-unix' },
     ]
   },
   {
-    category: 'Image Utilities',
+    category: 'Images',
+    icon: '🖼️',
     items: [
       { title: 'Image to Base64', path: '/image/base64' },
       { title: 'Image Optimiser', path: '/image/optimise' },

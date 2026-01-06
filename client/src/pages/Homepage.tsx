@@ -4,99 +4,11 @@ import { getPageTitle } from '@/utilities/page.utilities';
 import { Link } from '@tanstack/react-router';
 import useMostUseTools from '@/hooks/use-most-used-tools.ts';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { pageCategories } from '@/constants/page.constants.ts';
 
 export default function Homepage() {
   const recentPages = useMostRecentPages();
   const mostUsedTools = useMostUseTools();
-
-  const sections = [
-    {
-      title: '🧵 Tools for strings...',
-      tools: [
-        {
-          title: 'Count',
-          path: '/string/count'
-        },
-        {
-          title: 'Transform',
-          path: '/string/transform'
-        },
-        {
-          title: 'Case Converter',
-          path: '/string/case-converter'
-        },
-        {
-          title: 'Encode Decode',
-          path: '/string/encode-decode'
-        },
-        {
-          title: 'JWT Decoder',
-          path: '/string/jwt-decoder'
-        },
-        {
-          title: 'JSON Formatter',
-          path: '/string/json-formatter'
-        },
-        {
-          title: 'Hash Generator',
-          path: '/string/hash-generator'
-        },
-      ]
-    },
-    {
-      title: '🎨 Tools for colors...',
-      tools: [
-        {
-          title: 'Color Converter',
-          path: '/color/converter'
-        }
-      ]
-    },
-    {
-      title: '⚡ Tools for converters...',
-      tools: [
-        {
-          title: 'XML to JSON',
-          path: '/converter/xml-to-json'
-        },
-        {
-          title: 'JSON to XML',
-          path: '/converter/json-to-xml'
-        }
-      ]
-    },
-    {
-      title: '⏰ Tools for date and time...',
-      tools: [
-        {
-          title: 'Epoch Unix Date Time Converter',
-          path: '/date-time/epoch-unix'
-        },
-      ]
-    },
-    {
-      title: '🖼️ Tools for images...',
-      tools: [
-        {
-          title: 'Image to Base64',
-          path: '/image/base64'
-        },
-        {
-          title: 'Image Optimiser',
-          path: '/image/optimise'
-        },
-        {
-          title: 'Placeholder Image Generator',
-          path: '/image/placeholder'
-        },
-        {
-          title: 'Favicon Generator',
-          path: '/image/favicon-generator'
-        }
-      ]
-    }
-  ];
-
 
   return (
     <div className="space-y-8">
@@ -148,24 +60,22 @@ export default function Homepage() {
           </div>
         )
       }
-      
+
       <div>
         <h2 className="text-2xl font-bold mb-2">All tools...</h2>
         <div className="space-y-8">
-          {sections.map((section) => {
+          {pageCategories.map((section) => {
             return (
-              <div key={section.title}>
-                <h3 className="mb-2">{section.title}</h3>
+              <div key={section.category}>
+                <h3 className="mb-2">{section.icon} Tools for {section.category.toLowerCase()}...</h3>
                 <ul className="flex flex-wrap gap-2">
-                  {section.tools.map(tool => {
-                    return (
-                      <li key={tool.title}>
-                        <Button variant="secondary" size="lg" asChild>
-                          <Link to={tool.path}>{tool.title}</Link>
-                        </Button>
-                      </li>
-                    );
-                  })}
+                  {section.items.map((item) => (
+                    <li key={item.path}>
+                      <Button variant="secondary" size="lg" asChild>
+                        <Link to={item.path}>{item.title}</Link>
+                      </Button>
+                    </li>
+                  ))}
                 </ul>
               </div>
             );

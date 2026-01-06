@@ -1,9 +1,9 @@
-import type { FilteredSearchCategory, SearchCategory } from '@/interfaces/search.interface.ts';
+import type { FilteredPageCategory, PageCategory } from '@/interfaces/search.interface.ts';
 
 export const filterSearchItems = (
-  searchItems: SearchCategory[],
+  searchItems: PageCategory[],
   searchValue: string
-): FilteredSearchCategory[] => {
+): FilteredPageCategory[] => {
   if (!searchValue.trim()) {
     return searchItems;
   }
@@ -19,7 +19,7 @@ export const filterSearchItems = (
 };
 
 export const getTotalResults = (
-  searchItems: SearchCategory[],
+  searchItems: PageCategory[],
   searchValue: string
 ): number => {
   if (!searchValue.trim()) {

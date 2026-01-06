@@ -1,13 +1,14 @@
-export interface SearchItem {
+export interface PageItem {
   title: string;
   path: string;
 }
 
-export interface SearchCategory {
+export interface PageCategory {
   category: string;
-  items: SearchItem[];
+  icon?: string;
+  items: PageItem[];
 }
 
-export interface FilteredSearchCategory extends SearchCategory {
-  items: SearchItem[];
+export interface FilteredPageCategory extends PageCategory {
+  items: PageItem[];
 }
