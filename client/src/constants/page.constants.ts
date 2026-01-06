@@ -33,7 +33,7 @@ export const pageCategories: PageCategory[] = [
     category: 'Date & Time',
     icon: '⏰',
     items: [
-      { title: 'Epoch Unix Date Time Converter', path: '/date-time/epoch-unix' },
+      { title: 'Epoch/Unix Converter', path: '/date-time/epoch-unix' },
     ]
   },
   {
