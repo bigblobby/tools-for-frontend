@@ -19,6 +19,7 @@ export const pageCategories: PageCategory[] = [
     icon: '🎨',
     items: [
       { title: 'Color Converter', path: '/color/converter' },
+      { title: 'Gradient Generator', path: '/color/gradient-generator' }
     ]
   },
   {
