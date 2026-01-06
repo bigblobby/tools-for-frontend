@@ -1,5 +1,16 @@
-import type { SearchItem, SearchResultItemProps, SearchResultsProps } from '@/interfaces/search.interface.ts';
+import type {
+  FilteredSearchCategory,
+  SearchItem,
+} from '@/interfaces/search.interface.ts';
 import { Link } from '@tanstack/react-router';
+
+export interface SearchResultsProps {
+  filteredItems: FilteredSearchCategory[];
+}
+
+export interface SearchResultItemProps {
+  item: SearchItem;
+}
 
 const SearchResultItem = ({ item }: SearchResultItemProps) => {
   return (
