@@ -5,19 +5,22 @@ import { Link } from '@tanstack/react-router';
 
 export interface SearchResultsProps {
   filteredItems: FilteredPageCategory[];
+  setOpen: (value: boolean) => void;
 }
 
 export interface SearchResultItemProps {
   item: PageItem;
+  setOpen: (value: boolean) => void;
 }
 
-const SearchResultItem = ({ item }: SearchResultItemProps) => {
+const SearchResultItem = ({ item, setOpen }: SearchResultItemProps) => {
   return (
     <Link
       type="button"
       role="option"
       to={item.path}
       className="block w-full text-left px-2 py-1.5 text-sm rounded-sm hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none"
+      onClick={() => setOpen(false)}
     >
       {item.title}
     </Link>
@@ -26,6 +29,7 @@ const SearchResultItem = ({ item }: SearchResultItemProps) => {
 
 export const SearchResults = ({
   filteredItems,
+  setOpen
 }: SearchResultsProps) => {
   if (filteredItems.length === 0) {
     return (
@@ -50,6 +54,7 @@ export const SearchResults = ({
             <SearchResultItem
               key={item.path}
               item={item}
+              setOpen={setOpen}
             />
           ))}
         </div>

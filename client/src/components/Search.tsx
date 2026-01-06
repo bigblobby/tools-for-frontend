@@ -121,7 +121,7 @@ export default function Search() {
             e.preventDefault();
           }}
         >
-          <SearchResults filteredItems={filteredItems} />
+          <SearchResults filteredItems={filteredItems} setOpen={setOpen} />
         </PopoverContent>
       </Popover>
       {open && searchValue && (
