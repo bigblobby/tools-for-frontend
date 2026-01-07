@@ -16,10 +16,17 @@ export const pageCategories: PageCategory[] = [
   },
   {
     category: 'Colors',
-    icon: '🎨',
+    icon: '🫟',
     items: [
       { title: 'Color Converter', path: '/color/converter' },
       { title: 'Gradient Generator', path: '/color/gradient-generator' }
+    ]
+  },
+  {
+    category: 'CSS',
+    icon: '🎨',
+    items: [
+      { title: 'Box Shadow', path: '/css/box-shadow' },
     ]
   },
   {

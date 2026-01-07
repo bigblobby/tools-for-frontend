@@ -23,6 +23,7 @@ import {
   imageRoute,
   imageToBase64Route
 } from '@/routes/image.routes.tsx';
+import { cssRoute, boxShadowRoute } from '@/routes/css.route.tsx';
 
 export const rootRoute = createRootRoute({
   component: BaseLayout,
@@ -39,6 +40,7 @@ const routeTree = rootRoute.addChildren([
   homeRoute,
   stringRoute.addChildren([stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute, stringJSONFormatterRoute, stringJWTDecoderRoute]),
   colorRoute.addChildren([colorConverterRoute, colorGradientGeneratorRoute]),
+  cssRoute.addChildren([boxShadowRoute]),
   numberRoute.addChildren([]),
   converterRoute.addChildren([xmlToJsonConverterRoute, jsonToXmlConverterRoute]),
   dateTimeRoute.addChildren([epochUnixDateTimeRoute]),
