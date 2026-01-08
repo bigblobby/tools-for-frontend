@@ -50,6 +50,16 @@ export default function ColorPicker() {
     }
   }
 
+  const getHex = (color: Color) => {
+    try {
+      const hex = color.toGamut({ space: 'srgb' }).to('srgb').toString({ format: 'hex' });
+      const longhex = hex.length < 6 ? hex.split('').map(v => v + v).join('').slice(1) : hex;
+      return longhex.toUpperCase();
+    } catch {
+      return '#000000';
+    }
+  };
+
   const colorHarmonies = useMemo(() => {
     try {
       const baseColor = new Color(inputColor || "#000000");
@@ -63,18 +73,6 @@ export default function ColorPicker() {
       const oklchHue = oklch.h || 0;
 
       const normalizeHue = (h: number) => ((h % 360) + 360) % 360;
-
-      const getHex = (color: Color) => {
-        try {
-          const hex = color.toGamut({ space: 'srgb' }).to('srgb').toString({ format: 'hex' });
-          // Ensure hex is always 6 characters (expand short form like #f00 to #ff0000)
-          // Check length < 6 because short form is 4 chars (#f00) and long form is 7 chars (#ff0000)
-          const longhex = hex.length < 6 ? hex.split('').map(v => v + v).join('').slice(1) : hex;
-          return longhex.toUpperCase();
-        } catch {
-          return '#000000';
-        }
-      };
 
       // Complement: +180 degrees
       const complementHue = normalizeHue(hue + 180);
@@ -167,6 +165,38 @@ export default function ColorPicker() {
     }
   }, [inputColor]);
 
+  const colorVariations = useMemo(() => {
+    try {
+      const baseColor = new Color(inputColor || "#000000");
+      const white = new Color('white');
+      const black = new Color('black');
+
+      const shades: string[] = [];
+      const tints: string[] = [];
+
+      // Generate shades (0% to 100% black added)
+      for (let i = 0; i <= 10; i++) {
+        const percentage = i * 10;
+        const amount = percentage / 100;
+        const shade = baseColor.mix(black, amount, { space: 'srgb' });
+        shades.push(getHex(shade));
+      }
+
+      // Generate tints (0% to 100% white added)
+      for (let i = 0; i <= 10; i++) {
+        const percentage = i * 10;
+        const amount = percentage / 100;
+        const tint = baseColor.mix(white, amount, { space: 'srgb' });
+        tints.push(getHex(tint));
+      }
+
+      return { shades, tints };
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }, [inputColor]);
+
   const handleCopyColor = (color: string) => {
     void navigator.clipboard.writeText(color);
     toast.success("Copied to clipboard", { position: "top-center" });
@@ -214,6 +244,111 @@ export default function ColorPicker() {
           <div className="h-full w-full rounded-md border" style={{ backgroundColor: inputColor }}></div>
         </div>
       </div>
+
+      {colorVariations && (
+        <div className="mt-16">
+          <div className="flex items-center gap-2 mb-4">
+            <h2 className="text-2xl font-bold">Variations</h2>
+          </div>
+          <p className="text-gray-500 mb-4">
+            Generate tints and shades of your selected color by mixing in white or black in 10% increments.
+          </p>
+          <div className="bg-gray-100 rounded-lg p-4 mb-6">
+            <p className="text-sm font-semibold mb-1">Pro Tip</p>
+            <p className="text-sm text-gray-700">Shades work well for hover states and shadows, while tints are ideal for highlights and backgrounds.</p>
+          </div>
+
+          {/* Shades Section */}
+          <div className="mb-8">
+            <h3 className="font-bold text-lg mb-2">Shades</h3>
+            <p className="text-sm text-gray-600 mb-4">Darkened versions of your base color made by blending in black.</p>
+            <div className="relative">
+              <div className="flex h-16 gap-1 rounded-lg">
+                {colorVariations.shades.map((color, idx) => {
+                  const isFirst = idx === 0;
+                  const isLast = idx === colorVariations.shades.length - 1;
+                  const roundedClass = isFirst ? 'rounded-l-lg' : isLast ? 'rounded-r-lg' : '';
+                  return (
+                    <Tooltip key={idx}>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => handleCopyColor(color)}
+                          className={`flex-1 cursor-pointer ${roundedClass}`}
+                          style={{ backgroundColor: color }}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{color}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  );
+                })}
+              </div>
+              <div className="flex mt-2">
+                {Array.from({ length: 11 }, (_, i) => i * 10).map((percentage, idx) => (
+                  <div key={idx} className="flex-1 flex justify-center">
+                    <span className="text-xs bg-white px-1.5 py-0.5 rounded">{percentage}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Tints Section */}
+          <div className="mb-8">
+            <h3 className="font-bold text-lg mb-2">Tints</h3>
+            <p className="text-sm text-gray-600 mb-4">Lightened versions of your base color made by blending in white.</p>
+            <div className="relative">
+              <div className="flex h-16 gap-1 rounded-lg">
+                {colorVariations.tints.map((color, idx) => {
+                  const isFirst = idx === 0;
+                  const isLast = idx === colorVariations.tints.length - 1;
+                  const roundedClass = isFirst ? 'rounded-l-lg' : isLast ? 'rounded-r-lg' : '';
+                  return (
+                    <Tooltip key={idx}>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => handleCopyColor(color)}
+                          className={`flex-1 cursor-pointer ${roundedClass}`}
+                          style={{ backgroundColor: color }}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{color}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  );
+                })}
+              </div>
+              <div className="flex mt-2">
+                {Array.from({ length: 11 }, (_, i) => i * 10).map((percentage, idx) => (
+                  <div key={idx} className="flex-1 flex justify-center">
+                    <span className="text-xs bg-white px-1.5 py-0.5 rounded">{percentage}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Information Boxes */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h4 className="font-semibold mb-2">Where to Use</h4>
+              <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                <li>Interactive element states (hover, active, disabled)</li>
+                <li>Adding visual depth through shadows and highlights</li>
+                <li>Establishing uniform color palettes</li>
+              </ul>
+            </div>
+            <div className="bg-gray-50 rounded-lg p-4">
+              <h4 className="font-semibold mb-2">Best Practice</h4>
+              <p className="text-sm text-gray-700">
+                These variations serve as the building blocks for a unified color system. Save and export them to ensure design consistency throughout your project.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {colorHarmonies && (
         <div className="mt-16">
