@@ -20,14 +20,14 @@ export default function ColorGradientGeneratorPage() {
       </div>
       <div className="flex flex-col gap-10 mt-10">
         <div className="flex flex-col md:flex-row items-center md:items-stretch gap-3">
-          <div className="inline-block p-3 border-2 rounded-md">
+          <div className="inline-block p-3 border rounded-md">
             <ColorPicker value={color} onChange={setColor} disableDarkMode={true} />
           </div>
           <div className="w-full h-40 md:h-auto rounded-md" style={{ background: color }}></div>
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 border rounded-md p-4">
           <div>
-            <h2 className="text-2xl">How to use?</h2>
+            <h2 className="text-xl font-bold">How to use?</h2>
             <p className="text-gray-500">Paste the following into your css.</p>
             <pre className="whitespace-pre-wrap mt-3">
               {`background: ${color};\ncolor: ${color};`}

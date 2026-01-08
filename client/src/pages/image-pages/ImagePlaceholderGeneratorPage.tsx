@@ -20,8 +20,8 @@ export default function ImagePlaceholderGeneratorPage() {
         </div>
       </div>
 
-      <div className="max-w-sm">
-        <h2 className="text-xl">Size</h2>
+      <div className="max-w-sm border rounded-md p-4">
+        <h2 className="text-xl font-bold">Size</h2>
         <p className="text-gray-500 text-sm">Generate an image of any size, just set the width and height.</p>
         <div className="flex flex-col gap-2 mt-3">
           <PlaceholderImageInput path="/p/400x400" />
@@ -29,8 +29,8 @@ export default function ImagePlaceholderGeneratorPage() {
         </div>
       </div>
 
-      <div className="max-w-sm">
-        <h2 className="text-xl">Color</h2>
+      <div className="max-w-sm border rounded-md p-4">
+        <h2 className="text-xl font-bold">Color</h2>
         <p className="text-gray-500 text-sm">You can use either CSS color names or HEX (without #)</p>
         <div className="flex flex-col gap-4 mt-5">
           <div className="flex flex-col gap-2">

@@ -246,9 +246,9 @@ export default function ColorPicker() {
       </div>
 
       {colorVariations && (
-        <div className="mt-16">
+        <div className="mt-10 border rounded-md p-4">
           <div className="flex items-center gap-2 mb-4">
-            <h2 className="text-2xl font-bold">Variations</h2>
+            <h2 className="text-xl font-bold">Variations</h2>
           </div>
           <p className="text-gray-500 mb-4">
             Generate tints and shades of your selected color by mixing in white or black in 10% increments.
@@ -351,13 +351,13 @@ export default function ColorPicker() {
       )}
 
       {colorHarmonies && (
-        <div className="mt-16">
+        <div className="mt-10 border rounded-md p-4">
           <div className="flex items-center gap-2 mb-4">
-            <h2 className="text-2xl font-bold">Color Combinations</h2>
+            <h2 className="text-xl font-bold">Color Combinations</h2>
           </div>
           <p className="text-gray-500 mb-6">Discover color harmonies that work together. Each combination creates a different feeling and aesthetic.</p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 gap-x-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 gap-x-16 bg-gray-50 rounded-lg p-4">
             <div>
               <h3 className="font-bold mb-2">How to Use</h3>
               <p className="text-gray-500 text-sm">Tap any color swatch to copy its hex code. These palettes are based on color theory principles for harmonious results.</p>
