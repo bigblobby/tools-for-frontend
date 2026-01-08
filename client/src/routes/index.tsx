@@ -12,7 +12,7 @@ import {
   stringJWTDecoderRoute,
   stringJSONFormatterRoute
 } from '@/routes/string.routes';
-import { colorRoute, colorConverterRoute, colorGradientGeneratorRoute, colorPickerRoute } from '@/routes/color.routes';
+import { colorRoute, colorConverterRoute, colorGradientGeneratorRoute, colorPickerRoute, colorContrastCheckerRoute } from '@/routes/color.routes';
 import { numberRoute } from "@/routes/number.routes";
 import { converterRoute, xmlToJsonConverterRoute, jsonToXmlConverterRoute } from "@/routes/converter.routes";
 import { dateTimeRoute, epochUnixDateTimeRoute } from '@/routes/date-time.routes.tsx';
@@ -39,7 +39,7 @@ const homeRoute = createRoute({
 const routeTree = rootRoute.addChildren([
   homeRoute,
   stringRoute.addChildren([stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute, stringJSONFormatterRoute, stringJWTDecoderRoute]),
-  colorRoute.addChildren([colorConverterRoute, colorGradientGeneratorRoute, colorPickerRoute]),
+  colorRoute.addChildren([colorConverterRoute, colorGradientGeneratorRoute, colorPickerRoute, colorContrastCheckerRoute]),
   cssRoute.addChildren([boxShadowRoute]),
   numberRoute.addChildren([]),
   converterRoute.addChildren([xmlToJsonConverterRoute, jsonToXmlConverterRoute]),

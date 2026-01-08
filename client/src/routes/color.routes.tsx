@@ -3,6 +3,7 @@ import { createRoute } from "@tanstack/react-router";
 import { rootRoute } from ".";
 import ColorGradientGeneratorPage from '@/pages/color-pages/ColorGradientGeneratorPage.tsx';
 import ColorPicker from "@/pages/color-pages/ColorPicker";
+import ColorContrastChecker from "@/pages/color-pages/ColorContrastChecker";
 
 const colorRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -27,4 +28,10 @@ const colorPickerRoute = createRoute({
   component: ColorPicker,
 });
 
-export { colorRoute, colorConverterRoute, colorGradientGeneratorRoute, colorPickerRoute };
+const colorContrastCheckerRoute = createRoute({
+  getParentRoute: () => colorRoute,
+  path: "/contrast-checker",
+  component: ColorContrastChecker,
+});
+
+export { colorRoute, colorConverterRoute, colorGradientGeneratorRoute, colorPickerRoute, colorContrastCheckerRoute };

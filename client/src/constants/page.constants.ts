@@ -20,7 +20,8 @@ export const pageCategories: PageCategory[] = [
     items: [
       { title: 'Color Picker', path: '/color/picker' },
       { title: 'Color Converter', path: '/color/converter' },
-      { title: 'Gradient Generator', path: '/color/gradient-generator' }
+      { title: 'Gradient Generator', path: '/color/gradient-generator' },
+      { title: 'Contrast Checker', path: '/color/contrast-checker' }
     ]
   },
   {
