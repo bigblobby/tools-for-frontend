@@ -13,7 +13,9 @@ export const filterSearchItems = (
   return searchItems
     .map((group) => ({
       category: group.category,
-      items: group.items.filter((item) => item.title.toLowerCase().includes(lowerSearchValue))
+      items: group.items.filter((item) => {
+        return item.title.toLowerCase().includes(lowerSearchValue) || group.category.toLowerCase().includes(lowerSearchValue);
+      })
     }))
     .filter((group) => group.items.length > 0);
 };
