@@ -6,17 +6,17 @@ import { toast } from 'sonner';
 
 export default function ColorGradientGeneratorPage() {
   const [color, setColor] = useState('linear-gradient(90deg, rgba(96,93,93,1) 0%, rgba(255,255,255,1) 100%)');
-  
+
   const handleCopy = (text: string) => {
     void navigator.clipboard.writeText(text);
     toast.success("Copied to clipboard", { position: "top-center" });
   }
-  
+
   return (
     <div>
       <div>
         <h1 className="text-2xl font-bold">Gradient Generator</h1>
-        <p className="text-gray-500">Create linear or radial gradients with as many colors as you'd like.</p>
+        <p className="text-gray-500">Create linear or radial gradients using as many colors as you'd like.</p>
       </div>
       <div className="flex flex-col gap-10 mt-10">
         <div className="flex flex-col md:flex-row items-center md:items-stretch gap-3">

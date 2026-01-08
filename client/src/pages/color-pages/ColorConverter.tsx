@@ -63,7 +63,7 @@ export default function ColorConverter() {
     <div>
       <div>
         <h1 className="text-2xl font-bold">Color Converter</h1>
-        <p className="text-gray-500">Convert a color to a different format.</p>
+        <p className="text-gray-500">Convert a color to different formats.</p>
       </div>
       <div className="flex flex-row gap-10 mt-10">
         <div className="flex-1 flex flex-col gap-6">

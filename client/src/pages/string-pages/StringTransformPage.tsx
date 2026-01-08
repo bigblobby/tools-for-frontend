@@ -62,8 +62,8 @@ export default function StringTransformPage() {
     <div className="flex flex-row gap-10">
       <div className="flex-1 flex flex-col gap-6">
         <div>
-          <h1 className="text-2xl font-bold">String Transform</h1>
-          <p className="text-gray-500">This page transforms a string into a different format.</p>
+          <h1 className="text-2xl font-bold">Transform</h1>
+          <p className="text-gray-500">Transform a string into a different format.</p>
         </div>
 
         <div className="flex flex-col gap-3">

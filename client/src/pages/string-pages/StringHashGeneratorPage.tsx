@@ -49,8 +49,8 @@ export default function StringHashGeneratorPage() {
     <div className="flex flex-row gap-10">
       <div className="flex-1 flex flex-col gap-6">
         <div>
-          <h1 className="text-2xl font-bold">String Hash Generator</h1>
-          <p className="text-gray-500">This page generates a hash of a string.</p>
+          <h1 className="text-2xl font-bold">Hash Generator</h1>
+          <p className="text-gray-500">Generate hashes of a string using MD5, SHA-256, and SHA-512.</p>
         </div>
 
         <div className="flex flex-col gap-3">

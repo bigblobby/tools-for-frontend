@@ -13,8 +13,8 @@ export default function StringCountPage() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h1 className="text-2xl font-bold">String Count</h1>
-        <p className="text-gray-500">This page counts the number of words and characters in a string.</p>
+        <h1 className="text-2xl font-bold">Count</h1>
+        <p className="text-gray-500">Counts the number of words and characters in a string.</p>
       </div>
 
       <div>

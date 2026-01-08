@@ -8,41 +8,41 @@ export default function StringJSONFormatterPage() {
   const [jsonInput, setJsonInput] = useState('');
   const [jsonOutput, setJsonOutput] = useState('');
   const [spaces, setSpaces] = useState(2);
-  
+
   const handleFormatJson = (spaces?: number) => {
     if (!jsonInput.trim().length) {
       toast.error('No JSON added.');
       return;
     }
-    
+
     const formattedJSON = JSON.stringify(JSON.parse(jsonInput), null, spaces);
-    
+
     setJsonOutput(formattedJSON);
   }
-  
+
   const handleBeautifyJson = () => {
     handleFormatJson(spaces)
   }
-  
+
   const handleMinifyJson = () => {
     handleFormatJson();
   }
-  
+
   const handleCopyJsonOutput = () => {
     void navigator.clipboard.writeText(jsonOutput);
     toast.success('Copied to clipboard', { position: 'top-center' })
   }
-  
+
   const handleClearAll = () => {
     setJsonInput('');
     setJsonOutput('');
   }
-  
+
   return (
     <div className="flex flex-col gap-10">
       <div>
         <h1 className="text-2xl font-bold">JSON formatter</h1>
-        <p className="text-gray-500">Either beautify or minify JSON.</p>
+        <p className="text-gray-500">Beautify or minify JSON.</p>
       </div>
 
       <div className="flex row gap-10">
@@ -54,7 +54,7 @@ export default function StringJSONFormatterPage() {
           <Label>Number of spaces</Label>
           <Select value={String(spaces)} onValueChange={(value) => setSpaces(Number(value))}>
             <SelectTrigger className="w-40 xl:w-60">
-              <SelectValue placeholder="Number of spaces"/>
+              <SelectValue placeholder="Number of spaces" />
             </SelectTrigger>
             <SelectContent className="w-full">
               <SelectItem value="2">2</SelectItem>

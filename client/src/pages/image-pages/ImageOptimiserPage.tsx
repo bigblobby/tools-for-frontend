@@ -67,7 +67,7 @@ export default function ImageOptimiserPage() {
       <div className="flex-1 flex flex-col gap-6">
         <div>
           <h1 className="text-2xl font-bold">Image optimiser</h1>
-          <p className="text-gray-500">Optimise images</p>
+          <p className="text-gray-500">Optimise images by resizing, compressing, and converting formats.</p>
         </div>
         <div className="flex h-[600px]">
           <div className="basis-1/2 max-w-1/2">

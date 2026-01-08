@@ -78,8 +78,8 @@ export default function StringCaseConverterPage() {
     <div className="flex flex-row gap-10">
       <div className="flex-1 flex flex-col gap-6">
         <div>
-          <h1 className="text-2xl font-bold">String Case Converter</h1>
-          <p className="text-gray-500">This page converts a string to a different case.</p>
+          <h1 className="text-2xl font-bold">Case Converter</h1>
+          <p className="text-gray-500">Converts a string to a different case.</p>
         </div>
 
         <div className="flex flex-col gap-3">

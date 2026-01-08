@@ -6,7 +6,7 @@ export default function ImagePlaceholderGeneratorPage() {
       <div className="flex-1 flex flex-col gap-6">
         <div>
           <h1 className="text-2xl font-bold">Image placeholder generator</h1>
-          <p className="text-gray-500">Generate placeholder images of any size</p>
+          <p className="text-gray-500">Generate placeholder images of any size.</p>
         </div>
         <div className="flex flex-col gap-3">
           <div className="max-w-sm">
@@ -19,7 +19,7 @@ export default function ImagePlaceholderGeneratorPage() {
           </div>
         </div>
       </div>
-      
+
       <div className="max-w-sm">
         <h2 className="text-xl">Size</h2>
         <p className="text-gray-500 text-sm">Generate an image of any size, just set the width and height.</p>
