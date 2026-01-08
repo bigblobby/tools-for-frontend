@@ -1,5 +1,6 @@
 import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip.tsx';
 import { Pipette } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
 import { toast } from 'sonner';
@@ -51,7 +52,7 @@ export default function ColorPicker() {
 
   const colorHarmonies = useMemo(() => {
     try {
-      const baseColor = new Color(inputColor);
+      const baseColor = new Color(inputColor || "#000000");
       const hsl = baseColor.hsl;
       const hue = hsl.h || 0;
       const saturation = hsl.s || 0;
@@ -69,7 +70,7 @@ export default function ColorPicker() {
           // Ensure hex is always 6 characters (expand short form like #f00 to #ff0000)
           // Check length < 6 because short form is 4 chars (#f00) and long form is 7 chars (#ff0000)
           const longhex = hex.length < 6 ? hex.split('').map(v => v + v).join('').slice(1) : hex;
-          return longhex;
+          return longhex.toUpperCase();
         } catch {
           return '#000000';
         }
@@ -239,13 +240,18 @@ export default function ColorPicker() {
               <p className="text-sm text-gray-600">{colorHarmonies.complement.description}</p>
               <div className="flex gap-1 h-12 rounded-lg overflow-hidden">
                 {colorHarmonies.complement.colors.map((color, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleCopyColor(color)}
-                    className="flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-                    style={{ backgroundColor: color }}
-                    title={`Click to copy ${color}`}
-                  />
+                  <Tooltip key={idx}>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={() => handleCopyColor(color)}
+                        className="flex-1 cursor-pointer"
+                        style={{ backgroundColor: color }}
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{color}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 ))}
               </div>
               <p className="text-sm text-gray-500"><span className="font-semibold">Best for:</span> {colorHarmonies.complement.bestFor}</p>
@@ -257,13 +263,18 @@ export default function ColorPicker() {
               <p className="text-sm text-gray-600">{colorHarmonies.splitComplementary.description}</p>
               <div className="flex gap-1 h-12 rounded-lg overflow-hidden">
                 {colorHarmonies.splitComplementary.colors.map((color, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleCopyColor(color)}
-                    className="flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-                    style={{ backgroundColor: color }}
-                    title={`Click to copy ${color}`}
-                  />
+                  <Tooltip key={idx}>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={() => handleCopyColor(color)}
+                        className="flex-1 cursor-pointer"
+                        style={{ backgroundColor: color }}
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{color}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 ))}
               </div>
               <p className="text-sm text-gray-500"><span className="font-semibold">Best for:</span> {colorHarmonies.splitComplementary.bestFor}</p>
@@ -275,13 +286,18 @@ export default function ColorPicker() {
               <p className="text-sm text-gray-600">{colorHarmonies.triadic.description}</p>
               <div className="flex gap-1 h-12 rounded-lg overflow-hidden">
                 {colorHarmonies.triadic.colors.map((color, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleCopyColor(color)}
-                    className="flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-                    style={{ backgroundColor: color }}
-                    title={`Click to copy ${color}`}
-                  />
+                  <Tooltip key={idx}>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={() => handleCopyColor(color)}
+                        className="flex-1 cursor-pointer"
+                        style={{ backgroundColor: color }}
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{color}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 ))}
               </div>
               <p className="text-sm text-gray-500"><span className="font-semibold">Best for:</span> {colorHarmonies.triadic.bestFor}</p>
@@ -293,13 +309,18 @@ export default function ColorPicker() {
               <p className="text-sm text-gray-600">{colorHarmonies.analogous.description}</p>
               <div className="flex gap-1 h-12 rounded-lg overflow-hidden">
                 {colorHarmonies.analogous.colors.map((color, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleCopyColor(color)}
-                    className="flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-                    style={{ backgroundColor: color }}
-                    title={`Click to copy ${color}`}
-                  />
+                  <Tooltip key={idx}>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={() => handleCopyColor(color)}
+                        className="flex-1 cursor-pointer"
+                        style={{ backgroundColor: color }}
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{color}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 ))}
               </div>
               <p className="text-sm text-gray-500"><span className="font-semibold">Best for:</span> {colorHarmonies.analogous.bestFor}</p>
@@ -311,13 +332,18 @@ export default function ColorPicker() {
               <p className="text-sm text-gray-600">{colorHarmonies.monochromatic.description}</p>
               <div className="flex gap-1 h-12 rounded-lg overflow-hidden">
                 {colorHarmonies.monochromatic.colors.map((color, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleCopyColor(color)}
-                    className="flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-                    style={{ backgroundColor: color }}
-                    title={`Click to copy ${color}`}
-                  />
+                  <Tooltip key={idx}>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={() => handleCopyColor(color)}
+                        className="flex-1 cursor-pointer"
+                        style={{ backgroundColor: color }}
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{color}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 ))}
               </div>
               <p className="text-sm text-gray-500"><span className="font-semibold">Best for:</span> {colorHarmonies.monochromatic.bestFor}</p>
@@ -329,13 +355,18 @@ export default function ColorPicker() {
               <p className="text-sm text-gray-600">{colorHarmonies.tetradic.description}</p>
               <div className="flex gap-1 h-12 rounded-lg overflow-hidden">
                 {colorHarmonies.tetradic.colors.map((color, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleCopyColor(color)}
-                    className="flex-1 cursor-pointer hover:opacity-80 transition-opacity"
-                    style={{ backgroundColor: color }}
-                    title={`Click to copy ${color}`}
-                  />
+                  <Tooltip key={idx}>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={() => handleCopyColor(color)}
+                        className="flex-1 cursor-pointer"
+                        style={{ backgroundColor: color }}
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{color}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 ))}
               </div>
               <p className="text-sm text-gray-500"><span className="font-semibold">Best for:</span> {colorHarmonies.tetradic.bestFor}</p>
