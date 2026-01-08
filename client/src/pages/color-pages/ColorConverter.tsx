@@ -65,6 +65,11 @@ export default function ColorConverter() {
     setInputColor(e.target.value);
   }
 
+  const handleColorPickerClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    document.getElementById('color-picker')?.click();
+  }
+
   const handleEyeDropper = async () => {
     try {
       if (!('EyeDropper' in window)) {
@@ -91,21 +96,24 @@ export default function ColorConverter() {
     <div>
       <div>
         <h1 className="text-2xl font-bold">Color Converter</h1>
-        <p className="text-gray-500">Convert a color to different formats.</p>
+        <p className="text-gray-500">Convert a color to different formats. Use the color picker, or pick a color from anywhere on the screen using the eye dropper.</p>
       </div>
       <div className="flex flex-row gap-10 mt-10">
         <div className="flex-1 flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 md:min-w-[380px]">
             <Label htmlFor="color-input">Input color <span className="text-xs">(Orange, #FFA500, hsl(36, 100%, 50%), etc.)</span></Label>
             <div className="flex gap-2">
-              <input
-                id="color-picker"
-                type="color"
-                value={colorValues.hexColor ? (colorValues.hexColor.startsWith('#') ? colorValues.hexColor : `#${colorValues.hexColor}`) : "#000000"}
-                onChange={handleColorPickerChange}
-                className="h-10 w-20 border border-gray-300 rounded-md cursor-pointer"
-                title="Pick a color"
-              />
+              <div className="relative">
+                <Button variant="outline" style={{ backgroundColor: inputColor }} onClick={handleColorPickerClick} className="h-10 w-20"><span className="sr-only">Color picker</span></Button>
+                <input
+                  id="color-picker"
+                  type="color"
+                  value={colorValues.hexColor ? (colorValues.hexColor.startsWith('#') ? colorValues.hexColor : `#${colorValues.hexColor}`) : "#000000"}
+                  onChange={handleColorPickerChange}
+                  className="absolute top-0 left-0 -z-10 h-10 w-20 rounded-md cursor-pointer"
+                  title="Pick a color"
+                />
+              </div>
               <input
                 id="color-input"
                 value={inputColor}
@@ -113,11 +121,10 @@ export default function ColorConverter() {
                 onChange={handleColorChange}
                 type="text"
                 placeholder="Enter a color"
-                className="flex-1 h-10 border border-gray-300 rounded-md p-2"
+                className="flex-1 h-10 border rounded-md p-2"
               />
               <Button onClick={handleEyeDropper} variant="outline" className="h-10">
-                <span><Pipette /></span>
-                <span>Pick from screen</span>
+                <Pipette />
               </Button>
             </div>
           </div>
