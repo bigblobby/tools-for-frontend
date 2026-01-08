@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Pipette, Copy } from "lucide-react";
+import type { WindowWithEyeDropper } from '@/interfaces/browser.types';
 
 export default function ColorConverter() {
   const [inputColor, setInputColor] = useState("oklch(42.4% 0.199 265.638)");
@@ -77,15 +78,15 @@ export default function ColorConverter() {
         return;
       }
 
-      const eyeDropper = new (window as any).EyeDropper();
+      const eyeDropper = new (window as WindowWithEyeDropper).EyeDropper();
       const result = await eyeDropper.open();
 
       if (result.sRGBHex) {
         setInputColor(result.sRGBHex);
         toast.success("Color picked successfully", { position: "top-center" });
       }
-    } catch (error: any) {
-      if (error.name !== 'AbortError') {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.name !== 'AbortError') {
         toast.error("Failed to pick color", { position: "top-center" });
         console.error(error);
       }
