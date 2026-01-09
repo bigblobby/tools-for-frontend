@@ -102,12 +102,12 @@ export default function CsvToJsonConverterPage() {
         ogDescription="Convert CSV to JSON format instantly."
         canonicalUrl="https://toolsforfrontend.com/converter/csv-to-json"
       />
-      <div className="flex flex-row gap-10">
+      <div className="flex flex-col gap-10">
+        <div>
+          <h1 className="text-2xl font-bold">CSV to JSON Converter</h1>
+          <p className="text-gray-500">Convert CSV to JSON.</p>
+        </div>
         <div className="flex-1 flex flex-col gap-6">
-          <div>
-            <h1 className="text-2xl font-bold">CSV to JSON Converter</h1>
-            <p className="text-gray-500">Convert CSV to JSON.</p>
-          </div>
           <div className="flex flex-col gap-3">
             <div className="flex items-end justify-between">
               <Label htmlFor="csv-input">CSV</Label>

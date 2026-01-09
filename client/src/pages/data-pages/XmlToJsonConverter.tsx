@@ -51,12 +51,12 @@ export default function XmlToJsonConverter() {
         ogDescription="Convert XML to JSON format instantly."
         canonicalUrl="https://toolsforfrontend.com/converter/xml-to-json"
       />
-      <div className="flex flex-row gap-10">
+      <div className="flex flex-col gap-10">
+        <div>
+          <h1 className="text-2xl font-bold">XML to JSON Converter</h1>
+          <p className="text-gray-500">Convert XML to JSON.</p>
+        </div>
         <div className="flex-1 flex flex-col gap-6">
-          <div>
-            <h1 className="text-2xl font-bold">XML to JSON Converter</h1>
-            <p className="text-gray-500">Convert XML to JSON.</p>
-          </div>
           <div className="flex flex-col gap-3">
             <Label htmlFor="xml-input">XML</Label>
             <textarea value={xml} id="xml-input" className="block w-full h-80 font-mono border border-gray-300 rounded-md p-2" onChange={handleXmlChange}/>

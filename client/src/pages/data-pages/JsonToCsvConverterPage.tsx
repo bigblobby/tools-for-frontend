@@ -110,12 +110,12 @@ export default function JsonToCsvConverterPage() {
         ogDescription="Convert JSON to CSV format instantly."
         canonicalUrl="https://toolsforfrontend.com/converter/json-to-csv"
       />
-      <div className="flex flex-row gap-10">
+      <div className="flex flex-col gap-10">
+        <div>
+          <h1 className="text-2xl font-bold">JSON to CSV Converter</h1>
+          <p className="text-gray-500">Convert JSON to CSV.</p>
+        </div>
         <div className="flex-1 flex flex-col gap-6">
-          <div>
-            <h1 className="text-2xl font-bold">JSON to CSV Converter</h1>
-            <p className="text-gray-500">Convert JSON to CSV.</p>
-          </div>
           <div className="flex flex-col gap-3">
             <div className="flex items-end justify-between">
               <Label htmlFor="csv-input">JSON</Label>
