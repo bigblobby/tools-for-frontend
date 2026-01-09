@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Sidebar, SidebarGroup, SidebarHeader, SidebarContent, SidebarFooter, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
 import { pageCategories } from '@/constants/page.constants.ts';
+import type { PageItem } from "@/interfaces/search.interface";
 
 export default function SideNavigation() {
   const { setOpenMobile } = useSidebar()
@@ -23,7 +24,7 @@ export default function SideNavigation() {
           <SidebarGroup key={item.category}>
             <SidebarGroupLabel className="text-blue-800 font-bold">{item.category}</SidebarGroupLabel>
             <SidebarMenu>
-              {item.items.map((item) => (
+              {item.items.sort((a: PageItem, b: PageItem) => a.title.localeCompare(b.title)).map((item) => (
                 <SidebarMenuItem key={item.path}>
                   <SidebarMenuButton asChild onClick={handleOpenMobile}>
                     <Link to={item.path}>{item.title}</Link>

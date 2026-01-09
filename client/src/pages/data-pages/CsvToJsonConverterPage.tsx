@@ -54,6 +54,21 @@ export default function CsvToJsonConverterPage() {
     void csvToJson.mutate(csv, {
       onSuccess: (data: { json: string }) => {
         setJson(data.json);
+        // Get the file name from the CSV file
+        const fileBaseName = fileName?.split('.')[0] || 'converted';
+
+        // Create a blob and trigger download
+        const blob = new Blob([data.json], { type: 'application/json' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${fileBaseName}.json`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
         toast.success('CSV converted to JSON', { position: 'top-center' });
       },
       onError: (error: Error) => {
