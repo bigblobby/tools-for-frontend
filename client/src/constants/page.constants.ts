@@ -31,7 +31,7 @@ export const pageCategories: PageCategory[] = [
   },
   {
     category: 'Data',
-    icon: '',
+    icon: '💾',
     items: [
       { title: 'XML to JSON', path: '/data/xml-to-json', tags: ['converter'] },
       { title: 'JSON to XML', path: '/data/json-to-xml', tags: ['converter'] },
