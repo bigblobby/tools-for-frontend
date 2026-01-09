@@ -170,9 +170,11 @@ export default function ColorPicker() {
       const baseColor = new Color(inputColor || "#000000");
       const white = new Color('white');
       const black = new Color('black');
+      const gray = new Color('gray');
 
       const shades: string[] = [];
       const tints: string[] = [];
+      const tones: string[] = [];
 
       // Generate shades (0% to 100% black added)
       for (let i = 0; i <= 10; i++) {
@@ -190,7 +192,15 @@ export default function ColorPicker() {
         tints.push(getHex(tint));
       }
 
-      return { shades, tints };
+      // Generate tones (0% to 100% gray added)
+      for (let i = 0; i <= 10; i++) {
+        const percentage = i * 10;
+        const amount = percentage / 100;
+        const tone = baseColor.mix(gray, amount, { space: 'srgb' });
+        tones.push(getHex(tone));
+      }
+
+      return { shades, tints, tones };
     } catch (error) {
       console.error(error);
       return null;
@@ -261,7 +271,7 @@ export default function ColorPicker() {
           {/* Shades Section */}
           <div className="mb-8">
             <h3 className="font-bold text-lg mb-2">Shades</h3>
-            <p className="text-sm text-gray-600 mb-4">Darkened versions of your base color made by blending in black.</p>
+            <p className="text-sm text-gray-600 mb-4">Darkened versions of your base color made by blending in black. Shades create a sense of depth and hierarchy in your color palette.</p>
             <div className="relative">
               <div className="flex h-16 gap-1 rounded-lg">
                 {colorVariations.shades.map((color, idx) => {
@@ -297,12 +307,48 @@ export default function ColorPicker() {
           {/* Tints Section */}
           <div className="mb-8">
             <h3 className="font-bold text-lg mb-2">Tints</h3>
-            <p className="text-sm text-gray-600 mb-4">Lightened versions of your base color made by blending in white.</p>
+            <p className="text-sm text-gray-600 mb-4">Lightened versions of your base color made by blending in white. Tints make colors appear brighter and more vibrant.</p>
             <div className="relative">
               <div className="flex h-16 gap-1 rounded-lg">
                 {colorVariations.tints.map((color, idx) => {
                   const isFirst = idx === 0;
                   const isLast = idx === colorVariations.tints.length - 1;
+                  const roundedClass = isFirst ? 'rounded-l-lg' : isLast ? 'rounded-r-lg' : '';
+                  return (
+                    <Tooltip key={idx}>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={() => handleCopyColor(color)}
+                          className={`flex-1 cursor-pointer ${roundedClass}`}
+                          style={{ backgroundColor: color }}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{color}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  );
+                })}
+              </div>
+              <div className="flex mt-2">
+                {Array.from({ length: 11 }, (_, i) => i * 10).map((percentage, idx) => (
+                  <div key={idx} className="flex-1 flex justify-center">
+                    <span className="text-xs bg-white px-1.5 py-0.5 rounded">{percentage}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Tones Section */}
+          <div className="mb-8">
+            <h3 className="font-bold text-lg mb-2">Tones</h3>
+            <p className="text-sm text-gray-600 mb-4">Tones of your base color made by blending in gray. Tones are a great way to add subtle depth and contrast to your color palette.</p>
+            <div className="relative">
+              <div className="flex h-16 gap-1 rounded-lg">
+                {colorVariations.tones.map((color, idx) => {
+                  const isFirst = idx === 0;
+                  const isLast = idx === colorVariations.tones.length - 1;
                   const roundedClass = isFirst ? 'rounded-l-lg' : isLast ? 'rounded-r-lg' : '';
                   return (
                     <Tooltip key={idx}>
