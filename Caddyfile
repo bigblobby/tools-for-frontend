@@ -7,6 +7,14 @@ toolsforfrontend.com www.toolsforfrontend.com {
     reverse_proxy localhost:3001
   }
 
+  # Handle sitemap.xml and robots.txt (served from server for SEO)
+  handle /sitemap.xml {
+    reverse_proxy localhost:3001
+  }
+  handle /robots.txt {
+    reverse_proxy localhost:3001
+  }
+
   # Handle placeholder route (maps to /api/image/placeholder)
   handle /p/* {
     uri replace /p /api/image/placeholder

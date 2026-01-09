@@ -2,6 +2,7 @@ import express, { type Express } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { createRouter } from './routes';
+import { sitemapController } from './controllers/sitemap.controller';
 
 // Load environment variables
 dotenv.config();
@@ -24,6 +25,10 @@ app.use((req, res, next) => {
 });
 
 app.use(express.urlencoded({ extended: true }));
+
+// Sitemap and robots.txt routes (served at root level for SEO)
+app.get('/sitemap.xml', sitemapController.getSitemap);
+app.get('/robots.txt', sitemapController.getRobotsTxt);
 
 app.use('/api', createRouter());
 
