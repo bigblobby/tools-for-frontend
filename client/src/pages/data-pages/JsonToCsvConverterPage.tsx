@@ -46,8 +46,13 @@ export default function JsonToCsvConverterPage() {
           toast.error('Invalid JSON format', { position: 'top-center' });
         },
       });
-    } catch (error) {
-      toast.error('Invalid JSON format', { position: 'top-center' });
+    } catch (error: unknown) {
+      console.log(error);
+      if (error instanceof Error) {
+        toast.error(error.message, { position: 'top-center' });
+      } else {
+        toast.error('An unknown error occurred', { position: 'top-center' });
+      }
     }
   };
 
