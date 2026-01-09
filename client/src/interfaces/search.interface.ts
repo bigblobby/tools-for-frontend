@@ -1,6 +1,7 @@
 export interface PageItem {
   title: string;
   path: string;
+  tags?: string[];
 }
 
 export interface PageCategory {

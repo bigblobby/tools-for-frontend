@@ -9,8 +9,6 @@ export const pageCategories: PageCategory[] = [
       { title: 'Transform', path: '/string/transform' },
       { title: 'Case Converter', path: '/string/case-converter' },
       { title: 'Encode Decode', path: '/string/encode-decode' },
-      { title: 'JWT Decoder', path: '/string/jwt-decoder' },
-      { title: 'JSON Formatter', path: '/string/json-formatter' },
       { title: 'Hash Generator', path: '/string/hash-generator' },
     ]
   },
@@ -32,11 +30,13 @@ export const pageCategories: PageCategory[] = [
     ]
   },
   {
-    category: 'Converters',
-    icon: '🔄',
+    category: 'Data',
+    icon: '',
     items: [
-      { title: 'XML to JSON', path: '/converter/xml-to-json' },
-      { title: 'JSON to XML', path: '/converter/json-to-xml' },
+      { title: 'XML to JSON', path: '/data/xml-to-json', tags: ['converter'] },
+      { title: 'JSON to XML', path: '/data/json-to-xml', tags: ['converter'] },
+      { title: 'JWT Decoder', path: '/data/jwt-decoder' },
+      { title: 'JSON Formatter', path: '/data/json-formatter' },
     ]
   },
   {

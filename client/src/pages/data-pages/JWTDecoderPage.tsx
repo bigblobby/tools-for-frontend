@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { Label } from '@/components/ui/label.tsx';
 import SEO from '@/components/SEO';
 
-export default function StringJWTDecoderPage() {
+export default function JWTDecoderPage() {
   const [jwtToken, setJwtToken] = useState('');
   const [header, setHeader] = useState('');
   const [payload, setPayload] = useState('');

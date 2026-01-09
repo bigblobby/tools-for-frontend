@@ -9,12 +9,9 @@ import {
   stringEncodeDecodeRoute,
   stringHashGeneratorRoute,
   stringCaseConverterRoute,
-  stringJWTDecoderRoute,
-  stringJSONFormatterRoute
 } from '@/routes/string.routes';
 import { colorRoute, colorConverterRoute, colorGradientGeneratorRoute, colorPickerRoute, colorContrastCheckerRoute } from '@/routes/color.routes';
 import { numberRoute } from "@/routes/number.routes";
-import { converterRoute, xmlToJsonConverterRoute, jsonToXmlConverterRoute } from "@/routes/converter.routes";
 import { dateTimeRoute, epochUnixDateTimeRoute } from '@/routes/date-time.routes.tsx';
 import {
   faviconGeneratorRoute,
@@ -24,6 +21,7 @@ import {
   imageToBase64Route
 } from '@/routes/image.routes.tsx';
 import { cssRoute, boxShadowRoute } from '@/routes/css.route.tsx';
+import { dataRoute, jsonToXmlConverterRoute, xmlToJsonConverterRoute, jsonFormatterRoute, jwtDecoderRoute } from '@/routes/data.routes.tsx';
 
 export const rootRoute = createRootRoute({
   component: BaseLayout,
@@ -38,11 +36,11 @@ const homeRoute = createRoute({
 
 const routeTree = rootRoute.addChildren([
   homeRoute,
-  stringRoute.addChildren([stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute, stringJSONFormatterRoute, stringJWTDecoderRoute]),
+  stringRoute.addChildren([stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute]),
   colorRoute.addChildren([colorConverterRoute, colorGradientGeneratorRoute, colorPickerRoute, colorContrastCheckerRoute]),
   cssRoute.addChildren([boxShadowRoute]),
   numberRoute.addChildren([]),
-  converterRoute.addChildren([xmlToJsonConverterRoute, jsonToXmlConverterRoute]),
+  dataRoute.addChildren([xmlToJsonConverterRoute, jsonToXmlConverterRoute, jsonFormatterRoute, jwtDecoderRoute]),
   dateTimeRoute.addChildren([epochUnixDateTimeRoute]),
   imageRoute.addChildren([imageToBase64Route, imageOptimiserRoute, imagePlaceholderGeneratorRoute, faviconGeneratorRoute])
 ]);

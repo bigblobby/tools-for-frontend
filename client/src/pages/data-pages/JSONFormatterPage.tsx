@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label.tsx';
 import { toast } from 'sonner';
 import SEO from '@/components/SEO';
 
-export default function StringJSONFormatterPage() {
+export default function JSONFormatterPage() {
   const [jsonInput, setJsonInput] = useState('');
   const [jsonOutput, setJsonOutput] = useState('');
   const [spaces, setSpaces] = useState(2);
