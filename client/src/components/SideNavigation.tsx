@@ -21,7 +21,7 @@ export default function SideNavigation() {
       <SidebarContent>
         {pageCategories.map((item) => (
           <SidebarGroup key={item.category}>
-            <SidebarGroupLabel className="text-blue-900">{item.category}</SidebarGroupLabel>
+            <SidebarGroupLabel className="text-blue-800 font-bold">{item.category}</SidebarGroupLabel>
             <SidebarMenu>
               {item.items.map((item) => (
                 <SidebarMenuItem key={item.path}>

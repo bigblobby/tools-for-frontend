@@ -48,7 +48,7 @@ export default function Homepage() {
                       ⭐️ Your most used tools...{" "}
                       <Tooltip useTouch={true}>
                         <TooltipTrigger className="cursor-help" asChild>
-                          <button className="text-xs text-blue-500">How is this tracked?</button>
+                          <button className="text-xs text-blue-600">How is this tracked?</button>
                         </TooltipTrigger>
                         <TooltipContent className="w-56">
                           <p>The browser tracks page views in local storage, so we know which page you view the most. Which translates to the tool you use the most.... we hope.</p>
