@@ -3,6 +3,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Label } from '@/components/ui/label.tsx';
+import SEO from '@/components/SEO';
 
 export default function StringJWTDecoderPage() {
   const [jwtToken, setJwtToken] = useState('');
@@ -51,51 +52,61 @@ export default function StringJWTDecoderPage() {
   };
 
   return (
-    <div className="flex flex-col gap-10">
-      <div>
-        <h1 className="text-2xl font-bold">JWT Decoder</h1>
-        <p className="text-gray-500">Decode a JWT token and display the header and payload data.</p>
+    <>
+      <SEO
+        title="JWT Decoder - Decode JWT Tokens - Tools For Frontend"
+        description="Decode JWT (JSON Web Token) tokens and view the header and payload data. Free online JWT decoder tool for developers."
+        keywords="jwt decoder, jwt token decoder, decode jwt, json web token decoder, jwt header, jwt payload"
+        ogTitle="JWT Decoder - Tools For Frontend"
+        ogDescription="Decode JWT tokens and view the header and payload data."
+        canonicalUrl="https://toolsforfrontend.com/string/jwt-decoder"
+      />
+      <div className="flex flex-col gap-10">
+        <div>
+          <h1 className="text-2xl font-bold">JWT Decoder</h1>
+          <p className="text-gray-500">Decode a JWT token and display the header and payload data.</p>
+        </div>
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-3">
+            <Label htmlFor="jwt-input">JWT Token</Label>
+            <input
+              type="text"
+              id="jwt-input"
+              value={jwtToken}
+              onChange={handleJWTTokenChange}
+              className="block w-full h-10 border border-gray-300 rounded-md p-2"
+            />
+            <div className="flex gap-3">
+              <Button variant="secondary" onClick={handleDecodeJWT}>Decode</Button>
+              <Button variant="destructive-min" onClick={handleClearAll}>Clear All</Button>
+            </div>
+          </div>
+          <div className="flex flex-col gap-3">
+            <Label htmlFor="jwt-header">Header <span className="text-xs">(Read Only)</span></Label>
+            <textarea
+              readOnly value={header}
+              id="jwt-header"
+              className="block w-full h-40 border border-gray-300 rounded-md p-2"
+            />
+            <div>
+              <Button variant="secondary" onClick={handleCopyHeader}>Copy Header</Button>
+            </div>
+          </div>
+          <div className="flex flex-col gap-3">
+            <Label htmlFor="jwt-payload">Payload <span className="text-xs">(Read Only)</span></Label>
+            <textarea
+              rows={20}
+              readOnly
+              value={payload}
+              id="jwt-payload"
+              className="block w-full border border-gray-300 rounded-md p-2"
+            />
+            <div>
+              <Button variant="secondary" onClick={handleCopyPayload}>Copy Payload</Button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="jwt-input">JWT Token</Label>
-          <input
-            type="text"
-            id="jwt-input"
-            value={jwtToken}
-            onChange={handleJWTTokenChange}
-            className="block w-full h-10 border border-gray-300 rounded-md p-2"
-          />
-          <div className="flex gap-3">
-            <Button variant="secondary" onClick={handleDecodeJWT}>Decode</Button>
-            <Button variant="destructive-min" onClick={handleClearAll}>Clear All</Button>
-          </div>
-        </div>
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="jwt-header">Header <span className="text-xs">(Read Only)</span></Label>
-          <textarea
-            readOnly value={header}
-            id="jwt-header"
-            className="block w-full h-40 border border-gray-300 rounded-md p-2"
-          />
-          <div>
-            <Button variant="secondary" onClick={handleCopyHeader}>Copy Header</Button>
-          </div>
-        </div>
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="jwt-payload">Payload <span className="text-xs">(Read Only)</span></Label>
-          <textarea
-            rows={20}
-            readOnly
-            value={payload}
-            id="jwt-payload"
-            className="block w-full border border-gray-300 rounded-md p-2"
-          />
-          <div>
-            <Button variant="secondary" onClick={handleCopyPayload}>Copy Payload</Button>
-          </div>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }

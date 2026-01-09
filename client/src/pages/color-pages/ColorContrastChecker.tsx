@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Pipette, Check, X } from 'lucide-react';
 import type { WindowWithEyeDropper } from '@/interfaces/browser.types';
+import SEO from '@/components/SEO';
 
 interface ContrastResult {
   ratio: number;
@@ -166,11 +167,20 @@ export default function ColorContrastChecker() {
   const bgHex = getHexFromString(backgroundColor);
 
   return (
-    <div className="max-w-6xl">
-      <div>
-        <h1 className="text-2xl font-bold">Color Contrast Checker</h1>
-        <p className="text-gray-500">Check if your foreground and background colors meet WCAG accessibility standards.</p>
-      </div>
+    <>
+      <SEO
+        title="Color Contrast Checker - Tools For Frontend"
+        description="Check if your foreground and background colors meet WCAG 2.1 accessibility standards (AA and AAA). Free online color contrast checker for web accessibility."
+        keywords="color contrast checker, wcag, accessibility, contrast ratio, aa compliance, aaa compliance, web accessibility"
+        ogTitle="Color Contrast Checker - Tools For Frontend"
+        ogDescription="Check if your colors meet WCAG 2.1 accessibility standards for web accessibility."
+        canonicalUrl="https://toolsforfrontend.com/color/contrast-checker"
+      />
+      <div className="max-w-6xl">
+        <div>
+          <h1 className="text-2xl font-bold">Color Contrast Checker</h1>
+          <p className="text-gray-500">Check if your foreground and background colors meet WCAG accessibility standards.</p>
+        </div>
 
       <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Foreground Color Input */}
@@ -490,7 +500,8 @@ export default function ColorContrastChecker() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }
 

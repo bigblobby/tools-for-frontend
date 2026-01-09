@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { useConverterQueries } from '@/queries/converter.queries';
+import SEO from '@/components/SEO';
 
 export default function JsonToXmlConverterPage() {
   const [xml, setXml] = useState('');
@@ -43,26 +44,36 @@ export default function JsonToXmlConverterPage() {
   };
 
   return (
-    <div className="flex flex-row gap-10">
-      <div className="flex-1 flex flex-col gap-6">
-        <div>
-          <h1 className="text-2xl font-bold">JSON to XML Converter</h1>
-          <p className="text-gray-500">Convert JSON to XML.</p>
-        </div>
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="xml-input">JSON</Label>
-          <textarea value={json} id="xml-input" className="block w-full h-80 border border-gray-300 rounded-md p-2" onChange={handleJsonChange} />
-        </div>
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="json-input">XML <span className="text-xs">(Read Only)</span></Label>
-          <textarea readOnly value={xml} id="json-input" className="block w-full h-80 border border-gray-300 rounded-md p-2" onChange={handleXmlChange} />
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <Button variant="secondary" onClick={handleConvert}>Convert</Button>
-          <Button variant="secondary" onClick={handleCopy}>Copy</Button>
-          <Button variant="destructive-min" onClick={handleClear}>Clear</Button>
+    <>
+      <SEO
+        title="JSON to XML Converter - Tools For Frontend"
+        description="Convert JSON to XML format instantly. Free online JSON to XML converter tool for developers."
+        keywords="json to xml, json converter, xml converter, json to xml converter, convert json"
+        ogTitle="JSON to XML Converter - Tools For Frontend"
+        ogDescription="Convert JSON to XML format instantly."
+        canonicalUrl="https://toolsforfrontend.com/converter/json-to-xml"
+      />
+      <div className="flex flex-row gap-10">
+        <div className="flex-1 flex flex-col gap-6">
+          <div>
+            <h1 className="text-2xl font-bold">JSON to XML Converter</h1>
+            <p className="text-gray-500">Convert JSON to XML.</p>
+          </div>
+          <div className="flex flex-col gap-3">
+            <Label htmlFor="xml-input">JSON</Label>
+            <textarea value={json} id="xml-input" className="block w-full h-80 border border-gray-300 rounded-md p-2" onChange={handleJsonChange}/>
+          </div>
+          <div className="flex flex-col gap-3">
+            <Label htmlFor="json-input">XML <span className="text-xs">(Read Only)</span></Label>
+            <textarea readOnly value={xml} id="json-input" className="block w-full h-80 border border-gray-300 rounded-md p-2" onChange={handleXmlChange}/>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Button variant="secondary" onClick={handleConvert}>Convert</Button>
+            <Button variant="secondary" onClick={handleCopy}>Copy</Button>
+            <Button variant="destructive-min" onClick={handleClear}>Clear</Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
