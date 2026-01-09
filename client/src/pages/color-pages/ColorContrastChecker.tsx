@@ -212,7 +212,7 @@ export default function ColorContrastChecker() {
               onChange={handleForegroundChange}
               type="text"
               placeholder="Enter foreground color"
-              className="flex-1 h-10 border rounded-md p-2"
+              className="flex-1 h-10 font-mono border rounded-md p-2"
             />
             <Button
               onClick={() => handleEyeDropper('foreground')}
@@ -253,7 +253,7 @@ export default function ColorContrastChecker() {
               onChange={handleBackgroundChange}
               type="text"
               placeholder="Enter background color"
-              className="flex-1 h-10 border rounded-md p-2"
+              className="flex-1 h-10 font-mono border rounded-md p-2"
             />
             <Button
               onClick={() => handleEyeDropper('background')}

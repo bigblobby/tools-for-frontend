@@ -105,7 +105,7 @@ export default function ImageToBase64Page() {
                 </Select>
               </div>
   
-              <Textarea className="flex-grow-1 h-full" value={output} readOnly />
+              <Textarea className="flex-grow-1 h-full font-mono" value={output} readOnly />
               <div className="space-x-3">
                 <Button variant="secondary" onClick={handleCopy}>Copy</Button>
                 <Button variant="destructive-min" onClick={() => {

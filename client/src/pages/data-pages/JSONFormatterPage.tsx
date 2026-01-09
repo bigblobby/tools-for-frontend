@@ -58,7 +58,7 @@ export default function JSONFormatterPage() {
         <div className="flex row gap-10">
           <div className="flex-1 flex flex-col gap-3">
             <Label htmlFor="input">Input</Label>
-            <textarea value={jsonInput} rows={30} id="input" className="block w-full border border-gray-300 rounded-md p-2" onChange={(e) => setJsonInput(e.target.value)}/>
+            <textarea value={jsonInput} rows={30} id="input" className="block w-full font-mono border border-gray-300 rounded-md p-2" onChange={(e) => setJsonInput(e.target.value)}/>
           </div>
           <div className="flex flex-col gap-3 mt-10">
             <Label>Number of spaces</Label>
@@ -79,7 +79,7 @@ export default function JSONFormatterPage() {
           </div>
           <div className="flex-1 flex flex-col gap-3">
             <Label htmlFor="output">Output <span className="text-xs">(Read Only)</span></Label>
-            <textarea value={jsonOutput} readOnly rows={30} id="output" className="block w-full border border-gray-300 rounded-md p-2"/>
+            <textarea value={jsonOutput} readOnly rows={30} id="output" className="block w-full font-mono border border-gray-300 rounded-md p-2"/>
           </div>
         </div>
       </div>

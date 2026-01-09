@@ -61,11 +61,11 @@ export default function JsonToXmlConverterPage() {
           </div>
           <div className="flex flex-col gap-3">
             <Label htmlFor="xml-input">JSON</Label>
-            <textarea value={json} id="xml-input" className="block w-full h-80 border border-gray-300 rounded-md p-2" onChange={handleJsonChange}/>
+            <textarea value={json} id="xml-input" className="block w-full h-80 font-mono border border-gray-300 rounded-md p-2" onChange={handleJsonChange}/>
           </div>
           <div className="flex flex-col gap-3">
             <Label htmlFor="json-input">XML <span className="text-xs">(Read Only)</span></Label>
-            <textarea readOnly value={xml} id="json-input" className="block w-full h-80 border border-gray-300 rounded-md p-2" onChange={handleXmlChange}/>
+            <textarea readOnly value={xml} id="json-input" className="block w-full h-80 font-mono border border-gray-300 rounded-md p-2" onChange={handleXmlChange}/>
           </div>
           <div className="flex flex-wrap gap-3">
             <Button variant="secondary" onClick={handleConvert}>Convert</Button>

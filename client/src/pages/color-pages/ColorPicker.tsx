@@ -251,7 +251,7 @@ export default function ColorPicker() {
                   onChange={handleColorChange}
                   type="text"
                   placeholder="Enter a color"
-                  className="flex-1 h-10 border rounded-md p-2"
+                  className="flex-1 h-10 font-mono border rounded-md p-2"
                 />
                 <Button onClick={handleEyeDropper} variant="outline" className="h-10">
                   <Pipette />
@@ -415,11 +415,11 @@ export default function ColorPicker() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 gap-x-16 bg-gray-50 rounded-lg p-4">
               <div>
-                <h3 className="font-bold mb-2">How to Use</h3>
+                <h3 className="font-semibold mb-2">How to Use</h3>
                 <p className="text-gray-500 text-sm">Tap any color swatch to copy its hex code. These palettes are based on color theory principles for harmonious results.</p>
               </div>
               <div>
-                <h3 className="font-bold mb-2">Why It Matters</h3>
+                <h3 className="font-semibold mb-2">Why It Matters</h3>
                 <p className="text-gray-500 text-sm">Well-chosen color combinations help establish visual hierarchy and communicate the right tone.</p>
               </div>
             </div>

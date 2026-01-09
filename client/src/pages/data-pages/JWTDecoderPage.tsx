@@ -74,7 +74,7 @@ export default function JWTDecoderPage() {
               id="jwt-input"
               value={jwtToken}
               onChange={handleJWTTokenChange}
-              className="block w-full h-10 border border-gray-300 rounded-md p-2"
+              className="block w-full h-10 font-mono border border-gray-300 rounded-md p-2"
             />
             <div className="flex gap-3">
               <Button variant="secondary" onClick={handleDecodeJWT}>Decode</Button>
@@ -86,7 +86,7 @@ export default function JWTDecoderPage() {
             <textarea
               readOnly value={header}
               id="jwt-header"
-              className="block w-full h-40 border border-gray-300 rounded-md p-2"
+              className="block w-full h-40 font-mono border border-gray-300 rounded-md p-2"
             />
             <div>
               <Button variant="secondary" onClick={handleCopyHeader}>Copy Header</Button>
@@ -99,7 +99,7 @@ export default function JWTDecoderPage() {
               readOnly
               value={payload}
               id="jwt-payload"
-              className="block w-full border border-gray-300 rounded-md p-2"
+              className="block w-full font-mono border border-gray-300 rounded-md p-2"
             />
             <div>
               <Button variant="secondary" onClick={handleCopyPayload}>Copy Payload</Button>

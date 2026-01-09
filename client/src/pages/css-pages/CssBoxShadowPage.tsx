@@ -84,7 +84,7 @@ export default function CssBoxShadowPage() {
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="box-shadow-output">Box Shadow</Label>
-                <textarea readOnly value={boxShadow} id="box-shadow-output" className="block w-full h-24 border border-gray-300 rounded-md p-2" />
+                <textarea readOnly value={boxShadow} id="box-shadow-output" className="block w-full h-24 font-mono border border-gray-300 rounded-md p-2" />
               </div>
               <div>
                 <Button variant="secondary" onClick={handleCopyBoxShadow}>Copy</Button>

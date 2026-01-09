@@ -44,7 +44,7 @@ export default function ColorGradientGeneratorPage() {
             </pre>
             </div>
             <div>
-              <Input value={'background: ' + color + ';'}/>
+              <Input className="font-mono" value={color}/>
             </div>
             <div>
               <Button variant="secondary" onClick={() => handleCopy(color)}>Copy</Button>

@@ -132,7 +132,7 @@ export default function ColorConverter() {
                   onChange={handleColorChange}
                   type="text"
                   placeholder="Enter a color"
-                  className="flex-1 h-10 border rounded-md p-2"
+                  className="flex-1 h-10 font-mono border rounded-md p-2"
                 />
                 <Button onClick={handleEyeDropper} variant="outline" className="h-10">
                   <Pipette />
@@ -147,7 +147,7 @@ export default function ColorConverter() {
                 <Button variant="outline" className="flex items-center justify-normal gap-0 w-full border rounded-md p-0 h-auto cursor-pointer" onClick={(e) => handleCopyColor(e, colorValues.hexColor || "")}>
                   <div className="font-bold w-[120px] border-r px-4 py-2">Hex</div>
                   <div className="flex items-center justify-between w-full px-4 py-2">
-                    <div>{colorValues.hexColor?.toUpperCase()}</div>
+                    <div className="font-mono">{colorValues.hexColor?.toUpperCase()}</div>
                     <div><Copy /></div>
                   </div>
                 </Button>
@@ -155,49 +155,49 @@ export default function ColorConverter() {
                 <Button variant="outline" className="flex items-center justify-normal gap-0 w-full border rounded-md p-0 h-auto cursor-pointer" onClick={(e) => handleCopyColor(e, colorValues.hslColor?.toString() || "")}>
                   <div className="font-bold w-[120px] border-r px-4 py-2">HSL</div>
                   <div className="flex items-center justify-between w-full px-4 py-2">
-                    <div>{colorValues.hslColor?.toString()}</div>
+                    <div className="font-mono">{colorValues.hslColor?.toString()}</div>
                     <div><Copy /></div>
                   </div>
                 </Button>
                 <Button variant="outline" className="flex items-center justify-normal gap-0 w-full border rounded-md p-0 h-auto cursor-pointer" onClick={(e) => handleCopyColor(e, colorValues.rgbColor?.toString() || "")}>
                   <div className="font-bold w-[120px] border-r px-4 py-2">RGB</div>
                   <div className="flex items-center justify-between w-full px-4 py-2">
-                    <div>{colorValues.rgbColor?.toString()}</div>
+                    <div className="font-mono">{colorValues.rgbColor?.toString()}</div>
                     <div><Copy /></div>
                   </div>
                 </Button>
                 <Button variant="outline" className="flex items-center justify-normal gap-0 w-full border rounded-md p-0 h-auto cursor-pointer" onClick={(e) => handleCopyColor(e, colorValues.oklchColor?.toString() || "")}>
                   <div className="font-bold w-[120px] border-r px-4 py-2">OKLCH</div>
                   <div className="flex items-center justify-between w-full px-4 py-2">
-                    <div>{colorValues.oklchColor?.toString()}</div>
+                    <div className="font-mono">{colorValues.oklchColor?.toString()}</div>
                     <div><Copy /></div>
                   </div>
                 </Button>
                 <Button variant="outline" className="flex items-center justify-normal gap-0 w-full border rounded-md p-0 h-auto cursor-pointer" onClick={(e) => handleCopyColor(e, colorValues.oklabColor?.toString() || "")}>
                   <div className="font-bold w-[120px] border-r px-4 py-2">OKLAB</div>
                   <div className="flex items-center justify-between w-full px-4 py-2">
-                    <div>{colorValues.oklabColor?.toString()}</div>
+                    <div className="font-mono">{colorValues.oklabColor?.toString()}</div>
                     <div><Copy /></div>
                   </div>
                 </Button>
                 <Button variant="outline" className="flex items-center justify-normal gap-0 w-full border rounded-md p-0 h-auto cursor-pointer" onClick={(e) => handleCopyColor(e, colorValues.lchColor?.toString() || "")}>
                   <div className="font-bold w-[120px] border-r px-4 py-2">LCH</div>
                   <div className="flex items-center justify-between w-full px-4 py-2">
-                    <div>{colorValues.lchColor?.toString()}</div>
+                    <div className="font-mono">{colorValues.lchColor?.toString()}</div>
                     <div><Copy /></div>
                   </div>
                 </Button>
                 <Button variant="outline" className="flex items-center justify-normal gap-0 w-full border rounded-md p-0 h-auto cursor-pointer" onClick={(e) => handleCopyColor(e, colorValues.hwbColor?.toString() || "")}>
                   <div className="font-bold w-[120px] border-r px-4 py-2">HWB</div>
                   <div className="flex items-center justify-between w-full px-4 py-2">
-                    <div>{colorValues.hwbColor?.toString()}</div>
+                    <div className="font-mono">{colorValues.hwbColor?.toString()}</div>
                     <div><Copy /></div>
                   </div>
                 </Button>
                 <Button variant="outline" className="flex items-center justify-normal gap-0 w-full border rounded-md p-0 h-auto cursor-pointer" onClick={(e) => handleCopyColor(e, colorValues.labColor?.toString() || "")}>
                   <div className="font-bold w-[120px] border-r px-4 py-2">LAB</div>
                   <div className="flex items-center justify-between w-full px-4 py-2">
-                    <div>{colorValues.labColor?.toString()}</div>
+                    <div className="font-mono">{colorValues.labColor?.toString()}</div>
                     <div><Copy /></div>
                   </div>
                 </Button>
