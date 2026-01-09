@@ -18,7 +18,7 @@ app.use(cors());
 
 // Conditionally apply json() middleware, excluding routes that need raw body
 app.use((req, res, next) => {
-  if (req.path === '/api/converter/json-to-xml') {
+  if (req.path === '/api/converter/json-to-xml' || req.path === '/api/converter/json-to-csv') {
     return next(); // Skip json parsing for this route
   }
   express.json()(req, res, next);

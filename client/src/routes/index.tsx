@@ -21,7 +21,7 @@ import {
   imageToBase64Route
 } from '@/routes/image.routes.tsx';
 import { cssRoute, boxShadowRoute } from '@/routes/css.route.tsx';
-import { dataRoute, jsonToXmlConverterRoute, xmlToJsonConverterRoute, jsonFormatterRoute, jwtDecoderRoute } from '@/routes/data.routes.tsx';
+import { dataRoute, jsonToXmlConverterRoute, xmlToJsonConverterRoute, jsonFormatterRoute, jwtDecoderRoute, jsonToCsvConverterRoute, csvToJsonConverterRoute } from '@/routes/data.routes.tsx';
 
 export const rootRoute = createRootRoute({
   component: BaseLayout,
@@ -40,7 +40,7 @@ const routeTree = rootRoute.addChildren([
   colorRoute.addChildren([colorConverterRoute, colorGradientGeneratorRoute, colorPickerRoute, colorContrastCheckerRoute]),
   cssRoute.addChildren([boxShadowRoute]),
   numberRoute.addChildren([]),
-  dataRoute.addChildren([xmlToJsonConverterRoute, jsonToXmlConverterRoute, jsonFormatterRoute, jwtDecoderRoute]),
+  dataRoute.addChildren([xmlToJsonConverterRoute, jsonToXmlConverterRoute, jsonFormatterRoute, jwtDecoderRoute, jsonToCsvConverterRoute, csvToJsonConverterRoute]),
   dateTimeRoute.addChildren([epochUnixDateTimeRoute]),
   imageRoute.addChildren([imageToBase64Route, imageOptimiserRoute, imagePlaceholderGeneratorRoute, faviconGeneratorRoute])
 ]);
