@@ -20,7 +20,7 @@ import {
   imageRoute,
   imageToBase64Route
 } from '@/routes/image.routes.tsx';
-import { cssRoute, boxShadowRoute } from '@/routes/css.route.tsx';
+import { cssRoute, boxShadowRoute, cubicBezierRoute } from '@/routes/css.route.tsx';
 import { dataRoute, jsonToXmlConverterRoute, xmlToJsonConverterRoute, jsonFormatterRoute, jwtDecoderRoute, jsonToCsvConverterRoute, csvToJsonConverterRoute } from '@/routes/data.routes.tsx';
 
 export const rootRoute = createRootRoute({
@@ -38,7 +38,7 @@ const routeTree = rootRoute.addChildren([
   homeRoute,
   stringRoute.addChildren([stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute]),
   colorRoute.addChildren([colorConverterRoute, colorGradientGeneratorRoute, colorPickerRoute, colorContrastCheckerRoute]),
-  cssRoute.addChildren([boxShadowRoute]),
+  cssRoute.addChildren([boxShadowRoute, cubicBezierRoute]),
   numberRoute.addChildren([]),
   dataRoute.addChildren([xmlToJsonConverterRoute, jsonToXmlConverterRoute, jsonFormatterRoute, jwtDecoderRoute, jsonToCsvConverterRoute, csvToJsonConverterRoute]),
   dateTimeRoute.addChildren([epochUnixDateTimeRoute]),

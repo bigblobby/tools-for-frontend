@@ -1,6 +1,7 @@
 import { createRoute } from "@tanstack/react-router";
 import { rootRoute } from ".";
 import CssBoxShadowPage from '@/pages/css-pages/CssBoxShadowPage.tsx';
+import CubicBezierPage from '@/pages/css-pages/CubicBezierPage.tsx';
 
 const cssRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -13,4 +14,10 @@ const boxShadowRoute = createRoute({
   component: CssBoxShadowPage,
 });
 
-export { cssRoute, boxShadowRoute };
+const cubicBezierRoute = createRoute({
+  getParentRoute: () => cssRoute,
+  path: "/cubic-bezier",
+  component: CubicBezierPage,
+});
+
+export { cssRoute, boxShadowRoute, cubicBezierRoute };

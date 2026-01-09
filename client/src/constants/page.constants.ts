@@ -27,6 +27,7 @@ export const pageCategories: PageCategory[] = [
     icon: '🎨',
     items: [
       { title: 'Box Shadow', path: '/css/box-shadow' },
+      { title: 'Cubic Bezier / Easing', path: '/css/cubic-bezier' },
     ]
   },
   {
