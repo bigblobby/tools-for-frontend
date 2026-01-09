@@ -8,7 +8,7 @@ export const pageCategories: PageCategory[] = [
       { title: 'Count', path: '/string/count' },
       { title: 'Transform', path: '/string/transform' },
       { title: 'Case Converter', path: '/string/case-converter' },
-      { title: 'Encode Decode', path: '/string/encode-decode' },
+      { title: 'Encode Decode', path: '/string/encode-decode', tags: ['base64', 'url', 'html entity'] },
       { title: 'Hash Generator', path: '/string/hash-generator' },
     ]
   },
@@ -35,7 +35,7 @@ export const pageCategories: PageCategory[] = [
     items: [
       { title: 'XML to JSON', path: '/data/xml-to-json', tags: ['converter'] },
       { title: 'JSON to XML', path: '/data/json-to-xml', tags: ['converter'] },
-      { title: 'JWT Decoder', path: '/data/jwt-decoder' },
+      { title: 'JWT Decoder', path: '/data/jwt-decoder', tags: ['json web token'] },
       { title: 'JSON Formatter', path: '/data/json-formatter' },
       { title: 'JSON to CSV', path: '/data/json-to-csv', tags: ['converter'] },
       { title: 'CSV to JSON', path: '/data/csv-to-json', tags: ['converter'] },
