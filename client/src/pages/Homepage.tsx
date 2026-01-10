@@ -33,7 +33,7 @@ export default function Homepage() {
                     <ul className="flex flex-wrap gap-2">
                       {recentPages.slice().reverse().map((path: string, index: number) => (
                         <li key={index}>
-                          <Button variant="secondary" size="lg" asChild>
+                          <Button size="lg" asChild>
                             <Link to={path}>{getPageTitle(path)}</Link>
                           </Button>
                         </li>
@@ -58,7 +58,7 @@ export default function Homepage() {
                     <ul className="flex flex-wrap gap-2">
                       {mostUsedTools.slice(0, 5).map((path: string, index: number) => (
                         <li key={index}>
-                          <Button variant="secondary" size="lg" asChild>
+                          <Button size="lg" asChild>
                             <Link to={path}>{getPageTitle(path)}</Link>
                           </Button>
                         </li>
@@ -81,7 +81,7 @@ export default function Homepage() {
                   <ul className="flex flex-wrap gap-2">
                     {section.items.map((item) => (
                       <li key={item.path}>
-                        <Button variant="secondary" size="lg" asChild>
+                        <Button size="lg" asChild>
                           <Link to={item.path}>{item.title}</Link>
                         </Button>
                       </li>

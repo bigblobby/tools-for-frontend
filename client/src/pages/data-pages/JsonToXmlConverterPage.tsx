@@ -128,7 +128,6 @@ export default function JsonToXmlConverterPage() {
                 />
                 <Button
                   type="button"
-                  variant="secondary"
                   onClick={() => fileInputRef.current?.click()}
                   className="text-sm"
                 >
@@ -141,11 +140,11 @@ export default function JsonToXmlConverterPage() {
           <div className="flex flex-col gap-3">
             <Label htmlFor="json-input">XML <span className="text-xs">(Read Only)</span></Label>
             <textarea readOnly value={xml} id="json-input" className="block w-full h-80 font-mono border border-gray-300 rounded-md p-2" onChange={handleXmlChange} />
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <Button variant="secondary" onClick={handleDownload}>Download</Button>
-            <Button variant="secondary" onClick={handleCopy}>Copy</Button>
-            <Button variant="destructive-min" onClick={handleClear}>Clear</Button>
+            <div className="flex flex-wrap gap-3">
+              <Button onClick={handleDownload}>Download</Button>
+              <Button onClick={handleCopy}>Copy</Button>
+              <Button variant="destructive-min" onClick={handleClear}>Clear</Button>
+            </div>
           </div>
         </div>
       </div>

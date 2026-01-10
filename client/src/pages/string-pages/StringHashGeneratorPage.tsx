@@ -68,9 +68,9 @@ export default function StringHashGeneratorPage() {
             <textarea value={input} id="string-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleInputChange}/>
 
             <div className="flex flex-wrap gap-3">
-              <Button variant="secondary" onClick={handleGenerateMD5Hash}>MD5</Button>
-              <Button variant="secondary" onClick={handleGenerateSHA256Hash}>SHA-256</Button>
-              <Button variant="secondary" onClick={handleGenerateSHA512Hash}>SHA-512</Button>
+              <Button onClick={handleGenerateMD5Hash}>MD5</Button>
+              <Button onClick={handleGenerateSHA256Hash}>SHA-256</Button>
+              <Button onClick={handleGenerateSHA512Hash}>SHA-512</Button>
             </div>
             <div className="flex flex-col gap-3">
               <ButtonGroup>
@@ -83,7 +83,7 @@ export default function StringHashGeneratorPage() {
             <Label htmlFor="string-output">Output <span className="text-xs">(Read Only)</span></Label>
             <textarea readOnly value={output} id="string-output" className="block w-full h-40 border border-gray-300 rounded-md p-2"/>
             <div className="flex flex-wrap gap-3">
-              <Button variant="secondary" onClick={handleCopy}>Copy</Button>
+              <Button onClick={handleCopy}>Copy</Button>
               <Button variant="destructive-min" onClick={handleClearOutput}>Clear</Button>
             </div>
           </div>

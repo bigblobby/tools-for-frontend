@@ -97,7 +97,7 @@ export default function FaviconGeneratorPage() {
                 acceptedFileTypes={['image/png', 'image/jpeg', 'image/webp', 'image/svg+xml']}
               />
               <div>
-                <Button variant="secondary" onClick={handleGenerate}>Generate</Button>
+                <Button onClick={handleGenerate}>Generate</Button>
               </div>
             </div>
           </div>
@@ -112,7 +112,7 @@ export default function FaviconGeneratorPage() {
             </div>
             <Textarea className="font-mono" readOnly defaultValue={html}/>
             <div>
-              <Button variant="secondary" onClick={handleCopy}>Copy</Button>
+              <Button onClick={handleCopy}>Copy</Button>
             </div>
           </div>
         </div>

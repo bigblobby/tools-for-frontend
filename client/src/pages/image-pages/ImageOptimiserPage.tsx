@@ -162,7 +162,7 @@ export default function ImageOptimiserPage() {
                 </div>
               </div>
               <div className="space-x-3">
-                <Button variant="secondary" onClick={handleOptimise}>Optimise</Button>
+                <Button onClick={handleOptimise}>Optimise</Button>
               </div>
             </div>
           </div>

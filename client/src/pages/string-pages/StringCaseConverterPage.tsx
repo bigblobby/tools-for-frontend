@@ -97,10 +97,10 @@ export default function StringCaseConverterPage() {
             <textarea value={input} id="string-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleInputChange}/>
 
             <div className="flex flex-wrap gap-3">
-              <Button variant="secondary" onClick={handleConvertToCamelCase}>camelCase</Button>
-              <Button variant="secondary" onClick={handleConvertToSnakeCase}>snake_case</Button>
-              <Button variant="secondary" onClick={handleConvertToKebabCase}>kebab-case</Button>
-              <Button variant="secondary" onClick={handleConvertToPascalCase}>PascalCase</Button>
+              <Button onClick={handleConvertToCamelCase}>camelCase</Button>
+              <Button onClick={handleConvertToSnakeCase}>snake_case</Button>
+              <Button onClick={handleConvertToKebabCase}>kebab-case</Button>
+              <Button onClick={handleConvertToPascalCase}>PascalCase</Button>
             </div>
             <div className="flex flex-col gap-3">
               <ButtonGroup>
@@ -113,7 +113,7 @@ export default function StringCaseConverterPage() {
             <Label htmlFor="string-output">Output <span className="text-xs">(Read Only)</span></Label>
             <textarea readOnly value={output} id="string-output" className="block w-full h-40 border border-gray-300 rounded-md p-2"/>
             <div className="flex flex-wrap gap-3">
-              <Button variant="secondary" onClick={handleCopy}>Copy</Button>
+              <Button onClick={handleCopy}>Copy</Button>
               <Button variant="destructive-min" onClick={handleClearOutput}>Clear</Button>
             </div>
           </div>

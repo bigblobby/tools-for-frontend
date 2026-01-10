@@ -77,7 +77,7 @@ export default function JWTDecoderPage() {
               className="block w-full h-10 font-mono border border-gray-300 rounded-md p-2"
             />
             <div className="flex gap-3">
-              <Button variant="secondary" onClick={handleDecodeJWT}>Decode</Button>
+              <Button onClick={handleDecodeJWT}>Decode</Button>
               <Button variant="destructive-min" onClick={handleClearAll}>Clear All</Button>
             </div>
           </div>
@@ -89,7 +89,7 @@ export default function JWTDecoderPage() {
               className="block w-full h-40 font-mono border border-gray-300 rounded-md p-2"
             />
             <div>
-              <Button variant="secondary" onClick={handleCopyHeader}>Copy Header</Button>
+              <Button onClick={handleCopyHeader}>Copy Header</Button>
             </div>
           </div>
           <div className="flex flex-col gap-3">
@@ -102,7 +102,7 @@ export default function JWTDecoderPage() {
               className="block w-full font-mono border border-gray-300 rounded-md p-2"
             />
             <div>
-              <Button variant="secondary" onClick={handleCopyPayload}>Copy Payload</Button>
+              <Button onClick={handleCopyPayload}>Copy Payload</Button>
             </div>
           </div>
         </div>

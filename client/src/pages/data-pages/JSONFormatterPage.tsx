@@ -72,9 +72,9 @@ export default function JSONFormatterPage() {
                 <SelectItem value="4">4</SelectItem>
               </SelectContent>
             </Select>
-            <Button variant="secondary" onClick={handleBeautifyJson}>Beautify</Button>
-            <Button variant="secondary" onClick={handleMinifyJson}>Minify</Button>
-            <Button variant="secondary" onClick={handleCopyJsonOutput}>Copy Output</Button>
+            <Button onClick={handleBeautifyJson}>Beautify</Button>
+            <Button onClick={handleMinifyJson}>Minify</Button>
+            <Button onClick={handleCopyJsonOutput}>Copy Output</Button>
             <Button variant="destructive-min" onClick={handleClearAll}>Clear All</Button>
           </div>
           <div className="flex-1 flex flex-col gap-3">

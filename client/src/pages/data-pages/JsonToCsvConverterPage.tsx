@@ -50,7 +50,7 @@ export default function JsonToCsvConverterPage() {
     }
   };
 
-  const handleConvert = async () => {
+  const handleDownload = async () => {
     try {
       const jsonObj = JSON.parse(json);
 
@@ -133,7 +133,6 @@ export default function JsonToCsvConverterPage() {
                 />
                 <Button
                   type="button"
-                  variant="secondary"
                   onClick={() => fileInputRef.current?.click()}
                   className="text-sm"
                 >
@@ -146,11 +145,11 @@ export default function JsonToCsvConverterPage() {
           <div className="flex flex-col gap-3">
             <Label htmlFor="json-input">CSV <span className="text-xs">(Read Only)</span></Label>
             <textarea readOnly value={csv} id="csv-input" className="block w-full h-80 font-mono border border-gray-300 rounded-md p-2" onChange={handleCsvChange} />
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <Button variant="secondary" onClick={handleConvert}>Convert</Button>
-            <Button variant="secondary" onClick={handleCopy}>Copy</Button>
-            <Button variant="destructive-min" onClick={handleClear}>Clear</Button>
+            <div className="flex flex-wrap gap-3">
+              <Button onClick={handleDownload}>Download</Button>
+              <Button onClick={handleCopy}>Copy</Button>
+              <Button variant="destructive-min" onClick={handleClear}>Clear</Button>
+            </div>
           </div>
         </div>
       </div>

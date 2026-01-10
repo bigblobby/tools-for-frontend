@@ -94,23 +94,23 @@ export default function StringEncodeDecodePage() {
               <div className="flex flex-col gap-2">
                 <span className="block text-gray-500 text-sm">Base64</span>
                 <ButtonGroup>
-                  <Button variant="secondary" onClick={handleBase64Encode}>Encode</Button>
-                  <Button variant="secondary" onClick={handleBase64Decode}>Decode</Button>
+                  <Button onClick={handleBase64Encode}>Encode</Button>
+                  <Button onClick={handleBase64Decode}>Decode</Button>
                 </ButtonGroup>
               </div>
               <div className="flex flex-col gap-2">
                 <span className="block text-gray-500 text-sm">URL</span>
                 <ButtonGroup>
-                  <Button variant="secondary" onClick={handleURLEncode}>Encode</Button>
-                  <Button variant="secondary" onClick={handleURLDecode}>Decode</Button>
+                  <Button onClick={handleURLEncode}>Encode</Button>
+                  <Button onClick={handleURLDecode}>Decode</Button>
                 </ButtonGroup>
               </div>
               <div className="flex flex-col gap-2">
                 <span className="block text-gray-500 text-sm">HTML Entity</span>
                 <div className="flex items-center gap-2">
                   <ButtonGroup>
-                    <Button variant="secondary" onClick={handleHTMLEntityEncode}>Encode</Button>
-                    <Button variant="secondary" onClick={handleHTMLEntityDecode}>Decode</Button>
+                    <Button onClick={handleHTMLEntityEncode}>Encode</Button>
+                    <Button onClick={handleHTMLEntityDecode}>Decode</Button>
                   </ButtonGroup>
                   <div className="flex flex-row items-center gap-2">
                     <Checkbox id="use-named-references" checked={useNamedReferences} onCheckedChange={handleSetUseNamedReferences}/>
@@ -134,7 +134,7 @@ export default function StringEncodeDecodePage() {
             <Label htmlFor="string-output">Output <span className="text-xs">(Read Only)</span></Label>
             <textarea readOnly value={output} id="string-output" className="block w-full h-40 border border-gray-300 rounded-md p-2"/>
             <div className="flex flex-wrap gap-3">
-              <Button variant="secondary" onClick={handleCopy}>Copy</Button>
+              <Button onClick={handleCopy}>Copy</Button>
               <Button variant="destructive-min" onClick={handleClearOutput}>Clear</Button>
             </div>
           </div>

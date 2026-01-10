@@ -107,7 +107,7 @@ export default function ImageToBase64Page() {
   
               <Textarea className="flex-grow-1 h-full font-mono" value={output} readOnly />
               <div className="space-x-3">
-                <Button variant="secondary" onClick={handleCopy}>Copy</Button>
+                <Button onClick={handleCopy}>Copy</Button>
                 <Button variant="destructive-min" onClick={() => {
                   setKey(prevKey => prevKey + 1);
                   setCurrentFile(null);

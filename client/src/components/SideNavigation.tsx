@@ -14,7 +14,7 @@ export default function SideNavigation() {
     <Sidebar>
       <SidebarHeader className="p-4">
         <Link to="/">
-          <h1 className="text-xl font-mono font-bold text-blue-800">
+          <h1 className="text-xl font-mono font-bold text-brand">
             Tools for Frontend
           </h1>
         </Link>

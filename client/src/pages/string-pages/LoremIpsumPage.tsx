@@ -112,7 +112,7 @@ export default function LoremIpsumPage() {
             </div>
 
             <div className="flex gap-2">
-              <Button variant="secondary" onClick={handleGenerate}>Generate</Button>
+              <Button onClick={handleGenerate}>Generate</Button>
             </div>
           </div>
 
@@ -126,10 +126,10 @@ export default function LoremIpsumPage() {
               placeholder="Generated lorem ipsum text will appear here..."
             />
             <div className="flex gap-2">
-              <Button variant="secondary" onClick={handleCopy} disabled={!generatedText}>
+              <Button onClick={handleCopy}>
                 Copy
               </Button>
-              <Button variant="destructive-min" onClick={handleClear} disabled={!generatedText}>
+              <Button variant="destructive-min" onClick={handleClear}>
                 Clear
               </Button>
             </div>

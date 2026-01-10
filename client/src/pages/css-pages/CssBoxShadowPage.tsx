@@ -87,7 +87,7 @@ export default function CssBoxShadowPage() {
                 <textarea readOnly value={boxShadow} id="box-shadow-output" className="block w-full h-24 font-mono border border-gray-300 rounded-md p-2" />
               </div>
               <div>
-                <Button variant="secondary" onClick={handleCopyBoxShadow}>Copy</Button>
+                <Button onClick={handleCopyBoxShadow}>Copy</Button>
               </div>
             </div>
           </div>

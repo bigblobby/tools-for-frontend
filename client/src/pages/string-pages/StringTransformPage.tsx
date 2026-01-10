@@ -80,14 +80,14 @@ export default function StringTransformPage() {
             <Label htmlFor="string-input">Input</Label>
             <textarea value={input} id="string-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleInputChange}/>
             <div className="flex flex-wrap gap-3">
-              <Button variant="secondary" onClick={handleUppercase}>Uppercase</Button>
-              <Button variant="secondary" onClick={handleLowercase}>Lowercase</Button>
-              <Button variant="secondary" onClick={handleCapitalize}>Capitalize</Button>
-              <Button variant="secondary" onClick={handleReverse}>Reverse</Button>
-              <Button variant="secondary" onClick={handleRemoveExtraSpaces}>Remove Extra Spaces</Button>
-              <Button variant="secondary" onClick={handleRemoveSpecialCharacters}>Remove Special Characters</Button>
-              <Button variant="secondary" onClick={handleRemoveNumbers}>Remove Numbers</Button>
-              <Button variant="secondary" onClick={handleRemoveLetters}>Remove Letters</Button>
+              <Button onClick={handleUppercase}>Uppercase</Button>
+              <Button onClick={handleLowercase}>Lowercase</Button>
+              <Button onClick={handleCapitalize}>Capitalize</Button>
+              <Button onClick={handleReverse}>Reverse</Button>
+              <Button onClick={handleRemoveExtraSpaces}>Remove Extra Spaces</Button>
+              <Button onClick={handleRemoveSpecialCharacters}>Remove Special Characters</Button>
+              <Button onClick={handleRemoveNumbers}>Remove Numbers</Button>
+              <Button onClick={handleRemoveLetters}>Remove Letters</Button>
               <Button variant="destructive-min" onClick={handleClearInput}>Clear</Button>
             </div>
           </div>
@@ -96,7 +96,7 @@ export default function StringTransformPage() {
             <Label htmlFor="string-output">Output <span className="text-xs">(Read Only)</span></Label>
             <textarea readOnly value={output} id="string-output" className="block w-full h-40 border border-gray-300 rounded-md p-2"/>
             <div className="flex flex-wrap gap-3">
-              <Button variant="secondary" onClick={handleCopy}>Copy</Button>
+              <Button onClick={handleCopy}>Copy</Button>
               <Button variant="destructive-min" onClick={handleClearOutput}>Clear</Button>
             </div>
           </div>

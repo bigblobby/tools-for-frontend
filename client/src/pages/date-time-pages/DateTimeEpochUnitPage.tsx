@@ -42,7 +42,7 @@ export default function DateTimeEpochUnitPage() {
           <Label htmlFor="epoch-time">Convert epoch time to human readable</Label>
           <input value={epoch} onChange={handleSetEpoch} id="epoch-time" type="text" className="block w-full h-10 border border-gray-300 rounded-md p-2"/>
           <div>
-            <Button variant="secondary" onClick={handleConvertToHumanReadable}>Convert</Button>
+            <Button onClick={handleConvertToHumanReadable}>Convert</Button>
           </div>
           <div>
             {humanReadable?.toString()}
