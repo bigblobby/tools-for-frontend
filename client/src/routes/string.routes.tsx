@@ -5,6 +5,7 @@ import StringTransformPage from "@/pages/string-pages/StringTransformPage";
 import StringEncodeDecodePage from "@/pages/string-pages/StringEncodeDecodePage";
 import StringHashGeneratorPage from "@/pages/string-pages/StringHashGeneratorPage";
 import StringCaseConverterPage from "@/pages/string-pages/StringCaseConverterPage";
+import LoremIpsumPage from "@/pages/string-pages/LoremIpsumPage";
 
 const stringRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -47,4 +48,10 @@ const stringHashGeneratorRoute = createRoute({
   component: StringHashGeneratorPage,
 });
 
-export { stringRoute, stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute };
+const stringLoremIpsumRoute = createRoute({
+  getParentRoute: () => stringRoute,
+  path: "/lorem-ipsum",
+  component: LoremIpsumPage,
+});
+
+export { stringRoute, stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute, stringLoremIpsumRoute };

@@ -9,6 +9,7 @@ import {
   stringEncodeDecodeRoute,
   stringHashGeneratorRoute,
   stringCaseConverterRoute,
+  stringLoremIpsumRoute,
 } from '@/routes/string.routes';
 import { colorRoute, colorConverterRoute, colorGradientGeneratorRoute, colorPickerRoute, colorContrastCheckerRoute } from '@/routes/color.routes';
 import { numberRoute } from "@/routes/number.routes";
@@ -36,7 +37,7 @@ const homeRoute = createRoute({
 
 const routeTree = rootRoute.addChildren([
   homeRoute,
-  stringRoute.addChildren([stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute]),
+  stringRoute.addChildren([stringCountRoute, stringTransformRoute, stringEncodeDecodeRoute, stringHashGeneratorRoute, stringCaseConverterRoute, stringLoremIpsumRoute]),
   colorRoute.addChildren([colorConverterRoute, colorGradientGeneratorRoute, colorPickerRoute, colorContrastCheckerRoute]),
   cssRoute.addChildren([boxShadowRoute]),
   numberRoute.addChildren([]),

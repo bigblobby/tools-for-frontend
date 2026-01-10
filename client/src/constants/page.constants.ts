@@ -10,6 +10,7 @@ export const pageCategories: PageCategory[] = [
       { title: 'Case Converter', path: '/string/case-converter' },
       { title: 'Encode Decode', path: '/string/encode-decode', tags: ['base64', 'url', 'html entity'] },
       { title: 'Hash Generator', path: '/string/hash-generator' },
+      { title: 'Lorem Ipsum Generator', path: '/string/lorem-ipsum', tags: ['placeholder', 'dummy text'] },
     ]
   },
   {
