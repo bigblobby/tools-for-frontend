@@ -23,6 +23,7 @@ import {
 } from '@/routes/image.routes.tsx';
 import { cssRoute, boxShadowRoute } from '@/routes/css.route.tsx';
 import { dataRoute, jsonToXmlConverterRoute, xmlToJsonConverterRoute, jsonFormatterRoute, jwtDecoderRoute, jsonToCsvConverterRoute, csvToJsonConverterRoute } from '@/routes/data.routes.tsx';
+import Loading from "@/components/Loading";
 
 export const rootRoute = createRootRoute({
   component: BaseLayout,
@@ -46,4 +47,7 @@ const routeTree = rootRoute.addChildren([
   imageRoute.addChildren([imageToBase64Route, imageOptimiserRoute, imagePlaceholderGeneratorRoute, faviconGeneratorRoute])
 ]);
 
-export const router = createRouter({ routeTree });
+export const router = createRouter({
+  routeTree,
+  defaultPendingComponent: () => <Loading />,
+});

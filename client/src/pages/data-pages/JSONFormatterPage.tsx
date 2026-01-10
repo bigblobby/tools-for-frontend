@@ -5,9 +5,11 @@ import { Label } from '@/components/ui/label.tsx';
 import { toast } from 'sonner';
 import SEO from '@/components/SEO';
 import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-error_marker";
+import "ace-builds/src-noconflict/ext-language_tools";
 
 export default function JSONFormatterPage() {
   const [jsonInput, setJsonInput] = useState('');

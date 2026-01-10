@@ -1,11 +1,13 @@
+import { lazy } from "react";
 import { createRoute } from "@tanstack/react-router";
 import { rootRoute } from ".";
 import XmlToJsonConverter from "@/pages/data-pages/XmlToJsonConverter";
 import JsonToXmlConverterPage from "@/pages/data-pages/JsonToXmlConverterPage";
-import JSONFormatterPage from '@/pages/data-pages/JSONFormatterPage.tsx';
 import JWTDecoderPage from '@/pages/data-pages/JWTDecoderPage.tsx';
 import JsonToCsvConverterPage from "@/pages/data-pages/JsonToCsvConverterPage";
 import CsvToJsonConverterPage from "@/pages/data-pages/CsvToJsonConverterPage";
+
+const JSONFormatterPage = lazy(() => import('@/pages/data-pages/JSONFormatterPage.tsx'));
 
 const dataRoute = createRoute({
   getParentRoute: () => rootRoute,
