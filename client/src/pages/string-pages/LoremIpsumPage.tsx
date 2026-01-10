@@ -100,7 +100,7 @@ export default function LoremIpsumPage() {
             </div>
 
             <div className="flex flex-col gap-2 flex-1">
-              <Label htmlFor="lorem-count">Number</Label>
+              <Label htmlFor="lorem-count">Amount</Label>
               <Input
                 id="lorem-count"
                 type="number"
@@ -123,7 +123,6 @@ export default function LoremIpsumPage() {
               readOnly
               value={generatedText}
               className="h-80"
-              placeholder="Generated lorem ipsum text will appear here..."
             />
             <div className="flex gap-2">
               <Button onClick={handleCopy}>
