@@ -37,7 +37,7 @@ export const pageCategories: PageCategory[] = [
       { title: 'XML to JSON', path: '/data/xml-to-json', tags: ['converter'] },
       { title: 'JSON to XML', path: '/data/json-to-xml', tags: ['converter'] },
       { title: 'JWT Decoder', path: '/data/jwt-decoder', tags: ['json web token'] },
-      { title: 'JSON Formatter', path: '/data/json-formatter' },
+      { title: 'JSON Formatter/Validator', path: '/data/json-formatter' },
       { title: 'JSON to CSV', path: '/data/json-to-csv', tags: ['converter'] },
       { title: 'CSV to JSON', path: '/data/csv-to-json', tags: ['converter'] },
     ]

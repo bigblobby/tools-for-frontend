@@ -131,3 +131,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Ace Editor custom highlight color */
+.ace_active-line {
+  background-color: oklch(0.967 0.003 264.542) !important;
+}
+
+.ace_selection {
+  background-color: oklch(0.9 0.02 264.542) !important;
+}

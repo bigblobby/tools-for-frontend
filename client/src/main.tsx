@@ -6,6 +6,8 @@ import { RouterProvider } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 
+import "ace-builds/src-noconflict/ext-language_tools";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -17,8 +19,8 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <Toaster/>
-      <RouterProvider router={router}/>
+      <Toaster />
+      <RouterProvider router={router} />
     </QueryClientProvider>
   </StrictMode>,
 );
