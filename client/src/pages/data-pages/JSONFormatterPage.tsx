@@ -10,12 +10,13 @@ import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-error_marker";
 import "ace-builds/src-noconflict/ext-language_tools";
+import type { Editor } from 'ace-builds';
 
 export default function JSONFormatterPage() {
   const [jsonInput, setJsonInput] = useState('');
   const [jsonOutput, setJsonOutput] = useState('');
   const [spaces, setSpaces] = useState(2);
-  const inputEditorRef = useRef<any>(null);
+  const inputEditorRef = useRef<AceEditor>(null);
 
   const handleFormatJson = (spaces?: number) => {
     if (!jsonInput.trim().length) {
@@ -64,7 +65,7 @@ export default function JSONFormatterPage() {
     setJsonOutput('');
   };
 
-  const validateJSON = (text: string, editor: any) => {
+  const validateJSON = (text: string, editor: Editor) => {
     if (!editor) return;
 
     if (!text.trim()) {
@@ -75,14 +76,14 @@ export default function JSONFormatterPage() {
     try {
       JSON.parse(text);
       editor.getSession().setAnnotations([]);
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Try to extract position from error message
       let row = 0;
       let column = 0;
-      let message = error.message;
+      const message = error instanceof Error ? error.message : 'Unknown error';
 
       // Check if error message contains position information
-      const positionMatch = error.message.match(/position (\d+)/);
+      const positionMatch = message.match(/position (\d+)/);
       if (positionMatch) {
         const position = parseInt(positionMatch[1], 10);
         const lines = text.substring(0, position).split('\n');
@@ -94,7 +95,7 @@ export default function JSONFormatterPage() {
         for (let i = 0; i < lines.length; i++) {
           try {
             JSON.parse(lines.slice(0, i + 1).join('\n'));
-          } catch (e) {
+          } catch (_e) {
             row = i;
             column = 0;
             break;

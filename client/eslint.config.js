@@ -21,6 +21,14 @@ export default defineConfig([
     },
     rules: {
       'react-refresh/only-export-components': 'off', // TODO this will need to be fixed either by me or ShadCN https://github.com/shadcn-ui/ui/issues/7736
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
     }
   },
 ])
