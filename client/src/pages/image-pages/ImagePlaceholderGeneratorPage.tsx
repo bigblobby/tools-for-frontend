@@ -57,6 +57,24 @@ export default function ImagePlaceholderGeneratorPage() {
             </div>
           </div>
         </div>
+
+        <div className="max-w-sm border rounded-md p-4">
+          <h2 className="text-xl font-bold">Text</h2>
+          <p className="text-gray-500 text-sm">Change the text that is displayed on the image.</p>
+          <div className="flex flex-col gap-4 mt-5">
+            <div className="flex flex-col gap-2">
+              <PlaceholderImageInput path="/p/400x400?text=Hello"/>
+            </div>
+            <div className="flex flex-col gap-2">
+              <p className="text-gray-500 text-sm">Add spaces using <code>+</code>:</p>
+              <PlaceholderImageInput path="/p/400x400?text=Hello+world"/>
+            </div>
+            <div className="flex flex-col gap-2">
+              <p className="text-gray-500 text-sm">Add new lines using <code>\n</code>:</p>
+              <PlaceholderImageInput path="/p/400x400?text=Hello\nworld"/>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
