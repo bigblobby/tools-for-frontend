@@ -34,7 +34,7 @@ export default function CssBoxShadowPage() {
         ogDescription="Generate CSS box shadows with customizable options."
         canonicalUrl="https://toolsforfrontend.com/css/box-shadow"
       />
-      <div>
+      <div className="max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">Box Shadow Generator</h1>
           <p className="text-gray-500">Generate box shadows for your CSS.</p>

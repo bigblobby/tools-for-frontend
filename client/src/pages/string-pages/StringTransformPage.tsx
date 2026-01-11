@@ -69,7 +69,7 @@ export default function StringTransformPage() {
         ogDescription="Transform strings with uppercase, lowercase, capitalize, reverse, and more."
         canonicalUrl="https://toolsforfrontend.com/string/transform"
       />
-      <div className="flex flex-row gap-10">
+      <div className="flex flex-row gap-10 max-w-8xl">
         <div className="flex-1 flex flex-col gap-6">
           <div>
             <h1 className="text-2xl font-bold">Transform</h1>

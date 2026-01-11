@@ -21,7 +21,7 @@ export default function Homepage() {
         ogDescription="Free online tools for frontend developers. Color pickers, converters, image optimizers, and more."
         canonicalUrl="https://toolsforfrontend.com/"
       />
-      <div className="space-y-8">
+      <div className="space-y-8 max-w-8xl">
         {
           (recentPages.length > 0 || mostUsedTools.length > 0) && (
             <div>

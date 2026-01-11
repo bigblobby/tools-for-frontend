@@ -85,7 +85,7 @@ export default function StringCaseConverterPage() {
         ogDescription="Convert strings between camelCase, snake_case, kebab-case, and PascalCase formats."
         canonicalUrl="https://toolsforfrontend.com/string/case-converter"
       />
-      <div className="flex flex-row gap-10">
+      <div className="flex flex-row gap-10 max-w-8xl">
         <div className="flex-1 flex flex-col gap-6">
           <div>
             <h1 className="text-2xl font-bold">Case Converter</h1>

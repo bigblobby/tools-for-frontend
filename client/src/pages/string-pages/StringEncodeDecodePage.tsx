@@ -80,7 +80,7 @@ export default function StringEncodeDecodePage() {
         ogDescription="Encode and decode strings to/from Base64, URL, and HTML Entity formats."
         canonicalUrl="https://toolsforfrontend.com/string/encode-decode"
       />
-      <div className="flex flex-row gap-10">
+      <div className="flex flex-row gap-10 max-w-8xl">
         <div className="flex-1 flex flex-col gap-6">
           <div>
             <h1 className="text-2xl font-bold">Encode Decode</h1>

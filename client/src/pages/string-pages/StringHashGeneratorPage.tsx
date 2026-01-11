@@ -56,7 +56,7 @@ export default function StringHashGeneratorPage() {
         ogDescription="Generate MD5, SHA-256, and SHA-512 hashes from any string."
         canonicalUrl="https://toolsforfrontend.com/string/hash-generator"
       />
-      <div className="flex flex-row gap-10">
+      <div className="flex flex-row gap-10 max-w-8xl">
         <div className="flex-1 flex flex-col gap-6">
           <div>
             <h1 className="text-2xl font-bold">Hash Generator</h1>

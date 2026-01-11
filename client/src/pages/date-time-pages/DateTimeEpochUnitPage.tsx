@@ -32,7 +32,7 @@ export default function DateTimeEpochUnitPage() {
         ogDescription="Convert epoch and Unix timestamps to human-readable dates and times."
         canonicalUrl="https://toolsforfrontend.com/date-time/epoch-unix"
       />
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-10 max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">Epoch/Unix Timestamps</h1>
           <p className="text-gray-500">Convert epoch and unix timestamps to human readable dates/times.</p>

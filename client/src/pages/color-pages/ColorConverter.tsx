@@ -104,7 +104,7 @@ export default function ColorConverter() {
         ogDescription="Convert colors between different formats including HEX, RGB, HSL, OKLCH, and more."
         canonicalUrl="https://toolsforfrontend.com/color/converter"
       />
-      <div>
+      <div className="max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">Color Converter</h1>
           <p className="text-gray-500">Convert a color to different formats. Use the color picker, or pick a color from anywhere on the screen using the eye dropper.</p>

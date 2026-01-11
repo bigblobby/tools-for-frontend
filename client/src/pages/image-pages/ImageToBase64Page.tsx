@@ -70,7 +70,7 @@ export default function ImageToBase64Page() {
         ogDescription="Convert images to Base64 strings in multiple formats."
         canonicalUrl="https://toolsforfrontend.com/image/base64"
       />
-      <div className="flex flex-row gap-10">
+      <div className="flex flex-row gap-10 max-w-8xl">
         <div className="flex-1 flex flex-col gap-6 w-full">
           <div>
             <h1 className="text-2xl font-bold">Image to Base64</h1>

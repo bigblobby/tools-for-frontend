@@ -73,7 +73,7 @@ export default function ImageOptimiserPage() {
         ogDescription="Optimize images by resizing, compressing, and converting formats."
         canonicalUrl="https://toolsforfrontend.com/image/optimise"
       />
-      <div className="flex flex-row gap-10">
+      <div className="flex flex-row gap-10 max-w-8xl">
         <div className="flex-1 flex flex-col gap-6">
           <div>
             <h1 className="text-2xl font-bold">Image optimiser</h1>
@@ -95,11 +95,11 @@ export default function ImageOptimiserPage() {
                 <div className="flex flex-col gap-3">
                   <div className="flex gap-3">
                     <div className="basis-1/2 space-y-2">
-                      <Label htmlFor="width">Width</Label>
+                      <Label htmlFor="width">Width (px)</Label>
                       <Input id="width" type="number" value={width} onChange={(e) => setWidth(e.target.value)} placeholder="Leave empty for auto sizing" />
                     </div>
                     <div className="basis-1/2 space-y-2">
-                      <Label htmlFor="height">Height</Label>
+                      <Label htmlFor="height">Height (px)</Label>
                       <Input id="height" type="number" value={height} onChange={(e) => setHeight(e.target.value)} placeholder="Leave empty for auto sizing" />
                     </div>
                   </div>

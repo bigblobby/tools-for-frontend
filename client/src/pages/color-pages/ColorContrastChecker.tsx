@@ -176,7 +176,7 @@ export default function ColorContrastChecker() {
         ogDescription="Check if your colors meet WCAG 2.1 accessibility standards for web accessibility."
         canonicalUrl="https://toolsforfrontend.com/color/contrast-checker"
       />
-      <div className="max-w-6xl">
+      <div className="max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">Color Contrast Checker</h1>
           <p className="text-gray-500">Check if your foreground and background colors meet WCAG accessibility standards.</p>

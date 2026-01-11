@@ -128,13 +128,13 @@ export default function JSONFormatterPage() {
         ogDescription="Beautify and minify JSON with customizable indentation. Validate your JSON data and beautify it with customizable indentation."
         canonicalUrl="https://toolsforfrontend.com/string/json-formatter"
       />
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-10 max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">JSON formatter/validator</h1>
           <p className="text-gray-500">Beautify/minify and validate your JSON data.</p>
         </div>
 
-        <div className="flex row gap-10">
+        <div className="flex row gap-6">
           <div className="flex-1 flex flex-col gap-3">
             <Label htmlFor="input">Input</Label>
             <AceEditor

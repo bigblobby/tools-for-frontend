@@ -61,7 +61,7 @@ export default function JWTDecoderPage() {
         ogDescription="Decode JWT tokens and view the header and payload data."
         canonicalUrl="https://toolsforfrontend.com/string/jwt-decoder"
       />
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-10 max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">JWT Decoder</h1>
           <p className="text-gray-500">Decode a JWT token and display the header and payload data.</p>

@@ -21,7 +21,7 @@ export default function StringCountPage() {
         ogDescription="Count words and characters in any text string instantly."
         canonicalUrl="https://toolsforfrontend.com/string/count"
       />
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">Count</h1>
           <p className="text-gray-500">Counts the number of words and characters in a string.</p>

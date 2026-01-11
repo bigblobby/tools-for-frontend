@@ -23,7 +23,7 @@ export default function ColorGradientGeneratorPage() {
         ogDescription="Create beautiful linear or radial CSS gradients with multiple colors."
         canonicalUrl="https://toolsforfrontend.com/color/gradient-generator"
       />
-      <div>
+      <div className="max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">Gradient Generator</h1>
           <p className="text-gray-500">Create linear or radial gradients using as many colors as you'd like.</p>

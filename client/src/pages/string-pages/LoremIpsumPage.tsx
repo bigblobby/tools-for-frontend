@@ -77,7 +77,7 @@ export default function LoremIpsumPage() {
         ogDescription="Generate lorem ipsum placeholder text by words, sentences, or paragraphs."
         canonicalUrl="https://toolsforfrontend.com/string/lorem-ipsum"
       />
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">Lorem Ipsum Generator</h1>
           <p className="text-gray-500">Generate lorem ipsum placeholder text by words, sentences, or paragraphs.</p>

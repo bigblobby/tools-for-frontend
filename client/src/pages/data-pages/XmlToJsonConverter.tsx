@@ -103,7 +103,7 @@ export default function XmlToJsonConverter() {
         ogDescription="Convert XML to JSON format instantly."
         canonicalUrl="https://toolsforfrontend.com/converter/xml-to-json"
       />
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-10 max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">XML to JSON Converter</h1>
           <p className="text-gray-500">Convert XML to JSON.</p>

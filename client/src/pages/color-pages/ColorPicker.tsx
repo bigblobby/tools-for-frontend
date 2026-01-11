@@ -223,7 +223,7 @@ export default function ColorPicker() {
         ogDescription="Pick colors from anywhere on your screen using the eye dropper tool. Convert between color formats and explore color harmonies."
         canonicalUrl="https://toolsforfrontend.com/color/picker"
       />
-      <div className="max-w-4xl">
+      <div className="max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">Color Picker</h1>
           <p className="text-gray-500">Use the color picker, or pick a color from anywhere on the screen using the eye dropper.</p>
