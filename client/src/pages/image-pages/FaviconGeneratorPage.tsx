@@ -102,7 +102,7 @@ export default function FaviconGeneratorPage() {
             </div>
           </div>
           <div className="flex flex-col gap-3">
-            <h2 className="text-2xl">Next steps</h2>
+            <h2 className="text-xl font-bold">Next steps</h2>
             <div>
               <ol className="list-decimal list-inside text-gray-500">
                 <li>Paste the generated files into the relevant directory of your site. This might be at the root, <code>/assets</code> or <code>/public</code>.

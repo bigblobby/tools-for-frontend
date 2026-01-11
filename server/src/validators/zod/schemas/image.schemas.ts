@@ -7,6 +7,7 @@ export const getPlaceholderImageSchema = z.object({
   query: z.object({
     bgColor: z.string().optional(),
     color: z.string().optional(),
+    text: z.string().optional(),
   }).optional(),
 });
 

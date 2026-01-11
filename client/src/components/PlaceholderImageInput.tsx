@@ -3,23 +3,23 @@ import { IconCheck, IconCopy, IconExternalLink } from '@tabler/icons-react';
 import { useState, memo } from 'react';
 
 interface PlaceholderImageInputProps {
-  path: string;
+  url: string;
 }
 
 function PlaceholderImageInput({
-  path,
+                                 url,
 }: PlaceholderImageInputProps) {
   const [isCopied, setIsCopied] = useState(false);
 
   const copyToClipboard = () => {
-    void navigator.clipboard.writeText(location.origin + path);
+    void navigator.clipboard.writeText(url);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
   };
 
   return (
     <InputGroup>
-      <InputGroupInput value={location.origin + path} readOnly onClick={
+      <InputGroupInput value={url} readOnly onClick={
         (event) => {
           (event.target as HTMLInputElement).select();
         }
@@ -30,7 +30,7 @@ function PlaceholderImageInput({
           title="Open"
           size="icon-xs"
           onClick={() => {
-            window.open(location.origin + path, "_blank")
+            window.open(url, "_blank")
           }}
         >
           {<IconExternalLink />}
@@ -54,5 +54,5 @@ export default memo(PlaceholderImageInput, (prevProps, nextProps) => {
   // This has been added because the React profiler is saying its re-rendering all the PlaceholderImageInput components
   // when the copy is clicked even though it isn't... apparently this is something to do with reconciliation checks, but
   // this needs more investigation, for now this fixes the problem.
-  return prevProps.path === nextProps.path;
+  return prevProps.url === nextProps.url;
 });

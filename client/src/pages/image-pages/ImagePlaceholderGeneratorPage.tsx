@@ -1,7 +1,82 @@
 import PlaceholderImageInput from '@/components/PlaceholderImageInput.tsx';
 import SEO from '@/components/SEO';
+import { Label } from '@/components/ui/label.tsx';
+import { Input } from '@/components/ui/input.tsx';
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button.tsx';
+import { useQuery } from '@tanstack/react-query';
+import { useDebounce } from '@/hooks/use-debounce';
+import { Textarea } from '@/components/ui/textarea.tsx';
+
+const DEFAULT_BACKGROUND_COLOR = '#e6e6e6';
+const DEFAULT_TEXT_COLOR = '#666666';
 
 export default function ImagePlaceholderGeneratorPage() {
+  const [backgroundInputColor, setBackgroundInputColor] = useState(DEFAULT_BACKGROUND_COLOR);
+  const [textInputColor, setTextInputColor] = useState(DEFAULT_TEXT_COLOR);
+  const [width, setWidth] = useState('400');
+  const [height, setHeight] = useState('400');
+  const [text, setText] = useState('');
+
+  const debouncedWidth = useDebounce(width, 500);
+  const debouncedHeight = useDebounce(height, 500);
+  const debouncedBackgroundColor = useDebounce(backgroundInputColor, 500);
+  const debouncedTextColor = useDebounce(textInputColor, 500);
+  const debouncedText = useDebounce(text, 500);
+
+  const { data: image } = useQuery({
+    queryKey: ['image', debouncedWidth, debouncedHeight, debouncedBackgroundColor, debouncedTextColor, debouncedText],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      if (debouncedBackgroundColor && debouncedBackgroundColor !== DEFAULT_BACKGROUND_COLOR) params.set('bgColor', debouncedBackgroundColor.replace('#', ''));
+      if (debouncedTextColor && debouncedTextColor !== DEFAULT_TEXT_COLOR) params.set('color', debouncedTextColor.replace('#', ''));
+      if (debouncedText) {
+        const textForUrl = debouncedText.replace(/\n/g, '\\n');
+        params.set('text', textForUrl);
+      }
+
+      let url = `${location.origin}/p/${debouncedWidth}x${debouncedHeight}`;
+      if (params.size > 0) url += `?${decodeURIComponent(params.toString())}`;
+      return url;
+    },
+  });
+
+  const handleBackgroundColorPickerClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    document.getElementById('color-picker')?.click();
+  };
+
+  const handleBackgroundColorPickerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBackgroundInputColor(e.target.value);
+  };
+
+  const handleFocusBackgroundColorInput = (event: React.FocusEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    event.currentTarget.select();
+  };
+
+  const handleBackgroundColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBackgroundInputColor(e.target.value);
+  };
+
+  const handleTextColorPickerClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    document.getElementById('color-picker-text')?.click();
+  };
+
+  const handleTextColorPickerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTextInputColor(e.target.value);
+  };
+
+  const handleFocusTextColorInput = (event: React.FocusEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    event.currentTarget.select();
+  };
+
+  const handleTextColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTextInputColor(e.target.value);
+  };
+
   return (
     <>
       <SEO
@@ -12,66 +87,108 @@ export default function ImagePlaceholderGeneratorPage() {
         ogDescription="Generate placeholder images of any size instantly."
         canonicalUrl="https://toolsforfrontend.com/image/placeholder"
       />
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-10 max-w-8xl">
         <div className="flex-1 flex flex-col gap-6">
           <div>
             <h1 className="text-2xl font-bold">Image placeholder generator</h1>
-            <p className="text-gray-500">Generate placeholder images of any size.</p>
+            <p className="text-gray-500">Generate placeholder images of any size with customizable colors and text.</p>
           </div>
-          <div className="flex flex-col gap-3">
-            <div className="max-w-sm">
-              <div className="flex flex-col gap-3">
-                <div>
-                  <img src={location.origin + '/p/400x400'} alt=""/>
-                </div>
-                <PlaceholderImageInput path="/p/400x400"/>
+
+          <div className="grid grid-cols-2 gap-6">
+            <div className="flex flex-col gap-3 border rounded-md p-4">
+              <h2 className="text-xl font-bold">Preview</h2>
+              <div className="max-h-[800px]">
+                {image && <img className="rounded-md max-h-full" src={image} alt=""/>}
+              </div>
+              <div className="mt-auto">
+                <PlaceholderImageInput url={image || ''}/>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div className="max-w-sm border rounded-md p-4">
-          <h2 className="text-xl font-bold">Size</h2>
-          <p className="text-gray-500 text-sm">Generate an image of any size, just set the width and height.</p>
-          <div className="flex flex-col gap-2 mt-3">
-            <PlaceholderImageInput path="/p/400x400"/>
-            <PlaceholderImageInput path="/p/1200x300"/>
-          </div>
-        </div>
-
-        <div className="max-w-sm border rounded-md p-4">
-          <h2 className="text-xl font-bold">Color</h2>
-          <p className="text-gray-500 text-sm">You can use either CSS color names or HEX (without #)</p>
-          <div className="flex flex-col gap-4 mt-5">
-            <div className="flex flex-col gap-2">
-              <p className="text-gray-500 text-sm">Change both the background and text color:</p>
-              <PlaceholderImageInput path="/p/400x400?color=blue&bgColor=000000"/>
-            </div>
-            <div className="flex flex-col gap-2">
-              <p className="text-gray-500 text-sm">Only the background color:</p>
-              <PlaceholderImageInput path="/p/400x400?bgColor=pink"/>
-            </div>
-            <div className="flex flex-col gap-2">
-              <p className="text-gray-500 text-sm">Only the text color:</p>
-              <PlaceholderImageInput path="/p/400x400?color=green"/>
-            </div>
-          </div>
-        </div>
-
-        <div className="max-w-sm border rounded-md p-4">
-          <h2 className="text-xl font-bold">Text</h2>
-          <p className="text-gray-500 text-sm">Change the text that is displayed on the image.</p>
-          <div className="flex flex-col gap-4 mt-5">
-            <div className="flex flex-col gap-2">
-              <PlaceholderImageInput path="/p/400x400?text=Hello"/>
-            </div>
-            <div className="flex flex-col gap-2">
-              <p className="text-gray-500 text-sm">Add spaces using <code>+</code>:</p>
-              <PlaceholderImageInput path="/p/400x400?text=Hello+world"/>
-            </div>
-            <div className="flex flex-col gap-2">
-              <p className="text-gray-500 text-sm">Add new lines using <code>\n</code>:</p>
-              <PlaceholderImageInput path="/p/400x400?text=Hello\nworld"/>
+            <div className="flex flex-col gap-6">
+              <div className="border rounded-md p-4">
+                <h3 className="text-xl font-bold">Size</h3>
+                <p className="text-gray-500">Set the width and height of your placeholder image.</p>
+                <div className="flex gap-3 mt-4">
+                  <div className="basis-1/2 space-y-2">
+                    <Label htmlFor="width">Width (px)</Label>
+                    <Input id="width" type="number" value={width} onChange={(e) => setWidth(e.target.value)}/>
+                  </div>
+                  <div className="basis-1/2 space-y-2">
+                    <Label htmlFor="height">Height (px)</Label>
+                    <Input id="height" type="number" value={height} onChange={(e) => setHeight(e.target.value)}/>
+                  </div>
+                </div>
+              </div>
+              <div className="border rounded-md p-4">
+                <h3 className="text-xl font-bold">Color</h3>
+                <p className="text-gray-500">Customize background and text colors.</p>
+                <div className="flex flex-col gap-3 mt-4">
+                  <div className="basis-1/2 space-y-2">
+                    <Label htmlFor="color-input">Background color <span className="text-xs">(Orange, #FFA500, hsl(36, 100%, 50%), etc.)</span></Label>
+                    <div className="flex gap-2">
+                      <div className="relative">
+                        <Button variant="outline" style={{ backgroundColor: backgroundInputColor }} onClick={handleBackgroundColorPickerClick} className="h-10 w-20">
+                          <span className="sr-only">Color picker</span>
+                        </Button>
+                        <input
+                          id="color-picker"
+                          type="color"
+                          value={backgroundInputColor ? (backgroundInputColor.startsWith('#') ? backgroundInputColor : `#${backgroundInputColor}`) : '#000000'}
+                          onChange={handleBackgroundColorPickerChange}
+                          className="absolute top-0 left-0 -z-10 h-10 w-20 rounded-md cursor-pointer"
+                          title="Pick a color"
+                        />
+                      </div>
+                      <input
+                        id="color-input"
+                        value={backgroundInputColor}
+                        onFocus={handleFocusBackgroundColorInput}
+                        onChange={handleBackgroundColorChange}
+                        type="text"
+                        placeholder="Enter a color"
+                        className="flex-1 h-10 font-mono border rounded-md p-2"
+                      />
+                    </div>
+                  </div>
+                  <div className="basis-1/2 space-y-2">
+                    <Label htmlFor="color-input-text">Text color <span className="text-xs">(Orange, #FFA500, hsl(36, 100%, 50%), etc.)</span></Label>
+                    <div className="flex gap-2">
+                      <div className="relative">
+                        <Button variant="outline" style={{ backgroundColor: textInputColor }} onClick={handleTextColorPickerClick} className="h-10 w-20">
+                          <span className="sr-only">Color picker</span>
+                        </Button>
+                        <input
+                          id="color-picker-text"
+                          type="color"
+                          value={textInputColor ? (textInputColor.startsWith('#') ? textInputColor : `#${textInputColor}`) : '#000000'}
+                          onChange={handleTextColorPickerChange}
+                          className="absolute top-0 left-0 -z-10 h-10 w-20 rounded-md cursor-pointer"
+                          title="Pick a color"
+                        />
+                      </div>
+                      <input
+                        id="color-input-text"
+                        value={textInputColor}
+                        onFocus={handleFocusTextColorInput}
+                        onChange={handleTextColorChange}
+                        type="text"
+                        placeholder="Enter a color"
+                        className="flex-1 h-10 font-mono border rounded-md p-2"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="border rounded-md p-4">
+                <h3 className="text-xl font-bold">Text</h3>
+                <p className="text-gray-500">Customize the text displayed on the placeholder.</p>
+                <div className="flex gap-3 mt-4">
+                  <div className="space-y-2 w-full">
+                    <Label htmlFor="width">Custom text (optional)</Label>
+                    <Textarea className="w-full" id="width" value={text} onChange={(e) => setText(e.target.value)}/>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

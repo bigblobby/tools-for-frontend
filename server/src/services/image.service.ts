@@ -13,10 +13,10 @@ export class ImageService {
     const lines = resultText.split('\n');
     const numLines = lines.length;
     
-    const baseFontSize = Math.min(width, height) / 5;
-    const fontSize = baseFontSize / Math.sqrt(numLines);
+    const baseFontSize = Math.min(width, height) / 8;
+    const fontSize = Math.max(baseFontSize / (1 + (numLines - 1) * 0.2), baseFontSize / 3);
     const lineHeight = fontSize * 1.2;
-    
+
     const totalHeight = numLines * lineHeight;
     const centerY = height / 2;
     const startY = centerY - (totalHeight / 2) + (lineHeight / 2);
