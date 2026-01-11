@@ -1,4 +1,3 @@
-import PlaceholderImageInput from '@/components/PlaceholderImageInput.tsx';
 import SEO from '@/components/SEO';
 import { Label } from '@/components/ui/label.tsx';
 import { Input } from '@/components/ui/input.tsx';
@@ -7,6 +6,8 @@ import { Button } from '@/components/ui/button.tsx';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounce } from '@/hooks/use-debounce';
 import { Textarea } from '@/components/ui/textarea.tsx';
+import { IconCopy, IconExternalLink } from '@tabler/icons-react';
+import { toast } from 'sonner';
 
 const DEFAULT_BACKGROUND_COLOR = '#e6e6e6';
 const DEFAULT_TEXT_COLOR = '#666666';
@@ -77,6 +78,36 @@ export default function ImagePlaceholderGeneratorPage() {
     setTextInputColor(e.target.value);
   };
 
+  const handleCopyImageUrl = () => {
+    void navigator.clipboard.writeText(image || '');
+    toast.success('Copied to clipboard');
+  };
+
+  const handleCommonSizeClick = (width: string, height: string) => {
+    const params = new URLSearchParams();
+    if (debouncedBackgroundColor && debouncedBackgroundColor !== DEFAULT_BACKGROUND_COLOR) params.set('bgColor', debouncedBackgroundColor.replace('#', ''));
+    if (debouncedTextColor && debouncedTextColor !== DEFAULT_TEXT_COLOR) params.set('color', debouncedTextColor.replace('#', ''));
+    if (debouncedText) {
+      const textForUrl = debouncedText.replace(/\n/g, '\\n');
+      params.set('text', textForUrl);
+    }
+
+    let url = `${location.origin}/p/${width}x${height}`;
+    if (params.size > 0) url += `?${decodeURIComponent(params.toString())}`;
+    window.open(url, '_blank');
+  };
+
+  const commonSizes = [
+    { width: '1920', height: '1080', name: 'Full HD' },
+    { width: '2560', height: '1440', name: '2K / QHD' },
+    { width: '3840', height: '2160', name: '4K / UHD' },
+    { width: '1200', height: '630', name: 'OG Image' },
+    { width: '1080', height: '1080', name: 'Square' },
+    { width: '300', height: '250', name: 'Medium Rectangle' },
+    { width: '728', height: '90', name: 'Leaderboard' },
+    { width: '1280', height: '720', name: 'HD / 720p' },
+  ];
+
   return (
     <>
       <SEO
@@ -91,17 +122,23 @@ export default function ImagePlaceholderGeneratorPage() {
         <div className="flex-1 flex flex-col gap-6">
           <div>
             <h1 className="text-2xl font-bold">Image placeholder generator</h1>
-            <p className="text-gray-500">Generate placeholder images of any size with customizable colors and text.</p>
+            <p className="text-gray-500">Generate placeholder images of any size with customisable colors and text.</p>
           </div>
 
           <div className="grid grid-cols-2 gap-6">
             <div className="flex flex-col gap-3 border rounded-md p-4">
               <h2 className="text-xl font-bold">Preview</h2>
               <div className="max-h-[800px]">
-                {image && <img className="rounded-md max-h-full" src={image} alt=""/>}
+                {image && <img className="rounded-md max-h-full" src={image} alt="" />}
               </div>
-              <div className="mt-auto">
-                <PlaceholderImageInput url={image || ''}/>
+              <div className="flex gap-2 mt-auto">
+                <Input value={image || ''} readOnly />
+                <Button onClick={handleCopyImageUrl}><IconCopy /></Button>
+                <Button asChild>
+                  <a href={image || ''} target="_blank" rel="noopener noreferrer">
+                    <IconExternalLink />
+                  </a>
+                </Button>
               </div>
             </div>
             <div className="flex flex-col gap-6">
@@ -111,17 +148,17 @@ export default function ImagePlaceholderGeneratorPage() {
                 <div className="flex gap-3 mt-4">
                   <div className="basis-1/2 space-y-2">
                     <Label htmlFor="width">Width (px)</Label>
-                    <Input id="width" type="number" value={width} onChange={(e) => setWidth(e.target.value)}/>
+                    <Input id="width" type="number" value={width} onChange={(e) => setWidth(e.target.value)} />
                   </div>
                   <div className="basis-1/2 space-y-2">
                     <Label htmlFor="height">Height (px)</Label>
-                    <Input id="height" type="number" value={height} onChange={(e) => setHeight(e.target.value)}/>
+                    <Input id="height" type="number" value={height} onChange={(e) => setHeight(e.target.value)} />
                   </div>
                 </div>
               </div>
               <div className="border rounded-md p-4">
                 <h3 className="text-xl font-bold">Color</h3>
-                <p className="text-gray-500">Customize background and text colors.</p>
+                <p className="text-gray-500">Customise background and text colors.</p>
                 <div className="flex flex-col gap-3 mt-4">
                   <div className="basis-1/2 space-y-2">
                     <Label htmlFor="color-input">Background color <span className="text-xs">(Orange, #FFA500, hsl(36, 100%, 50%), etc.)</span></Label>
@@ -181,14 +218,29 @@ export default function ImagePlaceholderGeneratorPage() {
               </div>
               <div className="border rounded-md p-4">
                 <h3 className="text-xl font-bold">Text</h3>
-                <p className="text-gray-500">Customize the text displayed on the placeholder.</p>
+                <p className="text-gray-500">Customise the text displayed on the image.</p>
                 <div className="flex gap-3 mt-4">
                   <div className="space-y-2 w-full">
                     <Label htmlFor="width">Custom text (optional)</Label>
-                    <Textarea className="w-full" id="width" value={text} onChange={(e) => setText(e.target.value)}/>
+                    <Textarea className="w-full" id="width" value={text} onChange={(e) => setText(e.target.value)} />
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          <div className="border rounded-md p-4">
+            <h3 className="text-xl font-bold mb-4">Common Sizes</h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {commonSizes.map((size) => (
+                <button
+                  key={`${size.width}x${size.height}`}
+                  onClick={() => handleCommonSizeClick(size.width, size.height)}
+                  className="flex flex-col items-center justify-center p-4 border rounded-md hover:bg-gray-50 transition-colors cursor-pointer"
+                >
+                  <span className="text-lg font-bold">{size.width} x {size.height}</span>
+                  <span className="text-sm text-gray-500 mt-1">{size.name}</span>
+                </button>
+              ))}
             </div>
           </div>
         </div>
