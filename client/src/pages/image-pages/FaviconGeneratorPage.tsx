@@ -57,18 +57,18 @@ export default function FaviconGeneratorPage() {
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
-        toast.success('ICO images generated and downloaded!', { position: 'top-center' });
+        toast.success('ICO images generated and downloaded!');
       },
       onError: (error: Error) => {
         console.log(error);
-        toast.error('Failed to generate ICO images', { position: 'top-center' });
+        toast.error('Failed to generate ICO images');
       },
     });
   };
 
   const handleCopy = () => {
     void navigator.clipboard.writeText(html);
-    toast.success('Copied to clipboard', { position: 'top-center' });
+    toast.success('Copied to clipboard');
   };
 
   return (

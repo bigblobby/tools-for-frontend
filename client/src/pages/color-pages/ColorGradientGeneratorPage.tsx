@@ -10,7 +10,7 @@ export default function ColorGradientGeneratorPage() {
 
   const handleCopy = (text: string) => {
     void navigator.clipboard.writeText(text);
-    toast.success('Copied to clipboard', { position: 'top-center' });
+    toast.success('Copied to clipboard');
   };
 
   return (

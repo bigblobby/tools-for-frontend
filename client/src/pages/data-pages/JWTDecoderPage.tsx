@@ -37,12 +37,12 @@ export default function JWTDecoderPage() {
 
   const handleCopyHeader = () => {
     void navigator.clipboard.writeText(header);
-    toast.success('Header copied to clipboard', { position: 'top-center' });
+    toast.success('Header copied to clipboard');
   };
 
   const handleCopyPayload = () => {
     void navigator.clipboard.writeText(payload);
-    toast.success('Payload copied to clipboard', { position: 'top-center' });
+    toast.success('Payload copied to clipboard');
   };
 
   const handleClearAll = () => {

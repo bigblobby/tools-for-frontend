@@ -24,7 +24,7 @@ export default function XmlToJsonConverter() {
 
     // Validate file type
     if (!file.name.endsWith('.xml') && file.type !== 'application/xml' && file.type !== 'text/xml' && !file.type.includes('xml')) {
-      toast.error('Please upload an XML file', { position: 'top-center' });
+      toast.error('Please upload an XML file');
       return;
     }
 
@@ -33,10 +33,10 @@ export default function XmlToJsonConverter() {
       const text = e.target?.result as string;
       setXml(text);
       setFileName(file.name);
-      toast.success('XML file loaded', { position: 'top-center' });
+      toast.success('XML file loaded');
     };
     reader.onerror = () => {
-      toast.error('Error reading file', { position: 'top-center' });
+      toast.error('Error reading file');
     };
     reader.readAsText(file);
 
@@ -70,18 +70,18 @@ export default function XmlToJsonConverter() {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
 
-        toast.success('JSON file downloaded', { position: 'top-center' });
+        toast.success('JSON file downloaded');
       },
       onError: (error: Error) => {
         console.log(error);
-        toast.error('Invalid XML format', { position: 'top-center' });
+        toast.error('Invalid XML format');
       },
     });
   };
 
   const handleCopy = () => {
     void navigator.clipboard.writeText(json);
-    toast.success('JSON copied to clipboard', { position: 'top-center' });
+    toast.success('JSON copied to clipboard');
   };
 
   const handleClear = () => {

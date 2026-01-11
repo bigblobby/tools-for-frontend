@@ -131,7 +131,7 @@ export default function ColorContrastChecker() {
   const handleEyeDropper = async (type: 'foreground' | 'background') => {
     try {
       if (!('EyeDropper' in window)) {
-        toast.error("EyeDropper API is not supported in your browser", { position: "top-center" });
+        toast.error("EyeDropper API is not supported in your browser");
         return;
       }
 
@@ -144,11 +144,11 @@ export default function ColorContrastChecker() {
         } else {
           setBackgroundColor(result.sRGBHex);
         }
-        toast.success("Color picked successfully", { position: "top-center" });
+        toast.success("Color picked successfully");
       }
     } catch (error: unknown) {
       if (error instanceof Error && error.name !== 'AbortError') {
-        toast.error("Failed to pick color", { position: "top-center" });
+        toast.error("Failed to pick color");
         console.error(error);
       }
     }

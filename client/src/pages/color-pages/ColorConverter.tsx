@@ -55,7 +55,7 @@ export default function ColorConverter() {
   const handleCopyColor = (event: React.MouseEvent<HTMLButtonElement>, color: string) => {
     event.preventDefault();
     void navigator.clipboard.writeText(color);
-    toast.success("Copied to clipboard", { position: "top-center" });
+    toast.success("Copied to clipboard");
   }
 
   const handleFocusColorInput = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -75,7 +75,7 @@ export default function ColorConverter() {
   const handleEyeDropper = async () => {
     try {
       if (!('EyeDropper' in window)) {
-        toast.error("EyeDropper API is not supported in your browser", { position: "top-center" });
+        toast.error("EyeDropper API is not supported in your browser");
         return;
       }
 
@@ -84,11 +84,11 @@ export default function ColorConverter() {
 
       if (result.sRGBHex) {
         setInputColor(result.sRGBHex);
-        toast.success("Color picked successfully", { position: "top-center" });
+        toast.success("Color picked successfully");
       }
     } catch (error: unknown) {
       if (error instanceof Error && error.name !== 'AbortError') {
-        toast.error("Failed to pick color", { position: "top-center" });
+        toast.error("Failed to pick color");
         console.error(error);
       }
     }

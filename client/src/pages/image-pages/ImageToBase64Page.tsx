@@ -55,7 +55,7 @@ export default function ImageToBase64Page() {
 
   const handleCopy = () => {
     void navigator.clipboard.writeText(output);
-    toast.success('Copied to clipboard', { position: 'top-center' });
+    toast.success('Copied to clipboard');
   };
 
   const output = transformOutput(currentFile, format);

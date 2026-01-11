@@ -54,11 +54,11 @@ export default function ImageOptimiserPage() {
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(url);
-        toast.success('Images optimised and downloaded!', { position: 'top-center' });
+        toast.success('Images optimised and downloaded!');
       },
       onError: (error: Error) => {
         console.log(error);
-        toast.error('Failed to optimise images', { position: 'top-center' });
+        toast.error('Failed to optimise images');
       },
     })
   }

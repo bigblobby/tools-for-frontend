@@ -52,7 +52,7 @@ export default function StringTransformPage() {
 
   const handleCopy = () => {
     void navigator.clipboard.writeText(output);
-    toast.success('Copied to clipboard', { position: 'top-center' });
+    toast.success('Copied to clipboard');
   };
 
   const handleClearOutput = () => {

@@ -28,7 +28,7 @@ export default function JsonToCsvConverterPage() {
 
     // Validate file type
     if (!file.name.endsWith('.json') && file.type !== 'application/json' && !file.type.includes('json')) {
-      toast.error('Please upload a JSON file', { position: 'top-center' });
+      toast.error('Please upload a JSON file');
       return;
     }
 
@@ -37,10 +37,10 @@ export default function JsonToCsvConverterPage() {
       const text = e.target?.result as string;
       setJson(text);
       setFileName(file.name);
-      toast.success('JSON file loaded', { position: 'top-center' });
+      toast.success('JSON file loaded');
     };
     reader.onerror = () => {
-      toast.error('Error reading file', { position: 'top-center' });
+      toast.error('Error reading file');
     };
     reader.readAsText(file);
 
@@ -73,22 +73,22 @@ export default function JsonToCsvConverterPage() {
           document.body.removeChild(link);
           URL.revokeObjectURL(url);
 
-          toast.success('CSV file downloaded', { position: 'top-center' });
+          toast.success('CSV file downloaded');
         },
         onError: (error: Error) => {
           console.log(error);
-          toast.error('Invalid JSON format', { position: 'top-center' });
+          toast.error('Invalid JSON format');
         },
       });
     } catch (error: unknown) {
       console.log(error);
-      toast.error('Invalid JSON format', { position: 'top-center' });
+      toast.error('Invalid JSON format');
     }
   };
 
   const handleCopy = () => {
     void navigator.clipboard.writeText(csv);
-    toast.success('CSV copied to clipboard', { position: 'top-center' });
+    toast.success('CSV copied to clipboard');
   };
 
   const handleClear = () => {

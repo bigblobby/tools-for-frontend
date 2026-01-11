@@ -60,7 +60,7 @@ export default function LoremIpsumPage() {
       return;
     }
     void navigator.clipboard.writeText(generatedText);
-    toast.success('Text copied to clipboard', { position: 'top-center' });
+    toast.success('Text copied to clipboard');
   };
 
   const handleClear = () => {

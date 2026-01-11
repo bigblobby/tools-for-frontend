@@ -28,7 +28,7 @@ export default function CsvToJsonConverterPage() {
 
     // Validate file type
     if (!file.name.endsWith('.csv') && file.type !== 'text/csv' && !file.type.includes('csv')) {
-      toast.error('Please upload a CSV file', { position: 'top-center' });
+      toast.error('Please upload a CSV file');
       return;
     }
 
@@ -37,10 +37,10 @@ export default function CsvToJsonConverterPage() {
       const text = e.target?.result as string;
       setCsv(text);
       setFileName(file.name);
-      toast.success('CSV file loaded', { position: 'top-center' });
+      toast.success('CSV file loaded');
     };
     reader.onerror = () => {
-      toast.error('Error reading file', { position: 'top-center' });
+      toast.error('Error reading file');
     };
     reader.readAsText(file);
 
@@ -69,18 +69,18 @@ export default function CsvToJsonConverterPage() {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
 
-        toast.success('CSV converted to JSON', { position: 'top-center' });
+        toast.success('CSV converted to JSON');
       },
       onError: (error: Error) => {
         console.log(error);
-        toast.error('Invalid CSV format', { position: 'top-center' });
+        toast.error('Invalid CSV format');
       },
     });
   };
 
   const handleCopy = () => {
     void navigator.clipboard.writeText(json);
-    toast.success('JSON copied to clipboard', { position: 'top-center' });
+    toast.success('JSON copied to clipboard');
   };
 
   const handleClear = () => {

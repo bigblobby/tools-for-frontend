@@ -35,9 +35,9 @@ export default function JSONFormatterPage() {
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
-        toast.error(error.message, { position: 'top-center' });
+        toast.error(error.message);
       } else {
-        toast.error('Invalid JSON format', { position: 'top-center' });
+        toast.error('Invalid JSON format');
       }
     }
   };
@@ -48,16 +48,16 @@ export default function JSONFormatterPage() {
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
-        toast.error(error.message, { position: 'top-center' });
+        toast.error(error.message);
       } else {
-        toast.error('Invalid JSON format', { position: 'top-center' });
+        toast.error('Invalid JSON format');
       }
     }
   };
 
   const handleCopyJsonOutput = () => {
     void navigator.clipboard.writeText(jsonOutput);
-    toast.success('Copied to clipboard', { position: 'top-center' });
+    toast.success('Copied to clipboard');
   };
 
   const handleClearAll = () => {
