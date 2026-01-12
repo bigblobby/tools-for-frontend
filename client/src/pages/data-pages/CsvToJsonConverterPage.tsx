@@ -12,6 +12,7 @@ export default function CsvToJsonConverterPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const converterQueries = useConverterQueries();
   const csvToJson = converterQueries.csvToJson;
+  const loading = csvToJson.isPending;
 
   const handleCsvChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setCsv(event.target.value);
@@ -138,7 +139,13 @@ export default function CsvToJsonConverterPage() {
             <Label htmlFor="json-input">JSON <span className="text-xs">(Read Only)</span></Label>
             <textarea readOnly value={json} id="json-input" className="block w-full h-80 font-mono border border-gray-300 rounded-md p-2" onChange={handleJsonChange} />
             <div className="flex flex-wrap gap-3">
-              <Button onClick={handleDownload}>Download</Button>
+              <Button className="min-w-24" onClick={handleDownload} disabled={loading}>
+                {loading ? (
+                  <div className="w-4 h-4 border-2 border-white border-t-white/20 rounded-full animate-spin"></div>
+                  ) : (
+                    'Download'
+                )}
+              </Button>
               <Button onClick={handleCopy}>Copy</Button>
               <Button variant="destructive-min" onClick={handleClear}>Clear</Button>
             </div>
