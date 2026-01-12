@@ -142,7 +142,7 @@ export default function JsonToXmlConverterPage() {
             <Label htmlFor="json-input">XML <span className="text-xs">(Read Only)</span></Label>
             <textarea readOnly value={xml} id="json-input" className="block w-full h-80 font-mono border border-gray-300 rounded-md p-2" onChange={handleXmlChange} />
             <div className="flex flex-wrap gap-3">
-              <Button className="min-w-24" onClick={handleDownload}>
+              <Button className="min-w-24" onClick={handleDownload} disabled={loading}>
                 {loading ? (
                   <div className="w-4 h-4 border-2 border-white border-t-white/20 rounded-full animate-spin"></div>
                 ) : (
