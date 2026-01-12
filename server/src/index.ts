@@ -17,14 +17,16 @@ app.set('etag', false);
 app.use(cors());
 
 // Conditionally apply json() middleware, excluding routes that need raw body
+// Set a large limit (50MB) to handle large payloads
+const largeBodyLimit = '50mb';
 app.use((req, res, next) => {
   if (req.path === '/api/converter/json-to-xml' || req.path === '/api/converter/json-to-csv') {
     return next(); // Skip json parsing for this route
   }
-  express.json()(req, res, next);
+  express.json({ limit: largeBodyLimit })(req, res, next);
 });
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: largeBodyLimit }));
 
 // Sitemap and robots.txt routes (served at root level for SEO)
 app.get('/sitemap.xml', sitemapController.getSitemap);
