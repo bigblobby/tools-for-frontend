@@ -6,6 +6,7 @@ import useMostUseTools from '@/hooks/use-most-used-tools.ts';
 import { Button } from '@/components/ui/button.tsx';
 import { MoveLeft } from 'lucide-react';
 import Search from '@/components/Search.tsx';
+import { ModeToggle } from '@/components/ModeToggle.tsx';
 
 export default function BaseLayout() {
   const location = useLocation();
@@ -17,8 +18,9 @@ export default function BaseLayout() {
       <div className="flex w-full">
         <SideNavigation />
         <main className="flex-1 h-dvh overflow-y-auto">
-          <div className="border-b p-3">
+          <div className="flex items-center justify-between border-b p-3">
             <Search />
+            <ModeToggle />
           </div>
 
           <div className="p-4 md:p-8">

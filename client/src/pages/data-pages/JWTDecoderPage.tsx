@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { Label } from '@/components/ui/label.tsx';
 import SEO from '@/components/SEO';
+import { Input } from '@/components/ui/input.tsx';
+import { Textarea } from '@/components/ui/textarea.tsx';
 
 export default function JWTDecoderPage() {
   const [jwtToken, setJwtToken] = useState('');
@@ -64,17 +66,17 @@ export default function JWTDecoderPage() {
       <div className="flex flex-col gap-10 max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">JWT Decoder</h1>
-          <p className="text-gray-500">Decode a JWT token and display the header and payload data.</p>
+          <p className="text-muted-foreground">Decode a JWT token and display the header and payload data.</p>
         </div>
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
             <Label htmlFor="jwt-input">JWT Token</Label>
-            <input
+            <Input
               type="text"
               id="jwt-input"
               value={jwtToken}
               onChange={handleJWTTokenChange}
-              className="block w-full h-10 font-mono border border-gray-300 rounded-md p-2"
+              className="h-10 font-mono"
             />
             <div className="flex gap-3">
               <Button onClick={handleDecodeJWT}>Decode</Button>
@@ -83,10 +85,11 @@ export default function JWTDecoderPage() {
           </div>
           <div className="flex flex-col gap-3">
             <Label htmlFor="jwt-header">Header <span className="text-xs">(Read Only)</span></Label>
-            <textarea
-              readOnly value={header}
+            <Textarea
+              readOnly
+              value={header}
               id="jwt-header"
-              className="block w-full h-40 font-mono border border-gray-300 rounded-md p-2"
+              className="h-40 font-mono"
             />
             <div>
               <Button onClick={handleCopyHeader}>Copy Header</Button>
@@ -94,12 +97,12 @@ export default function JWTDecoderPage() {
           </div>
           <div className="flex flex-col gap-3">
             <Label htmlFor="jwt-payload">Payload <span className="text-xs">(Read Only)</span></Label>
-            <textarea
+            <Textarea
               rows={20}
               readOnly
               value={payload}
               id="jwt-payload"
-              className="block w-full font-mono border border-gray-300 rounded-md p-2"
+              className="h-40 font-mono"
             />
             <div>
               <Button onClick={handleCopyPayload}>Copy Payload</Button>

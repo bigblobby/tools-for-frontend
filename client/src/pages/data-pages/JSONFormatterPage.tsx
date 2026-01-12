@@ -8,15 +8,18 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/theme-github";
+import 'ace-builds/src-noconflict/theme-github_dark';
 import "ace-builds/src-noconflict/ext-error_marker";
 import "ace-builds/src-noconflict/ext-language_tools";
 import type { Editor } from 'ace-builds';
+import { useTheme } from '@/providers/theme-provider';
 
 export default function JSONFormatterPage() {
   const [jsonInput, setJsonInput] = useState('');
   const [jsonOutput, setJsonOutput] = useState('');
   const [spaces, setSpaces] = useState(2);
   const inputEditorRef = useRef<AceEditor>(null);
+  const theme = useTheme();
 
   const handleFormatJson = (spaces?: number) => {
     if (!jsonInput.trim().length) {
@@ -131,7 +134,7 @@ export default function JSONFormatterPage() {
       <div className="flex flex-col gap-10 max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">JSON formatter/validator</h1>
-          <p className="text-gray-500">Beautify/minify and validate your JSON data.</p>
+          <p className="text-muted-foreground">Beautify/minify and validate your JSON data.</p>
         </div>
 
         <div className="flex row gap-6">
@@ -141,7 +144,7 @@ export default function JSONFormatterPage() {
               ref={inputEditorRef}
               value={jsonInput}
               mode="json"
-              theme="github"
+              theme={theme.theme === 'dark' ? 'github_dark' : 'github'}
               onChange={(e) => setJsonInput(e)}
               name="input"
               editorProps={{ $blockScrolling: true }}
@@ -156,7 +159,8 @@ export default function JSONFormatterPage() {
               onLoad={(editor) => {
                 validateJSON(jsonInput, editor);
               }}
-              style={{ width: '100%', height: '600px', border: '1px solid oklch(87.2% 0.01 258.338)', borderRadius: '4px' }}
+              className="border"
+              style={{ width: '100%', height: '600px', borderRadius: '4px' }}
             />
           </div>
           <div className="flex flex-col gap-3 mt-10">
@@ -181,7 +185,7 @@ export default function JSONFormatterPage() {
             <AceEditor
               value={jsonOutput}
               mode="json"
-              theme="github"
+              theme={theme.theme === 'dark' ? 'github_dark' : 'github'}
               name="output"
               readOnly
               tabSize={spaces}
@@ -189,7 +193,8 @@ export default function JSONFormatterPage() {
               setOptions={{
                 useWorker: false
               }}
-              style={{ width: '100%', height: '600px', border: '1px solid oklch(87.2% 0.01 258.338)', borderRadius: '4px' }}
+              className="border"
+              style={{ width: '100%', height: '600px', borderRadius: '4px' }}
             />
           </div>
         </div>

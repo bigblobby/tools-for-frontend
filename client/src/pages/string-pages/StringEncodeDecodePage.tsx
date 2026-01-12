@@ -7,6 +7,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label.tsx';
 import { toast } from 'sonner';
 import SEO from '@/components/SEO';
+import { Textarea } from '@/components/ui/textarea.tsx';
+import { Card } from '@/components/ui/card.tsx';
 
 export default function StringEncodeDecodePage() {
   const [input, setInput] = useState('');
@@ -89,7 +91,7 @@ export default function StringEncodeDecodePage() {
 
           <div className="flex flex-col gap-3">
             <Label htmlFor="string-input">Input</Label>
-            <textarea value={input} id="string-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleInputChange}/>
+            <Textarea value={input} id="string-input" className="h-40" onChange={handleInputChange} />
             <div className="flex flex-wrap gap-3">
               <div className="flex flex-col gap-2">
                 <span className="block text-gray-500 text-sm">Base64</span>
@@ -132,7 +134,7 @@ export default function StringEncodeDecodePage() {
 
           <div className="flex flex-col gap-3">
             <Label htmlFor="string-output">Output <span className="text-xs">(Read Only)</span></Label>
-            <textarea readOnly value={output} id="string-output" className="block w-full h-40 border border-gray-300 rounded-md p-2"/>
+            <Textarea readOnly value={output} id="string-output" className="h-40" />
             <div className="flex flex-wrap gap-3">
               <Button onClick={handleCopy}>Copy</Button>
               <Button variant="destructive-min" onClick={handleClearOutput}>Clear</Button>
@@ -140,28 +142,28 @@ export default function StringEncodeDecodePage() {
           </div>
         </div>
 
-        <div className="flex flex-col max-w-[320px] gap-3 bg-zinc-100 p-4 rounded-md">
+        <Card className="max-w-[320px] gap-3 p-4">
           <div>
-            <h3 className="mb-2 font-bold text-gray-500">Base64</h3>
-            <p className="text-gray-500 text-sm">Encode or decode the string to/from Base64.</p>
+            <h3 className="mb-2 font-bold">Base64</h3>
+            <p className="text-sm">Encode or decode the string to/from Base64.</p>
           </div>
           <div>
-            <h3 className="mb-2 font-bold text-gray-500">URL</h3>
-            <p className="text-gray-500 text-sm">Encode or decode the string to/from URL.</p>
+            <h3 className="mb-2 font-bold">URL</h3>
+            <p className="text-sm">Encode or decode the string to/from URL.</p>
           </div>
           <div>
-            <h3 className="mb-2 font-bold text-gray-500">HTML Entity</h3>
-            <p className="text-gray-500 text-sm mb-2">
+            <h3 className="mb-2 font-bold">HTML Entity</h3>
+            <p className="text-sm mb-2">
               Encode or decode the string to/from HTML Entity using named references and encode everything.
             </p>
-            <p className="text-gray-500 text-sm mb-2"><span className="font-bold">
+            <p className="text-sm mb-2"><span className="font-bold">
               Use Named References: </span>Named references are HTML entities like &amp;amp;, &amp;lt;, &amp;gt;, &amp;quot;, &amp;apos;, &amp;nbsp;, etc.
             </p>
-            <p className="text-gray-500 text-sm mb-2"><span className="font-bold">
+            <p className="text-sm mb-2"><span className="font-bold">
               Encode Everything: </span>Encode everything is a flag that tells the encoder to encode all characters, not just the ones that need to be encoded.
             </p>
           </div>
-        </div>
+        </Card>
       </div>
     </>
   );

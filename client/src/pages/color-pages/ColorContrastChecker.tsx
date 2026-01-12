@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button.tsx';
 import { Pipette, Check, X } from 'lucide-react';
 import type { WindowWithEyeDropper } from '@/interfaces/browser.types';
 import SEO from '@/components/SEO';
+import { Input } from '@/components/ui/input.tsx';
 
 interface ContrastResult {
   ratio: number;
@@ -179,7 +180,7 @@ export default function ColorContrastChecker() {
       <div className="max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">Color Contrast Checker</h1>
-          <p className="text-gray-500">Check if your foreground and background colors meet WCAG accessibility standards.</p>
+          <p className="text-muted-foreground">Check if your foreground and background colors meet WCAG accessibility standards.</p>
         </div>
 
       <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -196,23 +197,23 @@ export default function ColorContrastChecker() {
               >
                 <span className="sr-only">Color picker</span>
               </Button>
-              <input
+              <Input
                 id="foreground-picker"
                 type="color"
                 value={fgHex.startsWith('#') ? fgHex : `#${fgHex}`}
                 onChange={handleForegroundPickerChange}
-                className="absolute top-0 left-0 -z-10 h-10 w-20 rounded-md cursor-pointer"
+                className="absolute top-0 left-0 -z-10 h-10 w-20"
                 title="Pick foreground color"
               />
             </div>
-            <input
+            <Input
               id="foreground-input"
               value={foregroundColor}
               onFocus={handleForegroundFocus}
               onChange={handleForegroundChange}
               type="text"
               placeholder="Enter foreground color"
-              className="flex-1 h-10 font-mono border rounded-md p-2"
+              className="flex-1 h-10 font-mono"
             />
             <Button
               onClick={() => handleEyeDropper('foreground')}
@@ -237,23 +238,23 @@ export default function ColorContrastChecker() {
               >
                 <span className="sr-only">Color picker</span>
               </Button>
-              <input
+              <Input
                 id="background-picker"
                 type="color"
                 value={bgHex.startsWith('#') ? bgHex : `#${bgHex}`}
                 onChange={handleBackgroundPickerChange}
-                className="absolute top-0 left-0 -z-10 h-10 w-20 rounded-md cursor-pointer"
+                className="absolute top-0 left-0 -z-10 h-10 w-20"
                 title="Pick background color"
               />
             </div>
-            <input
+            <Input
               id="background-input"
               value={backgroundColor}
               onFocus={handleBackgroundFocus}
               onChange={handleBackgroundChange}
               type="text"
               placeholder="Enter background color"
-              className="flex-1 h-10 font-mono border rounded-md p-2"
+              className="flex-1 h-10 font-mono"
             />
             <Button
               onClick={() => handleEyeDropper('background')}

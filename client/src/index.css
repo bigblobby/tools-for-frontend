@@ -8,7 +8,7 @@
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.13 0.028 261.692);
-  --card: oklch(1 0 0);
+  --card: oklch(0.967 0.001 286.375);
   --card-foreground: oklch(0.13 0.028 261.692);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.13 0.028 261.692);
@@ -61,7 +61,7 @@
   --accent-foreground: oklch(0.985 0.002 247.839);
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(1 0 0 / 10%);
+  --border: oklch(1 0 0 / 15%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.551 0.027 264.364);
   --chart-1: oklch(0.488 0.243 264.376);
@@ -77,6 +77,7 @@
   --sidebar-accent-foreground: oklch(0.985 0.002 247.839);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.551 0.027 264.364);
+  --brand: oklch(0.918 0.035 273.256);
 }
 
 @theme inline {
@@ -133,11 +134,18 @@
   }
 }
 
-/* Ace Editor custom highlight color */
 .ace_active-line {
   background-color: oklch(0.967 0.003 264.542) !important;
 }
 
 .ace_selection {
   background-color: oklch(0.9 0.02 264.542) !important;
+}
+
+.dark .ace_active-line {
+  background-color: oklch(0.278 0.033 256.848) !important;
+}
+
+.dark .ace_selection {
+  background-color: oklch(0.2 0.015 256.848) !important;
 }

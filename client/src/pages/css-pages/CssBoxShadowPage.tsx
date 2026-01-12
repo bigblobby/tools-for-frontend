@@ -5,6 +5,7 @@ import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { toast } from "sonner";
 import SEO from '@/components/SEO';
+import { Textarea } from '@/components/ui/textarea.tsx';
 
 export default function CssBoxShadowPage() {
   const [horizontalOffset, setHorizontalOffset] = useState(5);
@@ -37,7 +38,7 @@ export default function CssBoxShadowPage() {
       <div className="max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">Box Shadow Generator</h1>
-          <p className="text-gray-500">Generate box shadows for your CSS.</p>
+          <p className="text-muted-foreground">Generate box shadows for your CSS.</p>
         </div>
         <div className="flex flex-col md:flex-row gap-10 xl:gap-20 mt-10">
           <div className="basis-1/3 flex flex-col gap-6">
@@ -84,7 +85,7 @@ export default function CssBoxShadowPage() {
             <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="box-shadow-output">Box Shadow</Label>
-                <textarea readOnly value={boxShadow} id="box-shadow-output" className="block w-full h-24 font-mono border border-gray-300 rounded-md p-2" />
+                <Textarea readOnly value={boxShadow} id="box-shadow-output" className="h-24 font-mono" />
               </div>
               <div>
                 <Button onClick={handleCopyBoxShadow}>Copy</Button>

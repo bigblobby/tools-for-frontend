@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import SEO from '@/components/SEO';
+import { Textarea } from '@/components/ui/textarea.tsx';
 
 export default function StringCountPage() {
   const [wordCount, setWordCount] = useState(0);
@@ -28,7 +29,7 @@ export default function StringCountPage() {
         </div>
 
         <div>
-          <textarea id="string-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleInputChange}/>
+          <Textarea id="string-input" className="h-40" onChange={handleInputChange} />
         </div>
 
         <div>

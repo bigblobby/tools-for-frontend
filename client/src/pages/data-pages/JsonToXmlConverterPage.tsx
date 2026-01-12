@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { useConverterQueries } from '@/queries/converter.queries';
 import SEO from '@/components/SEO';
+import { Textarea } from '@/components/ui/textarea.tsx';
 
 export default function JsonToXmlConverterPage() {
   const [xml, setXml] = useState('');
@@ -109,7 +110,7 @@ export default function JsonToXmlConverterPage() {
       <div className="flex flex-col gap-10 max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">JSON to XML Converter</h1>
-          <p className="text-gray-500">Convert JSON to XML.</p>
+          <p className="text-muted-foreground">Convert JSON to XML.</p>
         </div>
         <div className="flex-1 flex flex-col gap-6">
           <div className="flex flex-col gap-3">
@@ -117,7 +118,7 @@ export default function JsonToXmlConverterPage() {
               <Label htmlFor="xml-input">JSON</Label>
               <div className="flex items-center gap-2">
                 {fileName && (
-                  <span className="text-sm text-gray-500">File: {fileName}</span>
+                  <span className="text-sm text-muted-foreground">File: {fileName}</span>
                 )}
                 <input
                   ref={fileInputRef}
@@ -136,11 +137,11 @@ export default function JsonToXmlConverterPage() {
                 </Button>
               </div>
             </div>
-            <textarea value={json} id="xml-input" className="block w-full h-80 font-mono border border-gray-300 rounded-md p-2" onChange={handleJsonChange} placeholder="Paste JSON here or upload a file" />
+            <Textarea value={json} id="xml-input" className="h-80 font-mono" onChange={handleJsonChange} placeholder="Paste JSON here or upload a file" />
           </div>
           <div className="flex flex-col gap-3">
             <Label htmlFor="json-input">XML <span className="text-xs">(Read Only)</span></Label>
-            <textarea readOnly value={xml} id="json-input" className="block w-full h-80 font-mono border border-gray-300 rounded-md p-2" onChange={handleXmlChange} />
+            <Textarea readOnly value={xml} id="json-input" className="h-80 font-mono" onChange={handleXmlChange} />
             <div className="flex flex-wrap gap-3">
               <Button className="min-w-24" onClick={handleDownload} disabled={loading}>
                 {loading ? (

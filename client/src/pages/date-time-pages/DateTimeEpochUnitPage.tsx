@@ -2,6 +2,7 @@ import { Label } from '@/components/ui/label.tsx';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button.tsx';
 import SEO from '@/components/SEO';
+import { Input } from '@/components/ui/input.tsx';
 
 export default function DateTimeEpochUnitPage() {
   const [epoch, setEpoch] = useState(Math.floor(new Date().getTime() / 1000.0));
@@ -60,12 +61,12 @@ export default function DateTimeEpochUnitPage() {
       <div className="flex flex-col gap-10 max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">Epoch/Unix Timestamps</h1>
-          <p className="text-gray-500">Convert epoch and unix timestamps to human readable dates/times.</p>
+          <p className="text-muted-foreground">Convert epoch and unix timestamps to human readable dates/times.</p>
         </div>
 
         <div className="flex flex-col gap-3">
           <Label htmlFor="epoch-time">Convert epoch time to human readable</Label>
-          <input value={epoch} onChange={handleSetEpoch} id="epoch-time" type="text" className="block w-full h-10 max-w-lg border border-gray-300 rounded-md p-2" />
+          <Input value={epoch} onChange={handleSetEpoch} id="epoch-time" type="text" className="h-10 max-w-lg" />
           <div>
             <Button onClick={handleConvertToHumanReadable}>Convert to Date</Button>
           </div>
@@ -79,23 +80,23 @@ export default function DateTimeEpochUnitPage() {
           <div className="grid grid-cols-2 md:grid-cols-6 gap-3 max-w-lg">
             <div className="flex flex-col gap-2">
               <Label htmlFor="year">Year</Label>
-              <input
+              <Input
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
                 id="year"
                 type="number"
-                className="block w-full h-10 border border-gray-300 rounded-md p-2"
+                className="h-10"
                 placeholder="2024"
               />
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="month">Month</Label>
-              <input
+              <Input
                 value={month}
                 onChange={(e) => setMonth(e.target.value)}
                 id="month"
                 type="number"
-                className="block w-full h-10 border border-gray-300 rounded-md p-2"
+                className="h-10"
                 placeholder="1-12"
                 min="1"
                 max="12"
@@ -103,12 +104,12 @@ export default function DateTimeEpochUnitPage() {
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="day">Day</Label>
-              <input
+              <Input
                 value={day}
                 onChange={(e) => setDay(e.target.value)}
                 id="day"
                 type="number"
-                className="block w-full h-10 border border-gray-300 rounded-md p-2"
+                className="h-10"
                 placeholder="1-31"
                 min="1"
                 max="31"
@@ -116,12 +117,12 @@ export default function DateTimeEpochUnitPage() {
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="hour">Hour</Label>
-              <input
+              <Input
                 value={hour}
                 onChange={(e) => setHour(e.target.value)}
                 id="hour"
                 type="number"
-                className="block w-full h-10 border border-gray-300 rounded-md p-2"
+                className="h-10"
                 placeholder="0-23"
                 min="0"
                 max="23"
@@ -129,12 +130,12 @@ export default function DateTimeEpochUnitPage() {
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="minute">Minute</Label>
-              <input
+              <Input
                 value={minute}
                 onChange={(e) => setMinute(e.target.value)}
                 id="minute"
                 type="number"
-                className="block w-full h-10 border border-gray-300 rounded-md p-2"
+                className="h-10"
                 placeholder="0-59"
                 min="0"
                 max="59"
@@ -142,12 +143,12 @@ export default function DateTimeEpochUnitPage() {
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="second">Second</Label>
-              <input
+              <Input
                 value={second}
                 onChange={(e) => setSecond(e.target.value)}
                 id="second"
                 type="number"
-                className="block w-full h-10 border border-gray-300 rounded-md p-2"
+                className="h-10"
                 placeholder="0-59"
                 min="0"
                 max="59"

@@ -22,7 +22,7 @@ export default function SideNavigation() {
       <SidebarContent>
         {pageCategories.map((item) => (
           <SidebarGroup key={item.category}>
-            <SidebarGroupLabel className="text-blue-800 font-bold">{item.category}</SidebarGroupLabel>
+            <SidebarGroupLabel className="text-brand font-bold">{item.category}</SidebarGroupLabel>
             <SidebarMenu>
               {item.items.sort((a: PageItem, b: PageItem) => a.title.localeCompare(b.title)).map((item) => (
                 <SidebarMenuItem key={item.path}>

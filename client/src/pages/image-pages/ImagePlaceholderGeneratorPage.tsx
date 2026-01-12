@@ -122,7 +122,7 @@ export default function ImagePlaceholderGeneratorPage() {
         <div className="flex-1 flex flex-col gap-6">
           <div>
             <h1 className="text-2xl font-bold">Image placeholder generator</h1>
-            <p className="text-gray-500">Generate placeholder images of any size with customisable colors and text.</p>
+            <p className="text-muted-foreground">Generate placeholder images of any size with customisable colors and text.</p>
           </div>
 
           <div className="grid grid-cols-2 gap-6">
@@ -144,7 +144,7 @@ export default function ImagePlaceholderGeneratorPage() {
             <div className="flex flex-col gap-6">
               <div className="border rounded-md p-4">
                 <h3 className="text-xl font-bold">Size</h3>
-                <p className="text-gray-500">Set the width and height of your placeholder image.</p>
+                <p className="text-muted-foreground">Set the width and height of your placeholder image.</p>
                 <div className="flex gap-3 mt-4">
                   <div className="basis-1/2 space-y-2">
                     <Label htmlFor="width">Width (px)</Label>
@@ -158,7 +158,7 @@ export default function ImagePlaceholderGeneratorPage() {
               </div>
               <div className="border rounded-md p-4">
                 <h3 className="text-xl font-bold">Color</h3>
-                <p className="text-gray-500">Customise background and text colors.</p>
+                <p className="text-muted-foreground">Customise background and text colors.</p>
                 <div className="flex flex-col gap-3 mt-4">
                   <div className="basis-1/2 space-y-2">
                     <Label htmlFor="color-input">Background color <span className="text-xs">(Orange, #FFA500, hsl(36, 100%, 50%), etc.)</span></Label>
@@ -167,23 +167,23 @@ export default function ImagePlaceholderGeneratorPage() {
                         <Button variant="outline" style={{ backgroundColor: backgroundInputColor }} onClick={handleBackgroundColorPickerClick} className="h-10 w-20">
                           <span className="sr-only">Color picker</span>
                         </Button>
-                        <input
+                        <Input
                           id="color-picker"
                           type="color"
                           value={backgroundInputColor ? (backgroundInputColor.startsWith('#') ? backgroundInputColor : `#${backgroundInputColor}`) : '#000000'}
                           onChange={handleBackgroundColorPickerChange}
-                          className="absolute top-0 left-0 -z-10 h-10 w-20 rounded-md cursor-pointer"
+                          className="absolute top-0 left-0 -z-10 h-10 w-20"
                           title="Pick a color"
                         />
                       </div>
-                      <input
+                      <Input
                         id="color-input"
                         value={backgroundInputColor}
                         onFocus={handleFocusBackgroundColorInput}
                         onChange={handleBackgroundColorChange}
                         type="text"
                         placeholder="Enter a color"
-                        className="flex-1 h-10 font-mono border rounded-md p-2"
+                        className="flex-1 h-10 font-mono"
                       />
                     </div>
                   </div>
@@ -194,23 +194,23 @@ export default function ImagePlaceholderGeneratorPage() {
                         <Button variant="outline" style={{ backgroundColor: textInputColor }} onClick={handleTextColorPickerClick} className="h-10 w-20">
                           <span className="sr-only">Color picker</span>
                         </Button>
-                        <input
+                        <Input
                           id="color-picker-text"
                           type="color"
                           value={textInputColor ? (textInputColor.startsWith('#') ? textInputColor : `#${textInputColor}`) : '#000000'}
                           onChange={handleTextColorPickerChange}
-                          className="absolute top-0 left-0 -z-10 h-10 w-20 rounded-md cursor-pointer"
+                          className="absolute top-0 left-0 -z-10 h-10 w-20"
                           title="Pick a color"
                         />
                       </div>
-                      <input
+                      <Input
                         id="color-input-text"
                         value={textInputColor}
                         onFocus={handleFocusTextColorInput}
                         onChange={handleTextColorChange}
                         type="text"
                         placeholder="Enter a color"
-                        className="flex-1 h-10 font-mono border rounded-md p-2"
+                        className="flex-1 h-10 font-mono"
                       />
                     </div>
                   </div>
@@ -218,7 +218,7 @@ export default function ImagePlaceholderGeneratorPage() {
               </div>
               <div className="border rounded-md p-4">
                 <h3 className="text-xl font-bold">Text</h3>
-                <p className="text-gray-500">Customise the text displayed on the image.</p>
+                <p className="text-muted-foreground">Customise the text displayed on the image.</p>
                 <div className="flex gap-3 mt-4">
                   <div className="space-y-2 w-full">
                     <Label htmlFor="width">Custom text (optional)</Label>
@@ -238,7 +238,7 @@ export default function ImagePlaceholderGeneratorPage() {
                   className="flex flex-col items-center justify-center p-4 border rounded-md hover:bg-gray-50 transition-colors cursor-pointer"
                 >
                   <span className="text-lg font-bold">{size.width} x {size.height}</span>
-                  <span className="text-sm text-gray-500 mt-1">{size.name}</span>
+                  <span className="text-sm text-muted-foreground mt-1">{size.name}</span>
                 </button>
               ))}
             </div>

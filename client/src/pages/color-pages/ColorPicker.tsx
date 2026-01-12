@@ -7,6 +7,8 @@ import { toast } from 'sonner';
 import Color from 'colorjs.io';
 import type { WindowWithEyeDropper } from '@/interfaces/browser.types';
 import SEO from '@/components/SEO';
+import { Input } from '@/components/ui/input.tsx';
+import { Card } from '@/components/ui/card.tsx';
 
 export default function ColorPicker() {
   const [inputColor, setInputColor] = useState("oklch(42.4% 0.199 265.638)");
@@ -226,7 +228,7 @@ export default function ColorPicker() {
       <div className="max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">Color Picker</h1>
-          <p className="text-gray-500">Use the color picker, or pick a color from anywhere on the screen using the eye dropper.</p>
+          <p className="text-muted-foreground">Use the color picker, or pick a color from anywhere on the screen using the eye dropper.</p>
         </div>
         <div className="flex flex-row gap-10 mt-10">
           <div className="flex-1 flex flex-col gap-6">
@@ -235,23 +237,23 @@ export default function ColorPicker() {
               <div className="flex gap-2">
                 <div className="relative">
                   <Button variant="outline" style={{ backgroundColor: inputColor }} onClick={handleColorPickerClick} className="h-10 w-20"><span className="sr-only">Color picker</span></Button>
-                  <input
+                  <Input
                     id="color-picker"
                     type="color"
                     value={inputColor ? (inputColor.startsWith('#') ? inputColor : `#${inputColor}`) : "#000000"}
                     onChange={handleColorPickerChange}
-                    className="absolute top-0 left-0 -z-10 h-10 w-20 rounded-md cursor-pointer"
+                    className="absolute top-0 left-0 -z-10 h-10 w-20"
                     title="Pick a color"
                   />
                 </div>
-                <input
+                <Input
                   id="color-input"
                   value={inputColor}
                   onFocus={handleFocusColorInput}
                   onChange={handleColorChange}
                   type="text"
                   placeholder="Enter a color"
-                  className="flex-1 h-10 font-mono border rounded-md p-2"
+                  className="flex-1 h-10 font-mono"
                 />
                 <Button onClick={handleEyeDropper} variant="outline" className="h-10">
                   <Pipette />
@@ -270,18 +272,18 @@ export default function ColorPicker() {
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-bold">Variations</h2>
             </div>
-            <p className="text-gray-500 mb-4">
+            <p className="text-muted-foreground mb-4">
               Generate tints and shades of your selected color by mixing in white or black in 10% increments.
             </p>
-            <div className="bg-gray-100 rounded-lg p-4 mb-6">
+            <Card className="p-4 mb-6 gap-0">
               <p className="text-sm font-semibold mb-1">Pro Tip</p>
-              <p className="text-sm text-gray-700">Shades work well for hover states and shadows, while tints are ideal for highlights and backgrounds.</p>
-            </div>
+              <p className="text-sm">Shades work well for hover states and shadows, while tints are ideal for highlights and backgrounds.</p>
+            </Card>
 
             {/* Shades Section */}
             <div className="mb-8">
               <h3 className="font-bold text-lg mb-2">Shades</h3>
-              <p className="text-sm text-gray-600 mb-4">Darkened versions of your base color made by blending in black. Shades create a sense of depth and hierarchy in your color palette.</p>
+              <p className="text-sm text-muted-foreground mb-4">Darkened versions of your base color made by blending in black. Shades create a sense of depth and hierarchy in your color palette.</p>
               <div className="relative">
                 <div className="flex h-16 gap-1 rounded-lg">
                   {colorVariations.shades.map((color, idx) => {
@@ -307,7 +309,7 @@ export default function ColorPicker() {
                 <div className="flex mt-2">
                   {Array.from({ length: 11 }, (_, i) => i * 10).map((percentage, idx) => (
                     <div key={idx} className="flex-1 flex justify-center">
-                      <span className="text-xs bg-white px-1.5 py-0.5 rounded">{percentage}%</span>
+                      <span className="text-xs px-1.5 py-0.5 rounded">{percentage}%</span>
                     </div>
                   ))}
                 </div>
@@ -317,7 +319,7 @@ export default function ColorPicker() {
             {/* Tints Section */}
             <div className="mb-8">
               <h3 className="font-bold text-lg mb-2">Tints</h3>
-              <p className="text-sm text-gray-600 mb-4">Lightened versions of your base color made by blending in white. Tints make colors appear brighter and more vibrant.</p>
+              <p className="text-sm text-muted-foreground mb-4">Lightened versions of your base color made by blending in white. Tints make colors appear brighter and more vibrant.</p>
               <div className="relative">
                 <div className="flex h-16 gap-1 rounded-lg">
                   {colorVariations.tints.map((color, idx) => {
@@ -343,7 +345,7 @@ export default function ColorPicker() {
                 <div className="flex mt-2">
                   {Array.from({ length: 11 }, (_, i) => i * 10).map((percentage, idx) => (
                     <div key={idx} className="flex-1 flex justify-center">
-                      <span className="text-xs bg-white px-1.5 py-0.5 rounded">{percentage}%</span>
+                      <span className="text-xs px-1.5 py-0.5 rounded">{percentage}%</span>
                     </div>
                   ))}
                 </div>
@@ -353,7 +355,7 @@ export default function ColorPicker() {
             {/* Tones Section */}
             <div className="mb-8">
               <h3 className="font-bold text-lg mb-2">Tones</h3>
-              <p className="text-sm text-gray-600 mb-4">Tones of your base color made by blending in gray. Tones are a great way to add subtle depth and contrast to your color palette.</p>
+              <p className="text-sm text-muted-foreground mb-4">Tones of your base color made by blending in gray. Tones are a great way to add subtle depth and contrast to your color palette.</p>
               <div className="relative">
                 <div className="flex h-16 gap-1 rounded-lg">
                   {colorVariations.tones.map((color, idx) => {
@@ -379,7 +381,7 @@ export default function ColorPicker() {
                 <div className="flex mt-2">
                   {Array.from({ length: 11 }, (_, i) => i * 10).map((percentage, idx) => (
                     <div key={idx} className="flex-1 flex justify-center">
-                      <span className="text-xs bg-white px-1.5 py-0.5 rounded">{percentage}%</span>
+                      <span className="text-xs px-1.5 py-0.5 rounded">{percentage}%</span>
                     </div>
                   ))}
                 </div>
@@ -388,20 +390,20 @@ export default function ColorPicker() {
 
             {/* Information Boxes */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-gray-50 rounded-lg p-4">
+              <Card className="p-4 gap-0">
                 <h4 className="font-semibold mb-2">Where to Use</h4>
-                <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+                <ul className="text-sm space-y-1 list-disc list-inside">
                   <li>Interactive element states (hover, active, disabled)</li>
                   <li>Adding visual depth through shadows and highlights</li>
                   <li>Establishing uniform color palettes</li>
                 </ul>
-              </div>
-              <div className="bg-gray-50 rounded-lg p-4">
+              </Card>
+              <Card className="p-4 gap-0">
                 <h4 className="font-semibold mb-2">Best Practice</h4>
-                <p className="text-sm text-gray-700">
+                <p className="text-sm">
                   These variations serve as the building blocks for a unified color system. Save and export them to ensure design consistency throughout your project.
                 </p>
-              </div>
+              </Card>
             </div>
           </div>
         )}
@@ -411,24 +413,24 @@ export default function ColorPicker() {
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-bold">Color Combinations</h2>
             </div>
-            <p className="text-gray-500 mb-6">Discover color harmonies that work together. Each combination creates a different feeling and aesthetic.</p>
+            <p className="text-muted-foreground mb-6">Discover color harmonies that work together. Each combination creates a different feeling and aesthetic.</p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 gap-x-16 bg-gray-50 rounded-lg p-4">
+            <Card className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 gap-x-16 p-4">
               <div>
                 <h3 className="font-semibold mb-2">How to Use</h3>
-                <p className="text-gray-500 text-sm">Tap any color swatch to copy its hex code. These palettes are based on color theory principles for harmonious results.</p>
+                <p className="text-sm">Tap any color swatch to copy its hex code. These palettes are based on color theory principles for harmonious results.</p>
               </div>
               <div>
                 <h3 className="font-semibold mb-2">Why It Matters</h3>
-                <p className="text-gray-500 text-sm">Well-chosen color combinations help establish visual hierarchy and communicate the right tone.</p>
+                <p className="text-sm">Well-chosen color combinations help establish visual hierarchy and communicate the right tone.</p>
               </div>
-            </div>
+            </Card>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 gap-x-16">
               {/* Complement */}
               <div className="flex flex-col gap-3">
                 <h3 className="font-bold text-lg">Complement</h3>
-                <p className="text-sm text-gray-600">{colorHarmonies.complement.description}</p>
+                <p className="text-sm text-muted-foreground">{colorHarmonies.complement.description}</p>
                 <div className="flex gap-1 h-12 rounded-lg overflow-hidden">
                   {colorHarmonies.complement.colors.map((color, idx) => (
                     <Tooltip key={idx}>
@@ -445,13 +447,13 @@ export default function ColorPicker() {
                     </Tooltip>
                   ))}
                 </div>
-                <p className="text-sm text-gray-500"><span className="font-semibold">Best for:</span> {colorHarmonies.complement.bestFor}</p>
+                <p className="text-sm text-muted-foreground"><span className="font-semibold">Best for:</span> {colorHarmonies.complement.bestFor}</p>
               </div>
 
               {/* Split-complementary */}
               <div className="flex flex-col gap-3">
                 <h3 className="font-bold text-lg">Split-complementary</h3>
-                <p className="text-sm text-gray-600">{colorHarmonies.splitComplementary.description}</p>
+                <p className="text-sm text-muted-foreground">{colorHarmonies.splitComplementary.description}</p>
                 <div className="flex gap-1 h-12 rounded-lg overflow-hidden">
                   {colorHarmonies.splitComplementary.colors.map((color, idx) => (
                     <Tooltip key={idx}>
@@ -468,13 +470,13 @@ export default function ColorPicker() {
                     </Tooltip>
                   ))}
                 </div>
-                <p className="text-sm text-gray-500"><span className="font-semibold">Best for:</span> {colorHarmonies.splitComplementary.bestFor}</p>
+                <p className="text-sm text-muted-foreground"><span className="font-semibold">Best for:</span> {colorHarmonies.splitComplementary.bestFor}</p>
               </div>
 
               {/* Triadic */}
               <div className="flex flex-col gap-3">
                 <h3 className="font-bold text-lg">Triadic</h3>
-                <p className="text-sm text-gray-600">{colorHarmonies.triadic.description}</p>
+                <p className="text-sm text-muted-foreground">{colorHarmonies.triadic.description}</p>
                 <div className="flex gap-1 h-12 rounded-lg overflow-hidden">
                   {colorHarmonies.triadic.colors.map((color, idx) => (
                     <Tooltip key={idx}>
@@ -491,13 +493,13 @@ export default function ColorPicker() {
                     </Tooltip>
                   ))}
                 </div>
-                <p className="text-sm text-gray-500"><span className="font-semibold">Best for:</span> {colorHarmonies.triadic.bestFor}</p>
+                <p className="text-sm text-muted-foreground"><span className="font-semibold">Best for:</span> {colorHarmonies.triadic.bestFor}</p>
               </div>
 
               {/* Analogous */}
               <div className="flex flex-col gap-3">
                 <h3 className="font-bold text-lg">Analogous</h3>
-                <p className="text-sm text-gray-600">{colorHarmonies.analogous.description}</p>
+                <p className="text-sm text-muted-foreground">{colorHarmonies.analogous.description}</p>
                 <div className="flex gap-1 h-12 rounded-lg overflow-hidden">
                   {colorHarmonies.analogous.colors.map((color, idx) => (
                     <Tooltip key={idx}>
@@ -514,13 +516,13 @@ export default function ColorPicker() {
                     </Tooltip>
                   ))}
                 </div>
-                <p className="text-sm text-gray-500"><span className="font-semibold">Best for:</span> {colorHarmonies.analogous.bestFor}</p>
+                <p className="text-sm text-muted-foreground"><span className="font-semibold">Best for:</span> {colorHarmonies.analogous.bestFor}</p>
               </div>
 
               {/* Monochromatic */}
               <div className="flex flex-col gap-3">
                 <h3 className="font-bold text-lg">Monochromatic</h3>
-                <p className="text-sm text-gray-600">{colorHarmonies.monochromatic.description}</p>
+                <p className="text-sm text-muted-foreground">{colorHarmonies.monochromatic.description}</p>
                 <div className="flex gap-1 h-12 rounded-lg overflow-hidden">
                   {colorHarmonies.monochromatic.colors.map((color, idx) => (
                     <Tooltip key={idx}>
@@ -537,13 +539,13 @@ export default function ColorPicker() {
                     </Tooltip>
                   ))}
                 </div>
-                <p className="text-sm text-gray-500"><span className="font-semibold">Best for:</span> {colorHarmonies.monochromatic.bestFor}</p>
+                <p className="text-sm text-muted-foreground"><span className="font-semibold">Best for:</span> {colorHarmonies.monochromatic.bestFor}</p>
               </div>
 
               {/* Tetradic */}
               <div className="flex flex-col gap-3">
                 <h3 className="font-bold text-lg">Tetradic</h3>
-                <p className="text-sm text-gray-600">{colorHarmonies.tetradic.description}</p>
+                <p className="text-sm text-muted-foreground">{colorHarmonies.tetradic.description}</p>
                 <div className="flex gap-1 h-12 rounded-lg overflow-hidden">
                   {colorHarmonies.tetradic.colors.map((color, idx) => (
                     <Tooltip key={idx}>
@@ -560,7 +562,7 @@ export default function ColorPicker() {
                     </Tooltip>
                   ))}
                 </div>
-                <p className="text-sm text-gray-500"><span className="font-semibold">Best for:</span> {colorHarmonies.tetradic.bestFor}</p>
+                <p className="text-sm text-muted-foreground"><span className="font-semibold">Best for:</span> {colorHarmonies.tetradic.bestFor}</p>
               </div>
             </div>
           </div>

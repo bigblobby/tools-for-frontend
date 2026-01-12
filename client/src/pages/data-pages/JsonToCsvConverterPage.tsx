@@ -4,6 +4,7 @@ import { useState, useRef, type ChangeEvent } from 'react';
 import { Label } from '@/components/ui/label.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { useConverterQueries } from '@/queries/converter.queries';
+import { Textarea } from '@/components/ui/textarea.tsx';
 
 export default function JsonToCsvConverterPage() {
   const [csv, setCsv] = useState('');
@@ -114,7 +115,7 @@ export default function JsonToCsvConverterPage() {
       <div className="flex flex-col gap-10 max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">JSON to CSV Converter</h1>
-          <p className="text-gray-500">Convert JSON to CSV.</p>
+          <p className="text-muted-foreground">Convert JSON to CSV.</p>
         </div>
         <div className="flex-1 flex flex-col gap-6">
           <div className="flex flex-col gap-3">
@@ -122,7 +123,7 @@ export default function JsonToCsvConverterPage() {
               <Label htmlFor="csv-input">JSON</Label>
               <div className="flex items-center gap-2">
                 {fileName && (
-                  <span className="text-sm text-gray-500">File: {fileName}</span>
+                  <span className="text-sm text-muted-foreground">File: {fileName}</span>
                 )}
                 <input
                   ref={fileInputRef}
@@ -141,11 +142,11 @@ export default function JsonToCsvConverterPage() {
                 </Button>
               </div>
             </div>
-            <textarea value={json} id="xml-input" className="block w-full h-80 font-mono border border-gray-300 rounded-md p-2" onChange={handleJsonChange} placeholder="Paste JSON here or upload a file" />
+            <Textarea value={json} id="xml-input" className="h-80 font-mono" onChange={handleJsonChange} placeholder="Paste JSON here or upload a file" />
           </div>
           <div className="flex flex-col gap-3">
             <Label htmlFor="json-input">CSV <span className="text-xs">(Read Only)</span></Label>
-            <textarea readOnly value={csv} id="csv-input" className="block w-full h-80 font-mono border border-gray-300 rounded-md p-2" onChange={handleCsvChange} />
+            <Textarea readOnly value={csv} id="csv-input" className="h-80 font-mono" onChange={handleCsvChange} />
             <div className="flex flex-wrap gap-3">
               <Button className="min-w-24" onClick={handleDownload} disabled={loading}>
                 {loading ? (

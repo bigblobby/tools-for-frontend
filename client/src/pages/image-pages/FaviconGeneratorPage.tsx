@@ -85,7 +85,7 @@ export default function FaviconGeneratorPage() {
         <div className="flex-1 flex flex-col gap-6">
           <div>
             <h1 className="text-2xl font-bold">Favicon Generator</h1>
-            <p className="text-gray-500">Favicons are used to create icons that display next to the address bar.</p>
+            <p className="text-muted-foreground">Favicons are used to create icons that display next to the address bar.</p>
           </div>
           <div className="flex h-[200px]">
             <div className="basis-full flex flex-col gap-3 md:basis-1/2 md:max-w-48">
@@ -104,7 +104,7 @@ export default function FaviconGeneratorPage() {
           <div className="flex flex-col gap-3">
             <h2 className="text-xl font-bold">Next steps</h2>
             <div>
-              <ol className="list-decimal list-inside text-gray-500">
+              <ol className="list-decimal list-inside text-muted-foreground">
                 <li>Paste the generated files into the relevant directory of your site. This might be at the root, <code>/assets</code> or <code>/public</code>.
                 </li>
                 <li>Paste the following into the <code>&lt;head&gt;</code> of your HTML document.</li>

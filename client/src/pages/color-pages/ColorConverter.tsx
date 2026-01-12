@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button.tsx';
 import { Pipette, Copy } from "lucide-react";
 import type { WindowWithEyeDropper } from '@/interfaces/browser.types';
 import SEO from '@/components/SEO';
+import { Input } from '@/components/ui/input.tsx';
 
 export default function ColorConverter() {
   const [inputColor, setInputColor] = useState("oklch(42.4% 0.199 265.638)");
@@ -107,7 +108,7 @@ export default function ColorConverter() {
       <div className="max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">Color Converter</h1>
-          <p className="text-gray-500">Convert a color to different formats. Use the color picker, or pick a color from anywhere on the screen using the eye dropper.</p>
+          <p className="text-muted-foreground">Convert a color to different formats. Use the color picker, or pick a color from anywhere on the screen using the eye dropper.</p>
         </div>
         <div className="flex flex-row gap-10 mt-10">
           <div className="flex-1 flex flex-col gap-6">
@@ -116,23 +117,23 @@ export default function ColorConverter() {
               <div className="flex gap-2">
                 <div className="relative">
                   <Button variant="outline" style={{ backgroundColor: inputColor }} onClick={handleColorPickerClick} className="h-10 w-20"><span className="sr-only">Color picker</span></Button>
-                  <input
+                  <Input
                     id="color-picker"
                     type="color"
                     value={colorValues.hexColor ? (colorValues.hexColor.startsWith('#') ? colorValues.hexColor : `#${colorValues.hexColor}`) : "#000000"}
                     onChange={handleColorPickerChange}
-                    className="absolute top-0 left-0 -z-10 h-10 w-20 rounded-md cursor-pointer"
+                    className="absolute top-0 left-0 -z-10 h-10 w-20"
                     title="Pick a color"
                   />
                 </div>
-                <input
+                <Input
                   id="color-input"
                   value={inputColor}
                   onFocus={handleFocusColorInput}
                   onChange={handleColorChange}
                   type="text"
                   placeholder="Enter a color"
-                  className="flex-1 h-10 font-mono border rounded-md p-2"
+                  className="flex-1 h-10 font-mono"
                 />
                 <Button onClick={handleEyeDropper} variant="outline" className="h-10">
                   <Pipette />

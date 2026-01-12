@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { Label } from '@/components/ui/label.tsx';
 import { toast } from 'sonner';
 import SEO from '@/components/SEO';
+import { Textarea } from '@/components/ui/textarea.tsx';
+import { Card } from '@/components/ui/card.tsx';
 
 export default function StringTransformPage() {
   const [input, setInput] = useState('');
@@ -78,7 +80,7 @@ export default function StringTransformPage() {
 
           <div className="flex flex-col gap-3">
             <Label htmlFor="string-input">Input</Label>
-            <textarea value={input} id="string-input" className="block w-full h-40 border border-gray-300 rounded-md p-2" onChange={handleInputChange}/>
+            <Textarea value={input} id="string-input" className="h-40" onChange={handleInputChange} />
             <div className="flex flex-wrap gap-3">
               <Button onClick={handleUppercase}>Uppercase</Button>
               <Button onClick={handleLowercase}>Lowercase</Button>
@@ -94,7 +96,7 @@ export default function StringTransformPage() {
 
           <div className="flex flex-col gap-3">
             <Label htmlFor="string-output">Output <span className="text-xs">(Read Only)</span></Label>
-            <textarea readOnly value={output} id="string-output" className="block w-full h-40 border border-gray-300 rounded-md p-2"/>
+            <Textarea readOnly value={output} id="string-output" className="h-40" />
             <div className="flex flex-wrap gap-3">
               <Button onClick={handleCopy}>Copy</Button>
               <Button variant="destructive-min" onClick={handleClearOutput}>Clear</Button>
@@ -102,40 +104,40 @@ export default function StringTransformPage() {
           </div>
         </div>
 
-        <div className="flex flex-col max-w-[320px] gap-3 bg-zinc-100 p-4 rounded-md">
-          <p className="text-gray-500 text-sm">
+        <Card className="max-w-[320px] gap-3 p-4">
+          <p className="text-sm">
             <span className="font-bold">Uppercase: </span>
             <span>Converts the string to uppercase</span>
           </p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-sm">
             <span className="font-bold">Lowercase: </span>
             <span>Converts the string to lowercase</span>
           </p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-sm">
             <span className="font-bold">Capitalize: </span>
             <span>Converts the first letter of each word to uppercase</span>
           </p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-sm">
             <span className="font-bold">Reverse: </span>
             <span>Converts the string to its reverse</span>
           </p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-sm">
             <span className="font-bold">Remove Extra Spaces: </span>
             <span>Removes extra spaces from the string</span>
           </p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-sm">
             <span className="font-bold">Remove Special Characters: </span>
             <span>Removes special characters from the string</span>
           </p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-sm">
             <span className="font-bold">Remove Numbers: </span>
             <span>Removes numbers from the string</span>
           </p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-sm">
             <span className="font-bold">Remove Letters: </span>
             <span>Removes letters from the string</span>
           </p>
-        </div>
+        </Card>
       </div>
     </>
   );
