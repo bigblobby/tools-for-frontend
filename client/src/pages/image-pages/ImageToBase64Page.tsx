@@ -74,7 +74,7 @@ export default function ImageToBase64Page() {
         <div className="flex-1 flex flex-col gap-6 w-full">
           <div>
             <h1 className="text-2xl font-bold">Image to Base64</h1>
-            <p className="text-gray-500">Convert an image to Base64 string.</p>
+            <p className="text-muted-foreground">Convert an image to Base64 string.</p>
           </div>
           <div className="flex h-[600px]">
             <div className="basis-1/2 max-w-1/2">

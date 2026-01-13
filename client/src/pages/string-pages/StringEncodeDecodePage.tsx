@@ -86,7 +86,7 @@ export default function StringEncodeDecodePage() {
         <div className="flex-1 flex flex-col gap-6">
           <div>
             <h1 className="text-2xl font-bold">Encode Decode</h1>
-            <p className="text-gray-500">Encode and decode strings to/from Base64, URL, and HTML Entity.</p>
+            <p className="text-muted-foreground">Encode and decode strings to/from Base64, URL, and HTML Entity.</p>
           </div>
 
           <div className="flex flex-col gap-3">
@@ -94,21 +94,21 @@ export default function StringEncodeDecodePage() {
             <Textarea value={input} id="string-input" className="h-40" onChange={handleInputChange} />
             <div className="flex flex-wrap gap-3">
               <div className="flex flex-col gap-2">
-                <span className="block text-gray-500 text-sm">Base64</span>
+                <span className="block text-muted-foreground text-sm">Base64</span>
                 <ButtonGroup>
                   <Button onClick={handleBase64Encode}>Encode</Button>
                   <Button onClick={handleBase64Decode}>Decode</Button>
                 </ButtonGroup>
               </div>
               <div className="flex flex-col gap-2">
-                <span className="block text-gray-500 text-sm">URL</span>
+                <span className="block text-muted-foreground text-sm">URL</span>
                 <ButtonGroup>
                   <Button onClick={handleURLEncode}>Encode</Button>
                   <Button onClick={handleURLDecode}>Decode</Button>
                 </ButtonGroup>
               </div>
               <div className="flex flex-col gap-2">
-                <span className="block text-gray-500 text-sm">HTML Entity</span>
+                <span className="block text-muted-foreground text-sm">HTML Entity</span>
                 <div className="flex items-center gap-2">
                   <ButtonGroup>
                     <Button onClick={handleHTMLEntityEncode}>Encode</Button>

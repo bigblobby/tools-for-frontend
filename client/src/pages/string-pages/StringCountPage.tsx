@@ -25,7 +25,7 @@ export default function StringCountPage() {
       <div className="flex flex-col gap-4 max-w-8xl">
         <div>
           <h1 className="text-2xl font-bold">Count</h1>
-          <p className="text-gray-500">Counts the number of words and characters in a string.</p>
+          <p className="text-muted-foreground">Counts the number of words and characters in a string.</p>
         </div>
 
         <div>
@@ -33,8 +33,8 @@ export default function StringCountPage() {
         </div>
 
         <div>
-          <p className="text-gray-500">Word Count: <span className="font-bold">{wordCount}</span></p>
-          <p className="text-gray-500">Character Count: <span className="font-bold">{characterCount}</span></p>
+          <p className="text-muted-foreground">Word Count: <span className="font-bold">{wordCount}</span></p>
+          <p className="text-muted-foreground">Character Count: <span className="font-bold">{characterCount}</span></p>
         </div>
       </div>
     </>
