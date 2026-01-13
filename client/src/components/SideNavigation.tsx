@@ -14,7 +14,7 @@ export default function SideNavigation() {
     <Sidebar>
       <SidebarHeader className="p-4">
         <Link to="/">
-          <h1 className="text-xl font-mono font-bold text-brand">
+          <h1 className="text-xl font-mono font-bold text-brand dark:text-white">
             Tools for Frontend
           </h1>
         </Link>
@@ -22,7 +22,7 @@ export default function SideNavigation() {
       <SidebarContent>
         {pageCategories.map((item) => (
           <SidebarGroup key={item.category}>
-            <SidebarGroupLabel className="text-brand font-bold">{item.category}</SidebarGroupLabel>
+            <SidebarGroupLabel className="text-brand dark:text-white font-bold">{item.category}</SidebarGroupLabel>
             <SidebarMenu>
               {item.items.sort((a: PageItem, b: PageItem) => a.title.localeCompare(b.title)).map((item) => (
                 <SidebarMenuItem key={item.path}>
