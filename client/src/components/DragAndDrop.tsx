@@ -144,7 +144,7 @@ export default function DragAndDrop({
         onChange={handleManualUpload}
       />
       <div
-        className="relative bg-gray-50 h-full cursor-pointer rounded-md border-dashed border-2"
+        className="relative bg-sidebar h-full cursor-pointer rounded-md border-dashed border-2"
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
@@ -153,7 +153,7 @@ export default function DragAndDrop({
       >
         {
           images.length === 0 && (
-            <div className="absolute w-full top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 px-2 text-gray-500 text-center pointer-events-none">
+            <div className="absolute w-full top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 px-2 text-muted-foreground text-center pointer-events-none">
               <span><Folder /></span>
               <h3>{text}</h3>
               <h4 className="text-xs">{helpText}</h4>
